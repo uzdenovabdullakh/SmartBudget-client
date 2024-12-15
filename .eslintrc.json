@@ -4,6 +4,9 @@
     "eslint:recommended",
     "plugin:prettier/recommended"
   ],
+  "globals": {
+    "React": "readonly"
+  },
   "rules": {
     "prettier/prettier": [
       "error",
@@ -16,6 +19,7 @@
         "endOfLine": "auto"
       }
     ],
-    "react/react-in-jsx-scope": "off"
+    "react/react-in-jsx-scope": "off",
+    "no-unused-vars": "warn"
   }
 }
