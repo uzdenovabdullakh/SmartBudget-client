@@ -3,7 +3,8 @@
     "airbnb",
     "airbnb-typescript",
     "airbnb/hooks",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
+    "plugin:@next/next/recommended"
   ],
   "parserOptions": {
     "project": "./tsconfig.json"
@@ -15,8 +16,15 @@
   "globals": {
     "React": "readonly"
   },
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+    }
+  },
   "rules": {
-    "react-hooks/exhaustive-deps": "off",
+    "react-hooks/exhaustive-deps": "warn",
+    "react-hooks/rules-of-hooks": "error",
+    "react/destructuring-assignment": "off",
     "react/react-in-jsx-scope": "off",
     "implicit-arrow-linebreak": "off",
     "@typescript-eslint/no-unused-vars": "warn",
