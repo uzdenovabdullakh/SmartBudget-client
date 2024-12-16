@@ -1,25 +1,57 @@
 {
   "extends": [
+    "airbnb",
+    "airbnb-typescript",
+    "airbnb/hooks",
     "next/core-web-vitals",
-    "eslint:recommended",
     "plugin:prettier/recommended"
   ],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "env": {
+    "browser": true,
+    "es2017": true
+  },
   "globals": {
     "React": "readonly"
   },
   "rules": {
-    "prettier/prettier": [
+    "react-hooks/exhaustive-deps": "off",
+    "react/react-in-jsx-scope": "off",
+    "implicit-arrow-linebreak": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "jsx-quotes": [
+      "error",
+      "prefer-double"
+    ],
+    "react/no-unescaped-entities": 0,
+    "react/prop-types": 0,
+    "react/require-default-props": 0,
+    "jsx-a11y/anchor-is-valid": "off",
+    "@next/next/no-document-import-in-page": "off",
+    "@typescript-eslint/semi": ["off", "never"],
+    "react/jsx-filename-extension": [
+      1,
+      { "extensions": [".ts", ".tsx", ".jsx"] }
+    ],
+    "react/function-component-definition": "off",
+    "import/no-extraneous-dependencies": [
       "error",
       {
-        "semi": true,
-        "singleQuote": false,
-        "tabWidth": 2,
-        "trailingComma": "all",
-        "printWidth": 80,
-        "endOfLine": "auto"
+        "devDependencies": true
       }
     ],
-    "react/react-in-jsx-scope": "off",
-    "no-unused-vars": "warn"
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "ts": "never",
+        "tsx": "never"
+      }
+    ],
+    "prettier/prettier": [
+      "error"
+    ]
   }
 }
