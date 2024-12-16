@@ -18,10 +18,10 @@ class MyDocument extends Document {
 
   render(): JSX.Element {
     return (
-      <Html>
+      <Html suppressHydrationWarning>
         <Head>
           <meta charSet="utf-8" />
-          <Favicon name="My Awesome Page" />
+          <Favicon />
         </Head>
         <body>
           <Main />

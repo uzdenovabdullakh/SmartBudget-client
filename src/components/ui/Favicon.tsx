@@ -1,8 +1,4 @@
-type FaviconProps = {
-  name: string;
-};
-
-const Favicon = ({ name }: FaviconProps): JSX.Element => {
+const Favicon = (): JSX.Element => {
   return (
     <>
       <link
