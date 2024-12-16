@@ -3,7 +3,6 @@
     "airbnb",
     "airbnb-typescript",
     "airbnb/hooks",
-    "next/core-web-vitals",
     "plugin:prettier/recommended"
   ],
   "parserOptions": {
@@ -30,10 +29,19 @@
     "react/require-default-props": 0,
     "jsx-a11y/anchor-is-valid": "off",
     "@next/next/no-document-import-in-page": "off",
-    "@typescript-eslint/semi": ["off", "never"],
+    "@typescript-eslint/semi": [
+      "off",
+      "never"
+    ],
     "react/jsx-filename-extension": [
       1,
-      { "extensions": [".ts", ".tsx", ".jsx"] }
+      {
+        "extensions": [
+          ".ts",
+          ".tsx",
+          ".jsx"
+        ]
+      }
     ],
     "react/function-component-definition": "off",
     "import/no-extraneous-dependencies": [
@@ -51,7 +59,14 @@
       }
     ],
     "prettier/prettier": [
-      "error"
+      "error",
+      {
+        "singleQuote": false,
+        "semi": true,
+        "tabWidth": 2,
+        "trailingComma": "all",
+        "endOfLine": "auto"
+      }
     ]
   }
 }
