@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "../styles/fonts/fonts.css";
+import "../../public/fonts/fonts.css";
 import Favicon from "@/components/ui/Favicon";
 import Providers from "./provider";
 
