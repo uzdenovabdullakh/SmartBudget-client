@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "../../public/fonts/fonts.css";
 import Favicon from "@/components/ui/Favicon";
+import { LayoutProps } from "@/types/types";
 import Providers from "./provider";
 
 export const metadata: Metadata = {
@@ -8,11 +9,7 @@ export const metadata: Metadata = {
   description: "App for your personal finance management",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<LayoutProps>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
