@@ -2,6 +2,9 @@
 
 import { extendTheme } from "@chakra-ui/react";
 import colors from "./colors/colors";
+import Text from "./components/text";
+import Button from "./components/button";
+import Heading from "./components/heading";
 
 const theme = extendTheme({
   colors,
@@ -39,6 +42,11 @@ const theme = extendTheme({
         fontWeight: "semibold",
       },
     },
+  },
+  components: {
+    Button,
+    Text,
+    Heading,
   },
 });
 

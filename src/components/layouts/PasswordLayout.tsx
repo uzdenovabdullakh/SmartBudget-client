@@ -38,11 +38,7 @@ export default function PasswordLayout({
           {subHeading}
         </Text>
         {children}
-        <Text
-          fontSize="sm"
-          textAlign="center"
-          color="others.accessibleDodgerBlue"
-        >
+        <Text as="span" fontSize="sm" textAlign="center" variant="link-text">
           <Link href="/auth/signin">Return to log in</Link>
         </Text>
       </VStack>

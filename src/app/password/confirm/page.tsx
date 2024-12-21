@@ -23,15 +23,7 @@ export default function ConfirmNewPasswordPage() {
           icon={FaLock}
         />
       </FormControl>
-      <Button
-        width="100%"
-        bg="blue.600"
-        color="white"
-        _hover={{ bg: "blue.700" }}
-        size="lg"
-      >
-        Reset password
-      </Button>
+      <Button variant="primaryButton">Reset password</Button>
     </PasswordLayout>
   );
 }

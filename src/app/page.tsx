@@ -7,17 +7,14 @@ import {
   Heading,
   Text,
   VStack,
-  HStack,
   Divider,
 } from "@chakra-ui/react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { MoneyOnCard, WomanWithGraphics } from "@/components/ui/Animations";
+import Header from "@/components/ui/Header";
 
 export default function HomePage() {
   const router = useRouter();
-
-  const handleSignUp = () => router.push("/auth/signup");
 
   return (
     <Box
@@ -27,48 +24,7 @@ export default function HomePage() {
       display="flex"
       flexDirection="column"
     >
-      <Flex
-        as="header"
-        justifyContent="space-between"
-        alignItems="center"
-        p={5}
-        paddingLeft="5rem"
-        paddingRight="5rem"
-        bgColor="neutrals.midnight"
-        fontFamily="figtree"
-        position="fixed"
-        top="0"
-        width="100%"
-        zIndex="1000"
-      >
-        <Link href="/">
-          <Heading as="h1" fontSize={{ base: "xl", lg: "2xl" }}>
-            Smart Budget.
-          </Heading>
-        </Link>
-        <HStack spacing={4}>
-          <Button
-            variant="outline"
-            color="neutrals.buttermilk"
-            size="lg"
-            _hover={{
-              color: "firefly.firefly300",
-            }}
-            onClick={() => router.push("auth/signin")}
-          >
-            Log In
-          </Button>
-          <Button
-            bgColor="firefly.firefly"
-            color="neutrals.midnight"
-            size="lg"
-            _hover={{ bgColor: "firefly.firefly500" }}
-            onClick={handleSignUp}
-          >
-            Sign Up Now
-          </Button>
-        </HStack>
-      </Flex>
+      <Header />
       <Box pt="7rem">
         <Flex
           flex="1"
@@ -83,12 +39,7 @@ export default function HomePage() {
             flex="1"
             maxWidth={{ base: "100%", lg: "40rem" }}
           >
-            <Heading
-              as="h2"
-              fontSize={{ base: "3xl", lg: "5xl" }}
-              fontWeight="semibold"
-              lineHeight="short"
-            >
+            <Heading as="h2" variant="title">
               Take Control of Your Finances Today
             </Heading>
             <Text
@@ -100,11 +51,8 @@ export default function HomePage() {
               effortlessly with Smart Budget.
             </Text>
             <Button
-              bgColor="firefly.firefly"
-              color="neutrals.midnight"
-              size="lg"
-              _hover={{ bgColor: "firefly.firefly500" }}
-              onClick={handleSignUp}
+              variant="callToActionButton"
+              onClick={() => router.push("/auth/signup")}
             >
               Start using
             </Button>
@@ -139,12 +87,7 @@ export default function HomePage() {
             flex="1"
             maxWidth={{ base: "100%", lg: "40rem" }}
           >
-            <Heading
-              as="h2"
-              fontSize={{ base: "3xl", lg: "5xl" }}
-              fontWeight="semibold"
-              lineHeight="short"
-            >
+            <Heading as="h2" variant="title">
               Your Financial Freedom Starts Here
             </Heading>
             <Box

@@ -14,14 +14,12 @@ export default function NotFoundPage() {
       flexDir="column"
     >
       <NotFound />
-      <Text fontSize="lg" color="granite.granite600" mb={6}>
+      <Text variant="error-description">
         Страница не найдена. Возможно, она была удалена или никогда не
         существовала.
       </Text>
       <Link href="/">
-        <Button bg="others.accessibleDodgerBlue" color="white">
-          Вернуться на главную
-        </Button>
+        <Button variant="primaryButton">Вернуться на главную</Button>
       </Link>
     </Flex>
   );

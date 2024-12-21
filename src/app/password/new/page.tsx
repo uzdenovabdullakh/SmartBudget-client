@@ -22,15 +22,7 @@ export default function ForgotPasswordPage() {
           icon={FaEnvelope}
         />
       </FormControl>
-      <Button
-        width="100%"
-        bg="blue.600"
-        color="white"
-        _hover={{ bg: "blue.700" }}
-        size="lg"
-      >
-        Send Reset Instructions
-      </Button>
+      <Button variant="primaryButton">Send Reset Instructions</Button>
     </PasswordLayout>
   );
 }

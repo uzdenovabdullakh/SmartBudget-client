@@ -23,21 +23,11 @@ export default function SignUpPage() {
     >
       <Card width="100%" maxW="md" gap={6} p={8}>
         <CardHeader justifyItems="center" p={0}>
-          <Heading
-            fontSize="3xl"
-            color="neutrals.midnight"
-            fontFamily="Figtree"
-          >
-            Sign Up
-          </Heading>
+          <Heading variant="cardHeader">Sign Up</Heading>
           <Text mt={2} fontSize="sm" color="neutrals.neutral400">
             Have an account?{" "}
             <Link href="/auth/signin">
-              <Text
-                as="span"
-                color="others.accessibleDodgerBlue"
-                _hover={{ textDecor: "underline" }}
-              >
+              <Text as="span" variant="link-text">
                 Log in.
               </Text>
             </Link>
@@ -48,15 +38,7 @@ export default function SignUpPage() {
           <FormInputUI type="email" placeholder="Email" icon={FaEnvelope} />
         </CardBody>
         <CardFooter flexDir="column" gap={2} alignItems="end" p={0}>
-          <Button
-            width="100%"
-            bg="others.accessibleDodgerBlue"
-            color="white"
-            _hover={{ bg: "blue.600" }}
-            size="lg"
-          >
-            Sign Up
-          </Button>
+          <Button variant="primaryButton">Sign Up</Button>
         </CardFooter>
       </Card>
     </AuthLayout>

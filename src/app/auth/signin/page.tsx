@@ -22,21 +22,11 @@ export default function LoginPage() {
     >
       <Card width="100%" maxW="md" gap={6} p={8}>
         <CardHeader justifyItems="center" p={0}>
-          <Heading
-            fontSize="3xl"
-            color="neutrals.midnight"
-            fontFamily="Figtree"
-          >
-            Log In
-          </Heading>
+          <Heading variant="cardHeader">Log In</Heading>
           <Text mt={2} fontSize="sm" color="neutrals.neutral400">
             New to Smart Budget?{" "}
             <Link href="/auth/signup">
-              <Text
-                as="span"
-                color="others.accessibleDodgerBlue"
-                _hover={{ textDecor: "underline" }}
-              >
+              <Text as="span" variant="link-text">
                 Sign up today.
               </Text>
             </Link>
@@ -48,26 +38,11 @@ export default function LoginPage() {
         </CardBody>
         <CardFooter flexDir="column" gap={2} alignItems="end" p={0}>
           <Link href="/password/new">
-            <Text
-              as="span"
-              textAlign="right"
-              color="others.accessibleDodgerBlue"
-              fontSize="sm"
-              mt={-2}
-              _hover={{ textDecor: "underline" }}
-            >
+            <Text variant="link-text" fontSize="sm" textAlign="right" mt={-2}>
               Forgot password?
             </Text>
           </Link>
-          <Button
-            width="100%"
-            bg="others.accessibleDodgerBlue"
-            color="white"
-            _hover={{ bg: "blue.600" }}
-            size="lg"
-          >
-            Log In
-          </Button>
+          <Button variant="primaryButton">Log In</Button>
         </CardFooter>
       </Card>
     </AuthLayout>

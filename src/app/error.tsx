@@ -29,15 +29,10 @@ export default function ErrorPage({ error, reset }: ErrorProps) {
       <Heading as="h1" size="2xl" color="red.500" mb={4}>
         Произошла ошибка!
       </Heading>
-      <Text fontSize="lg" color="granite.granite600" mb={6}>
+      <Text variant="error-description">
         Что-то пошло не так. Пожалуйста, попробуйте снова.
       </Text>
-      <Button
-        bg="others.accessibleDodgerBlue"
-        color="white"
-        size="lg"
-        onClick={() => reset()}
-      >
+      <Button variant="primaryButton" onClick={() => reset()}>
         Попробовать снова
       </Button>
     </Box>
