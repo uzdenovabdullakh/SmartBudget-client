@@ -11,11 +11,20 @@
     "tsc": "tsc"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.2.4",
+    "@chakra-ui/next-js": "^2.4.2",
+    "@chakra-ui/react": "^2.10.4",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "framer-motion": "^11.15.0",
+    "lottie-react": "^2.4.0",
     "next": "^15.1.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-icons": "^5.4.0"
   },
   "devDependencies": {
+    "@next/eslint-plugin-next": "^15.1.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
@@ -26,6 +35,7 @@
     "eslint-config-airbnb-typescript": "^18.0.0",
     "eslint-config-next": "15.0.3",
     "eslint-config-prettier": "^9.1.0",
+    "eslint-import-resolver-typescript": "^3.7.0",
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-prettier": "^5.2.1",

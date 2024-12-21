@@ -1,8 +1,4 @@
-type FaviconProps = {
-  name: string;
-};
-
-const Favicon = ({ name }: FaviconProps): JSX.Element => {
+const Favicon = (): JSX.Element => {
   return (
     <>
       <link
@@ -19,7 +15,7 @@ const Favicon = ({ name }: FaviconProps): JSX.Element => {
         sizes="180x180"
         href="/apple-touch-icon.png"
       />
-      <meta name="apple-mobile-web-app-title" content="MyWebSite" />
+      <meta name="apple-mobile-web-app-title" content="Smart Budget" />
       <link rel="manifest" href="/site.webmanifest" />
     </>
   );
