@@ -27,12 +27,12 @@ const FormInputUI = ({ type, placeholder, icon }: Props) => {
       <InputGroup>
         {icon && (
           <InputLeftElement>
-            <Icon as={icon} color="gray.500" />
+            <Icon as={icon} color="neutrals.neutral400" />
           </InputLeftElement>
         )}
         <Input
           border="1px solid"
-          borderColor="gray.500"
+          borderColor="neutrals.neutral400"
           type={showPassword}
           placeholder={placeholder}
         />

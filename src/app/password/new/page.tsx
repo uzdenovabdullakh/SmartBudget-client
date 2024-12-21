@@ -13,7 +13,7 @@ export default function ForgotPasswordPage() {
           you instructions to reset your password."
     >
       <FormControl>
-        <FormLabel fontSize="sm" color="gray.700">
+        <FormLabel fontSize="sm" color="neutrals.neutral500">
           Email:
         </FormLabel>
         <FormInputUI

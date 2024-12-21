@@ -17,7 +17,7 @@ export default function PasswordLayout({
       padding={4}
     >
       <Box position="absolute" top={4} left={8}>
-        <Heading color="blue.900" size="lg">
+        <Heading color="blurple.blurple800" size="lg">
           Smart Budget.
         </Heading>
       </Box>
@@ -31,14 +31,18 @@ export default function PasswordLayout({
         borderRadius="md"
         bg="white"
       >
-        <Heading fontSize="2xl" color="gray.900" textAlign="left">
+        <Heading fontSize="2xl" color="granite.granite900" textAlign="left">
           {heading}
         </Heading>
-        <Text fontSize="md" color="gray.600" fontFamily="nunito">
+        <Text fontSize="md" color="granite.granite600" fontFamily="nunito">
           {subHeading}
         </Text>
         {children}
-        <Text fontSize="sm" textAlign="center" color="blue.500">
+        <Text
+          fontSize="sm"
+          textAlign="center"
+          color="others.accessibleDodgerBlue"
+        >
           <Link href="/auth/signin">Return to log in</Link>
         </Text>
       </VStack>

@@ -24,7 +24,7 @@ export default function ConfirmRegistrationPage() {
           <Heading fontSize="3xl" color="gray.800" fontFamily="Figtree">
             Complete sign up
           </Heading>
-          <Text mt={2} fontSize="sm" color="gray.500">
+          <Text mt={2} fontSize="sm" color="neutrals.neutral400">
             Create and enter a password to complete signing up{" "}
           </Text>
         </CardHeader>
@@ -43,7 +43,7 @@ export default function ConfirmRegistrationPage() {
         <CardFooter flexDir="column" gap={2} alignItems="end" p={0}>
           <Button
             width="100%"
-            bg="blue.500"
+            bg="others.accessibleDodgerBlue"
             color="white"
             _hover={{ bg: "blue.600" }}
             size="lg"

@@ -17,7 +17,7 @@ export default function AuthLayout({
         </Link>
       </HStack>
       <HStack width="100%" gap={16} padding={4} justify="center">
-        <VStack align="start" width="40%" color="white">
+        <VStack align="start" width="40%" color="neutrals.buttermilk">
           <Heading fontSize="40px" mb={3}>
             {heading}
           </Heading>

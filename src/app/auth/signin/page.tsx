@@ -22,15 +22,19 @@ export default function LoginPage() {
     >
       <Card width="100%" maxW="md" gap={6} p={8}>
         <CardHeader justifyItems="center" p={0}>
-          <Heading fontSize="3xl" color="gray.800" fontFamily="Figtree">
+          <Heading
+            fontSize="3xl"
+            color="neutrals.midnight"
+            fontFamily="Figtree"
+          >
             Log In
           </Heading>
-          <Text mt={2} fontSize="sm" color="gray.500">
+          <Text mt={2} fontSize="sm" color="neutrals.neutral400">
             New to Smart Budget?{" "}
             <Link href="/auth/signup">
               <Text
                 as="span"
-                color="blue.500"
+                color="others.accessibleDodgerBlue"
                 _hover={{ textDecor: "underline" }}
               >
                 Sign up today.
@@ -47,7 +51,7 @@ export default function LoginPage() {
             <Text
               as="span"
               textAlign="right"
-              color="blue.500"
+              color="others.accessibleDodgerBlue"
               fontSize="sm"
               mt={-2}
               _hover={{ textDecor: "underline" }}
@@ -57,7 +61,7 @@ export default function LoginPage() {
           </Link>
           <Button
             width="100%"
-            bg="blue.500"
+            bg="others.accessibleDodgerBlue"
             color="white"
             _hover={{ bg: "blue.600" }}
             size="lg"

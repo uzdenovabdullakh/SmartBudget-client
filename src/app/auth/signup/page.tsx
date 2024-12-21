@@ -23,15 +23,19 @@ export default function SignUpPage() {
     >
       <Card width="100%" maxW="md" gap={6} p={8}>
         <CardHeader justifyItems="center" p={0}>
-          <Heading fontSize="3xl" color="gray.800" fontFamily="Figtree">
+          <Heading
+            fontSize="3xl"
+            color="neutrals.midnight"
+            fontFamily="Figtree"
+          >
             Sign Up
           </Heading>
-          <Text mt={2} fontSize="sm" color="gray.500">
+          <Text mt={2} fontSize="sm" color="neutrals.neutral400">
             Have an account?{" "}
             <Link href="/auth/signin">
               <Text
                 as="span"
-                color="blue.500"
+                color="others.accessibleDodgerBlue"
                 _hover={{ textDecor: "underline" }}
               >
                 Log in.
@@ -46,7 +50,7 @@ export default function SignUpPage() {
         <CardFooter flexDir="column" gap={2} alignItems="end" p={0}>
           <Button
             width="100%"
-            bg="blue.500"
+            bg="others.accessibleDodgerBlue"
             color="white"
             _hover={{ bg: "blue.600" }}
             size="lg"
