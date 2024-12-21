@@ -29,7 +29,7 @@ export default function Error({ error, reset }: ErrorProps) {
       <Lottie
         animationData={errorAnimation}
         loop
-        style={{ maxHeight: 500, maxWidth: 500, width: "100%" }}
+        style={{ maxHeight: 350, maxWidth: 350, width: "100%" }}
       />
       <Heading as="h1" size="2xl" color="red.500" mb={4}>
         Произошла ошибка!
