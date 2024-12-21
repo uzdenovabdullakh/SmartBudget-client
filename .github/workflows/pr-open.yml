@@ -13,7 +13,7 @@ jobs:
           node-version: '22'
           cache: 'npm'
       - name: install deps
-        run: npm ci
+        run: npm ci --legacy-peer-deps
       - name: lint
         run: npm run lint
       - name: tsc build
