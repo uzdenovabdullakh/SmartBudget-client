@@ -1,11 +1,10 @@
 "use client";
 
+import { NotFound } from "@/components/ui/Animations";
 import { Button, Text, Flex } from "@chakra-ui/react";
 import Link from "next/link";
-import Lottie from "lottie-react";
-import notFound from "../../public/animations/404.json";
 
-export default function NotFound() {
+export default function NotFoundPage() {
   return (
     <Flex
       width="100vw"
@@ -14,11 +13,7 @@ export default function NotFound() {
       justify="center"
       flexDir="column"
     >
-      <Lottie
-        animationData={notFound}
-        loop
-        style={{ maxHeight: 500, maxWidth: 500, width: "100%" }}
-      />
+      <NotFound />
       <Text fontSize="lg" color="gray.600" mb={6}>
         Страница не найдена. Возможно, она была удалена или никогда не
         существовала.

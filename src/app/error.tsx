@@ -1,18 +1,17 @@
 "use client";
 
-import Lottie from "lottie-react";
 import { useEffect } from "react";
 import { Box, Button, Heading, Text } from "@chakra-ui/react";
-import errorAnimation from "../../public/animations/error.json";
+import { ErrorAnimation } from "@/components/ui/Animations";
 
 interface ErrorProps {
   error?: Error;
   reset: () => void;
 }
 
-export default function Error({ error, reset }: ErrorProps) {
+export default function ErrorPage({ error, reset }: ErrorProps) {
   useEffect(() => {
-    // console.error("Произошла ошибка:", error);
+    console.error("Произошла ошибка:", error);
   }, [error]);
 
   return (
@@ -26,11 +25,7 @@ export default function Error({ error, reset }: ErrorProps) {
       bg="gray.50"
       px={6}
     >
-      <Lottie
-        animationData={errorAnimation}
-        loop
-        style={{ maxHeight: 350, maxWidth: 350, width: "100%" }}
-      />
+      <ErrorAnimation />
       <Heading as="h1" size="2xl" color="red.500" mb={4}>
         Произошла ошибка!
       </Heading>

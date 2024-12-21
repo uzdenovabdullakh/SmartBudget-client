@@ -1,10 +1,9 @@
 "use client";
 
-import Lottie from "lottie-react";
+import { Loading } from "@/components/ui/Animations";
 import { Flex } from "@chakra-ui/react";
-import loading from "../../public/animations/flying-money.json";
 
-export default function Loading() {
+export default function LoadingPage() {
   return (
     <Flex
       width="100vw"
@@ -13,11 +12,7 @@ export default function Loading() {
       justify="center"
       flexDir="column"
     >
-      <Lottie
-        animationData={loading}
-        loop
-        style={{ maxHeight: 500, maxWidth: 500, width: "100%" }}
-      />
+      <Loading />
     </Flex>
   );
 }
