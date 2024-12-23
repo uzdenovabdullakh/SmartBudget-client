@@ -29,7 +29,6 @@ const Header = () => {
         <Button
           variant="outline"
           color="neutrals.buttermilk"
-          size="lg"
           _hover={{
             color: "firefly.firefly300",
           }}
