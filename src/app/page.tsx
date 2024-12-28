@@ -11,10 +11,20 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { MoneyOnCard, WomanWithGraphics } from "@/components/ui/Animations";
-import Header from "@/components/ui/Header";
+import { Header } from "@/components/ui/Header";
+import { useEffect } from "react";
+import { useLocalStorage } from "@/lib/hooks/useLocalStorage";
 
 export default function HomePage() {
   const router = useRouter();
+  const { getLocalStorageItem } = useLocalStorage();
+
+  useEffect(() => {
+    const token = getLocalStorageItem("authAccessToken");
+    if (token) {
+      router.push("/dashboard");
+    }
+  }, [getLocalStorageItem, router]);
 
   return (
     <Box
