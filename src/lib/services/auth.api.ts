@@ -57,8 +57,11 @@ export const authApi = createApi({
         data,
       }),
     }),
-    resetPassword: builder.mutation<ResponseWithoutData, ResetPasswordDto>({
-      query: (data: ResetPasswordDto) => ({
+    resetPassword: builder.mutation<
+      ResponseWithoutData,
+      Omit<ResetPasswordDto, "confirmNewPassword">
+    >({
+      query: (data: Omit<ResetPasswordDto, "confirmNewPassword">) => ({
         url: "/reset-password",
         method: "POST",
         data,
