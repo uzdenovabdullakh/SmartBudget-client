@@ -13,19 +13,16 @@ const callToActionButton = defineStyle({
 });
 
 const primaryButton = defineStyle({
-  width: "100%",
   bg: "others.accessibleDodgerBlue",
   color: "white",
   _hover: { bg: "blue.600" },
   size: "lg",
 });
 
-const Button = defineStyleConfig({
+export const Button = defineStyleConfig({
   baseStyle,
   variants: {
     callToActionButton,
     primaryButton,
   },
 });
-
-export default Button;

@@ -1,6 +1,6 @@
 import { ComponentStyleConfig } from "@chakra-ui/react";
 
-const Text: ComponentStyleConfig = {
+export const Text: ComponentStyleConfig = {
   variants: {
     "error-description": {
       fontSize: "lg",
@@ -13,5 +13,3 @@ const Text: ComponentStyleConfig = {
     },
   },
 };
-
-export default Text;

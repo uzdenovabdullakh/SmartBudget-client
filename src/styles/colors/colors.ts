@@ -1,4 +1,4 @@
-const colors = {
+export const colors = {
   neutrals: {
     buttermilk: "#fef9ed",
     buttermilk150: "#fdf3d2",
@@ -64,5 +64,3 @@ const colors = {
     accessibleDodgerBlue: "#1378d1",
   },
 };
-
-export default colors;

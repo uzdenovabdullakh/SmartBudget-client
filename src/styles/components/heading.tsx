@@ -11,8 +11,6 @@ const cardHeader = defineStyle({
   color: "neutrals.midnight",
 });
 
-const Heading = defineStyleConfig({
+export const Heading = defineStyleConfig({
   variants: { title, cardHeader },
 });
-
-export default Heading;
