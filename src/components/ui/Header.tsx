@@ -2,7 +2,7 @@ import { Flex, Button, Heading, HStack } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-const Header = () => {
+export const Header = () => {
   const router = useRouter();
 
   return (
@@ -29,7 +29,6 @@ const Header = () => {
         <Button
           variant="outline"
           color="neutrals.buttermilk"
-          size="lg"
           _hover={{
             color: "firefly.firefly300",
           }}
@@ -47,5 +46,3 @@ const Header = () => {
     </Flex>
   );
 };
-
-export default Header;

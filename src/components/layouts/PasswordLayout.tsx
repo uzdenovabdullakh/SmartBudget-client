@@ -1,4 +1,4 @@
-import { LayoutProps } from "@/types/types";
+import { LayoutProps } from "@/lib/types/types";
 import { VStack, Box, Heading, Text } from "@chakra-ui/react";
 import Link from "next/link";
 

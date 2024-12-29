@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "../../public/fonts/fonts.css";
-import Favicon from "@/components/ui/Favicon";
-import { LayoutProps } from "@/types/types";
+import { Favicon } from "@/components/ui/Favicon";
+import { LayoutProps } from "@/lib/types/types";
 import { Suspense } from "react";
 import Providers from "./provider";
 import Loading from "./loading";

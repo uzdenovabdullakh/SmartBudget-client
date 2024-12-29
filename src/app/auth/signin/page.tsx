@@ -13,8 +13,51 @@ import { FaEnvelope, FaLock } from "react-icons/fa";
 import FormInputUI from "@/components/ui/FormInputUI";
 import AuthLayout from "@/components/layouts/AuthLayout";
 import Link from "next/link";
+import { useLoginMutation } from "@/lib/services/auth.api";
+import { useLazyGetUserQuery } from "@/lib/services/user.api";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { LoginDto, LoginSchema } from "@/lib/validation/login.schema";
+import { useLocalStorage } from "@/lib/hooks/useLocalStorage";
+import { showToast } from "@/lib/utils/toast";
 
 export default function LoginPage() {
+  const router = useRouter();
+  const { setLocalStorageItem } = useLocalStorage();
+
+  const [getUser] = useLazyGetUserQuery();
+  const [login, { isLoading }] = useLoginMutation();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginDto>({
+    resolver: zodResolver(LoginSchema),
+  });
+
+  const handleLogin: SubmitHandler<LoginDto> = async (data: LoginDto) => {
+    try {
+      const { accessToken, refreshToken } = await login(data).unwrap();
+
+      setLocalStorageItem("authAccessToken", accessToken);
+      setLocalStorageItem("authRefreshToken", refreshToken);
+
+      const { login: name } = await getUser().unwrap();
+
+      showToast({
+        title: "Login Successful",
+        description: `Welcome back, ${name}!`,
+        status: "success",
+      });
+
+      router.push("/dashboard");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <AuthLayout
       heading="Transform your finances."
@@ -32,9 +75,31 @@ export default function LoginPage() {
             </Link>
           </Text>
         </CardHeader>
-        <CardBody display="flex" flexDir="column" gap={6} p={0}>
-          <FormInputUI type="email" placeholder="Email" icon={FaEnvelope} />
-          <FormInputUI type="password" placeholder="Password" icon={FaLock} />
+        <CardBody
+          as="form"
+          onSubmit={handleSubmit(handleLogin)}
+          display="flex"
+          flexDir="column"
+          gap={6}
+          p={0}
+        >
+          <FormInputUI
+            type="email"
+            placeholder="Email"
+            icon={FaEnvelope}
+            error={errors.email?.message}
+            {...register("email")}
+          />
+          <FormInputUI
+            type="password"
+            placeholder="Password"
+            icon={FaLock}
+            error={errors.password?.message}
+            {...register("password")}
+          />
+          <Button variant="primaryButton" type="submit" isLoading={isLoading}>
+            Log In
+          </Button>
         </CardBody>
         <CardFooter flexDir="column" gap={2} alignItems="end" p={0}>
           <Link href="/password/new">
@@ -42,7 +107,6 @@ export default function LoginPage() {
               Forgot password?
             </Text>
           </Link>
-          <Button variant="primaryButton">Log In</Button>
         </CardFooter>
       </Card>
     </AuthLayout>

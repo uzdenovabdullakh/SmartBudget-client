@@ -1,12 +1,12 @@
 "use client";
 
 import { extendTheme } from "@chakra-ui/react";
-import colors from "./colors/colors";
-import Text from "./components/text";
-import Button from "./components/button";
-import Heading from "./components/heading";
+import { colors } from "./colors/colors";
+import { Text } from "./components/text";
+import { Button } from "./components/button";
+import { Heading } from "./components/heading";
 
-const theme = extendTheme({
+export const theme = extendTheme({
   colors,
   fonts: {
     heading: '"Figtree", Helvetica, Arial, sans-serif',
@@ -49,5 +49,3 @@ const theme = extendTheme({
     Heading,
   },
 });
-
-export default theme;
