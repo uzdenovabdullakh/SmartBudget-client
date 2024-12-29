@@ -4,6 +4,7 @@ import {
   Button,
   Card,
   CardBody,
+  CardFooter,
   FormControl,
   FormLabel,
 } from "@chakra-ui/react";
@@ -16,12 +17,20 @@ import {
   ResetPasswordRequestDto,
   ResetPasswordRequestSchema,
 } from "@/lib/validation/reset-password-request.schema";
-import { useResetPasswordRequestMutation } from "@/lib/services/auth.api";
+import {
+  useResendEmailMutation,
+  useResetPasswordRequestMutation,
+} from "@/lib/services/auth.api";
 import { showToast } from "@/lib/utils/toast";
+import { useState } from "react";
+import { ResendEmailSchema } from "@/lib/validation/resend-email.schema";
+import { TokenType } from "@/lib/types/auth.types";
 
 export default function ForgotPasswordPage() {
   const [resetPasswordRequest, { isLoading }] =
     useResetPasswordRequestMutation();
+  const [resendEmail, { isLoading: isResendEmailLoading }] =
+    useResendEmailMutation();
 
   const {
     register,
@@ -31,9 +40,25 @@ export default function ForgotPasswordPage() {
     resolver: zodResolver(ResetPasswordRequestSchema),
   });
 
+  const [isResendEmailVisible, setIsResendEmailVisible] = useState(false);
+  const [emailAddress, setEmailAddress] = useState("");
+
+  const handleError = (error: unknown) => {
+    const err = error as { data?: { message?: string } };
+    if (
+      err.data?.message ===
+      "Reset password email already send. Check your email box, or resend email"
+    ) {
+      setIsResendEmailVisible(true);
+    }
+    console.error(error);
+  };
+
   const handleResetPasswordRequest: SubmitHandler<
     ResetPasswordRequestDto
   > = async (data: ResetPasswordRequestDto) => {
+    setEmailAddress(data.email);
+
     try {
       const { message } = await resetPasswordRequest(data).unwrap();
 
@@ -43,7 +68,33 @@ export default function ForgotPasswordPage() {
         status: "success",
       });
     } catch (error) {
-      console.log(error);
+      handleError(error);
+    }
+  };
+
+  const handleResendEmailRequest = async () => {
+    if (!emailAddress) {
+      showToast({
+        title: "Error",
+        description: "Email address is missing.",
+        status: "error",
+      });
+      return;
+    }
+
+    try {
+      const data = { email: emailAddress, type: TokenType.RESET_PASSWORD };
+      ResendEmailSchema.parse(data);
+
+      const { message } = await resendEmail(data).unwrap();
+
+      showToast({
+        title: message,
+        description: "",
+        status: "success",
+      });
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -53,7 +104,7 @@ export default function ForgotPasswordPage() {
       subHeading="No sweat. Enter the email address you signed up with and we'll send
           you instructions to reset your password."
     >
-      <Card>
+      <Card display="flex" flexDir="column" gap={6} p={0} boxShadow="none">
         <CardBody
           as="form"
           onSubmit={handleSubmit(handleResetPasswordRequest)}
@@ -78,6 +129,17 @@ export default function ForgotPasswordPage() {
             Send Reset Instructions
           </Button>
         </CardBody>
+        {isResendEmailVisible && (
+          <CardFooter flexDir="column" gap={2} alignItems="end" p={0}>
+            <Button
+              variant="primaryButton"
+              isLoading={isResendEmailLoading}
+              onClick={handleResendEmailRequest}
+            >
+              Resend Email
+            </Button>
+          </CardFooter>
+        )}
       </Card>
     </PasswordLayout>
   );
