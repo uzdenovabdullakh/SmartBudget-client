@@ -1,9 +1,10 @@
 import { z } from "zod";
+import { TokenType } from "../types/auth.types";
 
 export const ResendEmailSchema = z
   .object({
     email: z.string().email({ message: "Invalid email address" }),
-    type: z.enum(["activate_account", "reset_password"]),
+    type: z.nativeEnum(TokenType),
   })
   .required();
 

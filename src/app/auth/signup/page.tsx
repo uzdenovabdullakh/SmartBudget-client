@@ -24,6 +24,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { showToast } from "@/lib/utils/toast";
 import { ResendEmailSchema } from "@/lib/validation/resend-email.schema";
+import { TokenType } from "@/lib/types/auth.types";
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -81,13 +82,10 @@ export default function SignUpPage() {
     }
 
     try {
-      const data = { email: emailAddress, type: "activate_account" };
+      const data = { email: emailAddress, type: TokenType.ACTIVATE_ACCOUNT };
       ResendEmailSchema.parse(data);
 
-      const { message } = await resendEmail({
-        email: emailAddress,
-        type: "activate_account",
-      }).unwrap();
+      const { message } = await resendEmail(data).unwrap();
 
       showToast({
         title: message,
