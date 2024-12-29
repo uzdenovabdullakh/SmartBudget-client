@@ -5,6 +5,7 @@ import { Button, Heading, Text, VStack } from "@chakra-ui/react";
 import { useResendEmailMutation } from "@/lib/services/auth.api";
 import { showToast } from "@/lib/utils/toast";
 import { ResendEmailSchema } from "@/lib/validation/resend-email.schema";
+import { TokenType } from "@/lib/types/auth.types";
 
 export default function WelcomePage() {
   const searchParams = useSearchParams();
@@ -26,13 +27,10 @@ export default function WelcomePage() {
     }
 
     try {
-      const data = { email, type: "activate_account" };
+      const data = { email, type: TokenType.ACTIVATE_ACCOUNT };
       ResendEmailSchema.parse(data);
 
-      const { message } = await resendEmail({
-        email,
-        type: "activate_account",
-      }).unwrap();
+      const { message } = await resendEmail(data).unwrap();
 
       showToast({
         title: message,
