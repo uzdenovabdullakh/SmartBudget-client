@@ -13,7 +13,10 @@ import { FaEnvelope, FaLock } from "react-icons/fa";
 import FormInputUI from "@/components/ui/FormInputUI";
 import AuthLayout from "@/components/layouts/AuthLayout";
 import Link from "next/link";
-import { useLoginMutation } from "@/lib/services/auth.api";
+import {
+  useLoginMutation,
+  useRestoreAccountRequestMutation,
+} from "@/lib/services/auth.api";
 import { useLazyGetUserQuery } from "@/lib/services/user.api";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -21,6 +24,9 @@ import { useRouter } from "next/navigation";
 import { LoginDto, LoginSchema } from "@/lib/validation/login.schema";
 import { useLocalStorage } from "@/lib/hooks/useLocalStorage";
 import { showToast } from "@/lib/utils/toast";
+import { useState } from "react";
+import { RestoreAccountRequestSchema } from "@/lib/validation/restore-account-request.schema";
+import { ErrorCodes } from "@/lib/types/constants";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -28,6 +34,7 @@ export default function LoginPage() {
 
   const [getUser] = useLazyGetUserQuery();
   const [login, { isLoading }] = useLoginMutation();
+  const [restoreAccountRequest] = useRestoreAccountRequestMutation();
 
   const {
     register,
@@ -37,7 +44,20 @@ export default function LoginPage() {
     resolver: zodResolver(LoginSchema),
   });
 
+  const [isRestoreAccountVisible, setIsRestoreAccountVisible] = useState(false);
+  const [email, setEmail] = useState("");
+
+  const handleError = (error: unknown) => {
+    const err = error as { data?: { code?: string } };
+    if (err.data?.code === ErrorCodes.USER_DELETED) {
+      setIsRestoreAccountVisible(true);
+    }
+    console.error(error);
+  };
+
   const handleLogin: SubmitHandler<LoginDto> = async (data: LoginDto) => {
+    setEmail(data.email);
+
     try {
       const { accessToken, refreshToken } = await login(data).unwrap();
 
@@ -53,6 +73,20 @@ export default function LoginPage() {
       });
 
       router.push("/dashboard");
+    } catch (error) {
+      handleError(error);
+    }
+  };
+
+  const handleRestoreAccount = async () => {
+    try {
+      RestoreAccountRequestSchema.parse({ email });
+
+      const { message } = await restoreAccountRequest({ email }).unwrap();
+
+      router.push(
+        `/auth/restore/request?message=${encodeURIComponent(message)}&email=${email}`,
+      );
     } catch (error) {
       console.log(error);
     }
@@ -107,6 +141,11 @@ export default function LoginPage() {
               Forgot password?
             </Text>
           </Link>
+          {isRestoreAccountVisible && (
+            <Button variant="callToActionButton" onClick={handleRestoreAccount}>
+              Restore Account
+            </Button>
+          )}
         </CardFooter>
       </Card>
     </AuthLayout>
