@@ -15,4 +15,5 @@ export type ResponseWithoutData = {
 export enum TokenType {
   ACTIVATE_ACCOUNT = "activate_account",
   RESET_PASSWORD = "reset_password",
+  RESTORE_ACCOUNT = "restore_account",
 }
