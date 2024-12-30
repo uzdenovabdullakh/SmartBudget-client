@@ -26,6 +26,7 @@ import { useLocalStorage } from "@/lib/hooks/useLocalStorage";
 import { showToast } from "@/lib/utils/toast";
 import { useState } from "react";
 import { RestoreAccountRequestSchema } from "@/lib/validation/restore-account-request.schema";
+import { ErrorCodes } from "@/lib/types/constants";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -47,8 +48,8 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
 
   const handleError = (error: unknown) => {
-    const err = error as { data?: { message?: string } };
-    if (err.data?.message === "User is deleted. Please restore your account.") {
+    const err = error as { data?: { code?: string } };
+    if (err.data?.code === ErrorCodes.USER_DELETED) {
       setIsRestoreAccountVisible(true);
     }
     console.error(error);

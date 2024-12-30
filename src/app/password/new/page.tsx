@@ -25,6 +25,7 @@ import { showToast } from "@/lib/utils/toast";
 import { useState } from "react";
 import { ResendEmailSchema } from "@/lib/validation/resend-email.schema";
 import { TokenType } from "@/lib/types/auth.types";
+import { ErrorCodes } from "@/lib/types/constants";
 
 export default function ForgotPasswordPage() {
   const [resetPasswordRequest, { isLoading }] =
@@ -44,11 +45,8 @@ export default function ForgotPasswordPage() {
   const [emailAddress, setEmailAddress] = useState("");
 
   const handleError = (error: unknown) => {
-    const err = error as { data?: { message?: string } };
-    if (
-      err.data?.message ===
-      "Reset password email already send. Check your email box, or resend email"
-    ) {
+    const err = error as { data?: { code?: string } };
+    if (err.data?.code === ErrorCodes.TOO_MANY_REQUESTS) {
       setIsResendEmailVisible(true);
     }
     console.error(error);
