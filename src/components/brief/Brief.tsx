@@ -12,8 +12,8 @@ import {
   Progress,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { BriefQuestions, QuestionCategoryMapping } from "@/lib/types/constants";
 import { AnswerToBriefSchema } from "@/lib/validation/brief.schema";
+import { BriefQuestions, QuestionCategoryMapping } from "@/lib/constants/brief";
 import { BriefImage } from "./BriefImage";
 
 export const Brief = ({ onClose }: { onClose: () => void }) => {
