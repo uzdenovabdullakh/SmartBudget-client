@@ -1,7 +1,14 @@
 "use client";
 
-import { Loading } from "@/components/ui/Animations";
+import dynamic from "next/dynamic";
 import { Flex } from "@chakra-ui/react";
+
+const Loading = dynamic(
+  () => import("@/components/ui/Animations").then((mod) => mod.Loading),
+  {
+    ssr: false,
+  },
+);
 
 export default function LoadingPage() {
   return (

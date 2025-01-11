@@ -1,9 +1,3 @@
-export const ErrorCodes = {
-  USER_DELETED: "USER_DELETED",
-  USER_NOT_ACTIVATED: "USER_NOT_ACTIVATED",
-  TOO_MANY_REQUESTS: "TOO_MANY_REQUESTS",
-};
-
 export const BriefQuestions: Record<string, string[] | string> = {
   "Tell us about your home": "",
   "Do you currently have any debt?": [],

@@ -25,7 +25,7 @@ import { showToast } from "@/lib/utils/toast";
 import { useState } from "react";
 import { ResendEmailSchema } from "@/lib/validation/resend-email.schema";
 import { TokenType } from "@/lib/types/auth.types";
-import { ErrorCodes } from "@/lib/types/constants";
+import { ErrorCodes } from "@/lib/constants/error-codes";
 
 export default function ForgotPasswordPage() {
   const [resetPasswordRequest, { isLoading }] =

@@ -26,7 +26,7 @@ import { useLocalStorage } from "@/lib/hooks/useLocalStorage";
 import { showToast } from "@/lib/utils/toast";
 import { useState } from "react";
 import { RestoreAccountRequestSchema } from "@/lib/validation/restore-account-request.schema";
-import { ErrorCodes } from "@/lib/types/constants";
+import { ErrorCodes } from "@/lib/constants/error-codes";
 
 export default function LoginPage() {
   const router = useRouter();

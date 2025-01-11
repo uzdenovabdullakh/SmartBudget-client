@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { useLocalStorage } from "./hooks/useLocalStorage";
+import { ErrorCodes } from "./constants/error-codes";
 
 const baseURL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -11,6 +12,14 @@ const axiosInstance = axios.create({
   },
 });
 
+function safeParseJSON(value: string) {
+  try {
+    return JSON.parse(value);
+  } catch {
+    return value;
+  }
+}
+
 axiosInstance.interceptors.request.use(
   (config) => {
     const { getLocalStorageItem } = useLocalStorage();
@@ -18,7 +27,7 @@ axiosInstance.interceptors.request.use(
 
     if (token) {
       // eslint-disable-next-line no-param-reassign
-      config.headers.Authorization = `Bearer ${JSON.parse(token)}`;
+      config.headers.Authorization = `Bearer ${safeParseJSON(token)}`;
     }
     return config;
   },
@@ -48,7 +57,7 @@ axiosInstance.interceptors.response.use(
 
     const unauthorized =
       error.response.data.statusCode === 401 &&
-      error.response.data.message === "Invalid or missing token";
+      error.response.data.code === ErrorCodes.UNAUTHORIZED;
 
     if (unauthorized && !originalRequest.isRetry) {
       if (!isRefreshing) {
@@ -62,7 +71,7 @@ axiosInstance.interceptors.response.use(
           const {
             data: { refreshToken, accessToken },
           } = await axios.post(`${baseURL}/auth/refresh-token`, {
-            refreshToken: JSON.parse(refreshTokenFromStorage),
+            refreshToken: safeParseJSON(refreshTokenFromStorage),
           });
 
           setLocalStorageItem("authRefreshToken", refreshToken);
@@ -85,7 +94,7 @@ axiosInstance.interceptors.response.use(
       } else {
         return new Promise((resolve) => {
           addRefreshSubscriber((token) => {
-            originalRequest.headers.Authorization = `Bearer ${JSON.parse(token)}`;
+            originalRequest.headers.Authorization = `Bearer ${safeParseJSON(token)}`;
             resolve(axiosInstance(originalRequest));
           });
         });
