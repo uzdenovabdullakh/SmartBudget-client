@@ -10,10 +10,25 @@ import {
   Divider,
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import { MoneyOnCard, WomanWithGraphics } from "@/components/ui/Animations";
+import dynamic from "next/dynamic";
 import { Header } from "@/components/ui/Header";
 import { useEffect } from "react";
 import { useLocalStorage } from "@/lib/hooks/useLocalStorage";
+
+const MoneyOnCard = dynamic(
+  () => import("@/components/ui/Animations").then((mod) => mod.MoneyOnCard),
+  {
+    ssr: false,
+  },
+);
+
+const WomanWithGraphics = dynamic(
+  () =>
+    import("@/components/ui/Animations").then((mod) => mod.WomanWithGraphics),
+  {
+    ssr: false,
+  },
+);
 
 export default function HomePage() {
   const router = useRouter();
