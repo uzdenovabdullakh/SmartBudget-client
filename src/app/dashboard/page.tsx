@@ -1,7 +1,7 @@
 "use client";
 
 import { Brief } from "@/components/brief/Brief";
-import { Sidebar } from "@/components/sidebar/sidebar";
+import { Sidebar } from "@/components/sidebar/Sidebar";
 import { useLazyGetUserQuery } from "@/lib/services/user.api";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { format } from "date-fns";
