@@ -1,10 +1,12 @@
+type BudgetSettings = {
+  currency?: "$" | "₽" | "€";
+  currencyPlacement?: "before" | "after";
+};
+
 export type Budget = {
   id: string;
   name: string;
-  settings: {
-    currency?: "USD" | "RUB" | "EUR";
-    currencyPlacement?: "before" | "after";
-  };
+  settings: BudgetSettings;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date;
