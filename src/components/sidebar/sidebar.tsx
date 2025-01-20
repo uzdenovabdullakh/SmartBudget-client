@@ -9,38 +9,26 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useEffect, useState, useCallback } from "react";
-import { useLazyGetUserQuery } from "@/lib/services/user.api";
+import { UserDetails } from "@/lib/types/user.types";
 import { IoAddCircleOutline } from "react-icons/io5";
-import { useLazyGetBudgetsQuery } from "@/lib/services/budget.api";
 import { Account } from "@/lib/types/account.types";
 import { Budget } from "@/lib/types/budget.types";
 import { useLazyGetAccountsQuery } from "@/lib/services/account.api";
 import { AddAccountModal } from "../ui/modal/add-account/AddAccount";
 import { SidebarAccounts } from "./SidebarAccounts";
 
-export const Sidebar = () => {
+type SidebarProps = {
+  user: UserDetails | null;
+  budget: Budget | null;
+};
+
+export const Sidebar = ({ user, budget }: SidebarProps) => {
   const [accounts, setAccounts] = useState<Account[]>([]);
-  const [budget, setBudget] = useState<Budget | null>(null);
-  const [userData, setUserData] = useState<{
-    login: string;
-    email: string;
-  } | null>(null);
 
   const { isOpen: isSidebarOpen, onToggle } = useDisclosure();
   const { isOpen: isModalOpen, onOpen, onClose } = useDisclosure();
 
-  const [getBudgets] = useLazyGetBudgetsQuery();
   const [getAccounts] = useLazyGetAccountsQuery();
-  const [getUser] = useLazyGetUserQuery();
-
-  const fetchBudget = useCallback(async () => {
-    try {
-      const result = await getBudgets().unwrap();
-      setBudget(result[0]);
-    } catch (error) {
-      console.log(error);
-    }
-  }, [getBudgets]);
 
   const fetchAccounts = useCallback(async () => {
     try {
@@ -58,20 +46,9 @@ export const Sidebar = () => {
     }
   }, [budget?.id, getAccounts]);
 
-  const fetchUserData = useCallback(async () => {
-    try {
-      const { login, email } = await getUser().unwrap();
-      setUserData({ login, email });
-    } catch (error) {
-      console.log(error);
-    }
-  }, [getUser]);
-
   useEffect(() => {
     fetchAccounts();
-    fetchUserData();
-    fetchBudget();
-  }, [fetchAccounts, fetchUserData, fetchBudget]);
+  }, [fetchAccounts]);
 
   return (
     <Flex
@@ -93,7 +70,7 @@ export const Sidebar = () => {
         {isSidebarOpen && (
           <Box ml={2}>
             <Text fontSize="lg" fontWeight="bold" whiteSpace="nowrap">
-              {userData?.login} Budget
+              {user?.login} Budget
             </Text>
             <Text
               fontSize="sm"
@@ -102,7 +79,7 @@ export const Sidebar = () => {
               whiteSpace="normal"
               wordBreak="break-word"
             >
-              {userData?.email}
+              {user?.email}
             </Text>
           </Box>
         )}
