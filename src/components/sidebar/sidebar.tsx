@@ -92,10 +92,16 @@ export const Sidebar = () => {
         <Image src="/logo.png" alt="Logo" boxSize="50px" borderRadius="full" />
         {isSidebarOpen && (
           <Box ml={2}>
-            <Text fontSize="lg" fontWeight="bold">
+            <Text fontSize="lg" fontWeight="bold" whiteSpace="nowrap">
               {userData?.login} Budget
             </Text>
-            <Text fontSize="sm" color="gray.400">
+            <Text
+              fontSize="sm"
+              color="gray.400"
+              maxWidth="180px"
+              whiteSpace="normal"
+              wordBreak="break-word"
+            >
               {userData?.email}
             </Text>
           </Box>
