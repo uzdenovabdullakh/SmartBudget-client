@@ -12,4 +12,4 @@ export const budgetsApi = createApi({
   }),
 });
 
-export const { useGetBudgetsQuery } = budgetsApi;
+export const { useLazyGetBudgetsQuery } = budgetsApi;
