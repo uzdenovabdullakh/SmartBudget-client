@@ -1,6 +1,7 @@
 import { Account } from "@/lib/types/account.types";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import { Text, HStack, VStack, Box, IconButton } from "@chakra-ui/react";
+import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 
 type SidebarAccountsProps = {
@@ -12,9 +13,19 @@ export const SidebarAccounts = ({
   budgetName,
   accounts,
 }: SidebarAccountsProps) => {
+  const router = useRouter();
+  const params = useParams();
+  const budgetId = params?.id;
+
   const [isOpen, setIsOpen] = useState(true);
 
   const toggleOpen = () => setIsOpen(!isOpen);
+
+  const handleAccountClick = (accountId: string) => {
+    if (budgetId) {
+      router.push(`/dashboard/${budgetId}/account/${accountId}`);
+    }
+  };
 
   return (
     <Box w="full">
@@ -39,6 +50,8 @@ export const SidebarAccounts = ({
               justifyContent="space-between"
               w="full"
               pl={4}
+              onClick={() => handleAccountClick(account.id)}
+              cursor="pointer"
             >
               <Text>{account.name}</Text>
               <Text>{account.amount}</Text>
