@@ -16,6 +16,7 @@ import { Budget } from "@/lib/types/budget.types";
 import { useLazyGetAccountsQuery } from "@/lib/services/account.api";
 import { AddAccountModal } from "../ui/modal/add-account/AddAccount";
 import { SidebarAccounts } from "./SidebarAccounts";
+import { NavigationButtons } from "./NavigationButton";
 
 type SidebarProps = {
   user: UserDetails | null;
@@ -88,18 +89,8 @@ export const Sidebar = ({ user, budget }: SidebarProps) => {
       {isSidebarOpen && (
         <>
           <VStack align="start" spacing={4} w="full">
-            <Button justifyContent="start" w="full">
-              <Text>Budget</Text>
-            </Button>
-            <Button justifyContent="start" w="full">
-              <Text>Reflect</Text>
-            </Button>
-            <Button justifyContent="start" w="full">
-              <Text>All Accounts</Text>
-            </Button>
-
+            <NavigationButtons budgetId={budget?.id || ""} />
             <Divider />
-
             <Box w="full">
               <SidebarAccounts
                 budgetName={budget?.name || ""}
