@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { format } from "date-fns";
 import { Brief } from "@/components/brief/Brief";
 import { Sidebar } from "@/components/sidebar/Sidebar";
 import { useLazyGetBudgetsQuery } from "@/lib/services/budget.api";
@@ -8,8 +10,6 @@ import { useLazyGetUserQuery } from "@/lib/services/user.api";
 import { Budget } from "@/lib/types/budget.types";
 import { UserDetails } from "@/lib/types/user.types";
 import { Flex, Box, Text } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
-import { format } from "date-fns";
 
 export default function DashboardLayout({
   children,
