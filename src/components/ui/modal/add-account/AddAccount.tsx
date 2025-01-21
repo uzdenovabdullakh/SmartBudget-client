@@ -10,12 +10,12 @@ import {
   CreateUnlinkedAccountSchema,
 } from "@/lib/validation/account.schema";
 import { UnlinkedAccountType } from "@/lib/constants/enums";
+import { DefaultModalProps } from "@/lib/types/types";
 import { DefaultModal } from "..";
 import FormInputUI from "../../FormInputUI";
 
-type DefaultModalProps = {
-  isOpen: boolean;
-  onClose: (val?: any) => void;
+type AddAccountModalProps = {
+  refreshAccounts: () => Promise<void>;
   budgetId: string;
 };
 
@@ -23,7 +23,8 @@ export const AddAccountModal = ({
   isOpen,
   onClose,
   budgetId,
-}: DefaultModalProps) => {
+  refreshAccounts,
+}: DefaultModalProps & AddAccountModalProps) => {
   const [currentStep, setCurrentStep] = useState<"select" | "unlinked">(
     "select",
   );
@@ -35,6 +36,7 @@ export const AddAccountModal = ({
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<CreateUnlinkedAccountDto>({
     resolver: zodResolver(CreateUnlinkedAccountSchema),
     defaultValues: {
@@ -50,12 +52,15 @@ export const AddAccountModal = ({
   ) => {
     try {
       await createUnlinkedAccount(data).unwrap();
+      refreshAccounts();
 
       showToast({
         title: "Success",
         description: "Account created successfully!",
         status: "success",
       });
+
+      reset();
       onClose();
     } catch (error) {
       console.log(error);
