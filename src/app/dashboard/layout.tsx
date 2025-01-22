@@ -1,13 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { format } from "date-fns";
+import { useRouter, usePathname } from "next/navigation";
 import { useLazyGetBudgetsQuery } from "@/lib/services/budget.api";
 import { useLazyGetUserQuery } from "@/lib/services/user.api";
 import { Budget } from "@/lib/types/budget.types";
 import { UserDetails } from "@/lib/types/user.types";
-import { Flex, Box, Text } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { Brief } from "@/components/brief/Brief";
 import { Sidebar } from "@/components/sidebar/Sidebar";
 
@@ -16,9 +15,8 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const date = format(new Date(), "MMM yyyy");
-
   const router = useRouter();
+  const pathname = usePathname();
   const [getUser] = useLazyGetUserQuery();
   const [getBudgets] = useLazyGetBudgetsQuery();
 
@@ -33,7 +31,7 @@ export default function DashboardLayout({
         const firstBudget = budgetResponse[0];
         setBudget(firstBudget);
 
-        if (firstBudget?.id) {
+        if (!pathname.includes(firstBudget?.id) && firstBudget?.id) {
           router.replace(`/dashboard/${firstBudget.id}`);
         }
       } catch (error) {
@@ -42,7 +40,7 @@ export default function DashboardLayout({
     };
 
     fetchBudget();
-  }, [getBudgets, router]);
+  }, [getBudgets, pathname, router]);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -64,16 +62,6 @@ export default function DashboardLayout({
       {isBriefVisible && <Brief onClose={() => setBriefVisible(false)} />}
       <Sidebar user={user} budget={budget} />
       <Flex flex="1" direction="column">
-        <Box p={6} textAlign="left" borderBottom="1px solid #e2e8f0">
-          <Text
-            fontSize="xl"
-            fontWeight="bold"
-            color="granite.granite900"
-            fontFamily="figtree"
-          >
-            {date}
-          </Text>
-        </Box>
         {children}
       </Flex>
     </Flex>
