@@ -10,7 +10,8 @@ export type DefaultModalProps = {
 };
 
 export type PaginationParams = {
-  order?: "asc" | "desc";
+  order?: "ASC" | "DESC";
   page?: number;
   pageSize?: number;
+  search?: string;
 };
