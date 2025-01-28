@@ -10,7 +10,19 @@ export type DefaultModalProps = {
 };
 
 export type PaginationParams = {
-  order?: "asc" | "desc";
+  order?: "ASC" | "DESC";
   page?: number;
   pageSize?: number;
+  search?: string;
 };
+
+export type DateRange = {
+  from: Date | null;
+  to: Date | null;
+};
+
+export type PredefinedRange =
+  | "This month"
+  | "Latest 3 Months"
+  | "This Year"
+  | "Custom";

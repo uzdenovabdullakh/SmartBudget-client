@@ -12,7 +12,7 @@ import {
 import { UnlinkedAccountType } from "@/lib/constants/enums";
 import { DefaultModalProps } from "@/lib/types/types";
 import { DefaultModal } from "..";
-import FormInputUI from "../../FormInputUI";
+import FormInputUI from "../../ui/FormInputUI";
 
 type AddAccountModalProps = {
   refreshAccounts: () => Promise<void>;
