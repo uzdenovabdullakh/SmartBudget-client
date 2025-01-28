@@ -15,7 +15,7 @@ export const SidebarAccounts = ({
 }: SidebarAccountsProps) => {
   const router = useRouter();
   const params = useParams();
-  const budgetId = params?.id;
+  const budgetId = Array.isArray(params?.id) ? params.id[0] : params?.id;
 
   const [isOpen, setIsOpen] = useState(true);
 
