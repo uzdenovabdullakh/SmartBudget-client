@@ -13,7 +13,7 @@ import { ReactNode } from "react";
 type BasePopoverProps = {
   triggerButton: JSX.Element;
   isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
+  onClose: () => void;
   bodyHeight?: string;
   contentWidth?: string;
   headerText?: string;
@@ -26,7 +26,7 @@ type BasePopoverProps = {
 export const BasePopover = ({
   triggerButton,
   isOpen,
-  setIsOpen,
+  onClose,
   bodyHeight,
   contentWidth,
   headerText,
@@ -37,12 +37,12 @@ export const BasePopover = ({
 }: BasePopoverProps) => {
   const handleApply = () => {
     if (onApply) onApply();
-    setIsOpen(false);
+    onClose();
   };
 
   const handleCancel = () => {
     if (onCancel) onCancel();
-    setIsOpen(false);
+    onClose();
   };
 
   return (

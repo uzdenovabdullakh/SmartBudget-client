@@ -1,7 +1,7 @@
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { Text, Button, HStack, VStack } from "@chakra-ui/react";
+import { Text, Button, HStack, VStack, useDisclosure } from "@chakra-ui/react";
 import { DateRange, PredefinedRange } from "@/lib/types/types";
 import { getDateRange } from "@/lib/utils/helpers";
 import { BasePopover } from "..";
@@ -11,7 +11,8 @@ type DateRangePopoverProps = {
 };
 
 export const DateRangePopover = ({ applyDate }: DateRangePopoverProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const { isOpen, onToggle, onClose } = useDisclosure();
+
   const [dateRange, setDateRange] = useState<DateRange>({
     from: null,
     to: null,
@@ -55,7 +56,7 @@ export const DateRangePopover = ({ applyDate }: DateRangePopoverProps) => {
   };
 
   const triggerButton = (
-    <Button pr={6} pl={6} onClick={() => setIsOpen(true)}>
+    <Button pr={6} pl={6} onClick={onToggle}>
       View Options
     </Button>
   );
@@ -112,7 +113,7 @@ export const DateRangePopover = ({ applyDate }: DateRangePopoverProps) => {
     <BasePopover
       triggerButton={triggerButton}
       isOpen={isOpen}
-      setIsOpen={setIsOpen}
+      onClose={onClose}
       bodyHeight="130px"
       contentWidth="600px"
       headerText="View Options"
