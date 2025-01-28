@@ -144,7 +144,8 @@ export const MenuPopover = ({ user }: MenuPopoverProps) => {
           />
         }
         footerContent={<LogoutButton onLogout={handleLogout} />}
-        bodyHeight="500px"
+        contentProps={{ maxW: "280px", mt: "80px", ml: "10px" }}
+        bodyProps={{ minH: "495px" }}
       />
       <AddBudgetModal
         isOpen={isAddBudgetModalOpen}

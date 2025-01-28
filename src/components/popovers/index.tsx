@@ -7,6 +7,8 @@ import {
   PopoverFooter,
   Button,
   HStack,
+  PopoverBodyProps,
+  PopoverContentProps,
 } from "@chakra-ui/react";
 import { ReactNode } from "react";
 
@@ -14,8 +16,8 @@ type BasePopoverProps = {
   triggerButton: ReactNode;
   isOpen: boolean;
   onClose: () => void;
-  bodyHeight?: string;
-  contentWidth?: string;
+  bodyProps?: PopoverBodyProps;
+  contentProps?: PopoverContentProps;
   headerText?: string;
   bodyContent: ReactNode;
   footerContent?: ReactNode | null;
@@ -27,8 +29,8 @@ export const BasePopover = ({
   triggerButton,
   isOpen,
   onClose,
-  bodyHeight,
-  contentWidth,
+  bodyProps,
+  contentProps,
   headerText,
   bodyContent,
   footerContent = null,
@@ -49,11 +51,11 @@ export const BasePopover = ({
   return (
     <Popover isOpen={isOpen} onClose={onClose} closeOnBlur {...props}>
       <PopoverTrigger>{triggerButton}</PopoverTrigger>
-      <PopoverContent minW={contentWidth} p={4}>
+      <PopoverContent {...contentProps} p={4}>
         {headerText && (
           <PopoverHeader fontWeight="bold">{headerText}</PopoverHeader>
         )}
-        <PopoverBody minH={bodyHeight}>{bodyContent}</PopoverBody>
+        <PopoverBody {...bodyProps}>{bodyContent}</PopoverBody>
         {footerContent !== null ? (
           footerContent
         ) : (

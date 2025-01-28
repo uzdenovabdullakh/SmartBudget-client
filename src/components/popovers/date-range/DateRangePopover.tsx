@@ -114,8 +114,8 @@ export const DateRangePopover = ({ applyDate }: DateRangePopoverProps) => {
       triggerButton={triggerButton}
       isOpen={isOpen}
       onClose={onClose}
-      bodyHeight="130px"
-      contentWidth="600px"
+      contentProps={{ minW: "600px" }}
+      bodyProps={{ minH: "130px" }}
       headerText="View Options"
       bodyContent={bodyContent}
       onApply={handleApply}
