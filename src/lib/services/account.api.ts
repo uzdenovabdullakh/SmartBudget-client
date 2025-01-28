@@ -1,7 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { axiosBaseQuery } from "../axiosBaseQuery";
 import { CreateUnlinkedAccountDto } from "../validation/account.schema";
-import { AccountsResult } from "../types/account.types";
+import { Account, AccountsResult } from "../types/account.types";
 import { PaginationParams } from "../types/types";
 
 export const accountApi = createApi({
@@ -32,8 +32,14 @@ export const accountApi = createApi({
         data,
       }),
     }),
+    getAccount: builder.query<Account, string>({
+      query: (id: string) => ({ url: `/${id}`, method: "GET" }),
+    }),
   }),
 });
 
-export const { useCreateUnlinkedAccountMutation, useLazyGetAccountsQuery } =
-  accountApi;
+export const {
+  useCreateUnlinkedAccountMutation,
+  useLazyGetAccountsQuery,
+  useLazyGetAccountQuery,
+} = accountApi;
