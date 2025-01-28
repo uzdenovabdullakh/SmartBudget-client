@@ -64,13 +64,14 @@ export const Sidebar = ({ user, budget }: SidebarProps) => {
       position="relative"
       transition="width 0.3s"
     >
-      <Flex align="center" justifyContent="space-between" cursor="pointer">
+      <Flex align="center" justifyContent="space-between">
         <Image
           src="/logo.png"
           alt="Logo"
           boxSize="50px"
           borderRadius="full"
           onClick={onToggle}
+          cursor="pointer"
         />
         {isSidebarOpen && <MenuPopover user={user} />}
       </Flex>

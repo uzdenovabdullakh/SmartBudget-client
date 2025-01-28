@@ -31,7 +31,13 @@ const PopoverTriggerButton = ({
   user: UserDetails | null;
   onToggle: () => void;
 }) => (
-  <Box display="flex" alignItems="center" gap={2} onClick={onToggle}>
+  <Box
+    display="flex"
+    alignItems="center"
+    gap={2}
+    onClick={onToggle}
+    cursor="pointer"
+  >
     <Box>
       <Text fontSize="lg" fontWeight="bold" whiteSpace="nowrap">
         {user?.login} Budget
