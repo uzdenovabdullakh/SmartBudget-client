@@ -15,3 +15,14 @@ export type PaginationParams = {
   pageSize?: number;
   search?: string;
 };
+
+export type DateRange = {
+  from: Date | null;
+  to: Date | null;
+};
+
+export type PredefinedRange =
+  | "This month"
+  | "Latest 3 Months"
+  | "This Year"
+  | "Custom";
