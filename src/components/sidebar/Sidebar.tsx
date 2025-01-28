@@ -3,20 +3,22 @@ import {
   Image,
   Box,
   Button,
-  Text,
   VStack,
   Divider,
   useDisclosure,
+  IconButton,
 } from "@chakra-ui/react";
 import { useEffect, useState, useCallback } from "react";
 import { UserDetails } from "@/lib/types/user.types";
 import { IoAddCircleOutline } from "react-icons/io5";
+import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
 import { Account } from "@/lib/types/account.types";
 import { Budget } from "@/lib/types/budget.types";
 import { useLazyGetAccountsQuery } from "@/lib/services/account.api";
 import { AddAccountModal } from "../modals/add-account/AddAccount";
 import { SidebarAccounts } from "./SidebarAccounts";
 import { NavigationButtons } from "./NavigationButton";
+import { MenuPopover } from "../popovers/menu/MenuPopover";
 
 type SidebarProps = {
   user: UserDetails | null;
@@ -54,36 +56,23 @@ export const Sidebar = ({ user, budget }: SidebarProps) => {
   return (
     <Flex
       direction="column"
-      width={isSidebarOpen ? "250px" : "80px"}
+      width={isSidebarOpen ? "300px" : "80px"}
       bg="blue.900"
       color="white"
       height="100vh"
       p={4}
+      position="relative"
       transition="width 0.3s"
     >
-      <Flex
-        align="center"
-        justifyContent="space-between"
-        cursor="pointer"
-        onClick={onToggle}
-      >
-        <Image src="/logo.png" alt="Logo" boxSize="50px" borderRadius="full" />
-        {isSidebarOpen && (
-          <Box ml={2}>
-            <Text fontSize="lg" fontWeight="bold" whiteSpace="nowrap">
-              {user?.login} Budget
-            </Text>
-            <Text
-              fontSize="sm"
-              color="gray.400"
-              maxWidth="180px"
-              whiteSpace="normal"
-              wordBreak="break-word"
-            >
-              {user?.email}
-            </Text>
-          </Box>
-        )}
+      <Flex align="center" justifyContent="space-between" cursor="pointer">
+        <Image
+          src="/logo.png"
+          alt="Logo"
+          boxSize="50px"
+          borderRadius="full"
+          onClick={onToggle}
+        />
+        {isSidebarOpen && <MenuPopover user={user} />}
       </Flex>
       <Divider my={4} />
       {isSidebarOpen && (
@@ -105,6 +94,14 @@ export const Sidebar = ({ user, budget }: SidebarProps) => {
               >
                 Add Account
               </Button>
+              <IconButton
+                aria-label="Close Sidebar"
+                icon={<MdKeyboardDoubleArrowLeft />}
+                position="absolute"
+                bottom="16px"
+                right="16px"
+                onClick={onToggle}
+              />
             </Box>
           </VStack>
           <AddAccountModal

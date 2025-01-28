@@ -11,14 +11,14 @@ import {
 import { ReactNode } from "react";
 
 type BasePopoverProps = {
-  triggerButton: JSX.Element;
+  triggerButton: ReactNode;
   isOpen: boolean;
   onClose: () => void;
   bodyHeight?: string;
   contentWidth?: string;
   headerText?: string;
   bodyContent: ReactNode;
-  footerContent?: ReactNode;
+  footerContent?: ReactNode | null;
   onApply?: () => void;
   onCancel?: () => void;
 };
@@ -31,9 +31,10 @@ export const BasePopover = ({
   contentWidth,
   headerText,
   bodyContent,
-  footerContent,
+  footerContent = null,
   onApply,
   onCancel,
+  ...props
 }: BasePopoverProps) => {
   const handleApply = () => {
     if (onApply) onApply();
@@ -46,14 +47,16 @@ export const BasePopover = ({
   };
 
   return (
-    <Popover isOpen={isOpen} onClose={handleCancel} closeOnBlur>
+    <Popover isOpen={isOpen} onClose={onClose} closeOnBlur {...props}>
       <PopoverTrigger>{triggerButton}</PopoverTrigger>
       <PopoverContent minW={contentWidth} p={4}>
         {headerText && (
           <PopoverHeader fontWeight="bold">{headerText}</PopoverHeader>
         )}
         <PopoverBody minH={bodyHeight}>{bodyContent}</PopoverBody>
-        {footerContent || (
+        {footerContent !== null ? (
+          footerContent
+        ) : (
           <PopoverFooter display="flex" justifyContent="flex-end">
             <HStack spacing={4}>
               <Button variant="ghost" onClick={handleCancel}>
