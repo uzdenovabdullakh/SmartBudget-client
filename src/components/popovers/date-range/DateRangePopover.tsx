@@ -11,6 +11,7 @@ type DateRangePopoverProps = {
 };
 
 export const DateRangePopover = ({ applyDate }: DateRangePopoverProps) => {
+  const [isOpen, setIsOpen] = useState(false);
   const [dateRange, setDateRange] = useState<DateRange>({
     from: null,
     to: null,
@@ -52,6 +53,12 @@ export const DateRangePopover = ({ applyDate }: DateRangePopoverProps) => {
     applyDate(dateRange);
     resetState();
   };
+
+  const triggerButton = (
+    <Button pr={6} pl={6} onClick={() => setIsOpen(true)}>
+      View Options
+    </Button>
+  );
 
   const bodyContent = (
     <VStack spacing={6} align="stretch">
@@ -103,7 +110,11 @@ export const DateRangePopover = ({ applyDate }: DateRangePopoverProps) => {
 
   return (
     <BasePopover
-      triggerButtonLabel="View Options"
+      triggerButton={triggerButton}
+      isOpen={isOpen}
+      setIsOpen={setIsOpen}
+      bodyHeight="130px"
+      contentWidth="600px"
       headerText="View Options"
       bodyContent={bodyContent}
       onApply={handleApply}

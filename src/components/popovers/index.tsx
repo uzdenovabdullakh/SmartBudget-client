@@ -8,10 +8,14 @@ import {
   Button,
   HStack,
 } from "@chakra-ui/react";
-import { ReactNode, useState } from "react";
+import { ReactNode } from "react";
 
 type BasePopoverProps = {
-  triggerButtonLabel: string;
+  triggerButton: JSX.Element;
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+  bodyHeight?: string;
+  contentWidth?: string;
   headerText?: string;
   bodyContent: ReactNode;
   footerContent?: ReactNode;
@@ -20,15 +24,17 @@ type BasePopoverProps = {
 };
 
 export const BasePopover = ({
-  triggerButtonLabel,
+  triggerButton,
+  isOpen,
+  setIsOpen,
+  bodyHeight,
+  contentWidth,
   headerText,
   bodyContent,
   footerContent,
   onApply,
   onCancel,
 }: BasePopoverProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-
   const handleApply = () => {
     if (onApply) onApply();
     setIsOpen(false);
@@ -41,16 +47,12 @@ export const BasePopover = ({
 
   return (
     <Popover isOpen={isOpen} onClose={handleCancel} closeOnBlur>
-      <PopoverTrigger>
-        <Button pr={6} pl={6} onClick={() => setIsOpen(true)}>
-          {triggerButtonLabel}
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent minW="600px" p={4}>
+      <PopoverTrigger>{triggerButton}</PopoverTrigger>
+      <PopoverContent minW={contentWidth} p={4}>
         {headerText && (
           <PopoverHeader fontWeight="bold">{headerText}</PopoverHeader>
         )}
-        <PopoverBody minH="130px">{bodyContent}</PopoverBody>
+        <PopoverBody minH={bodyHeight}>{bodyContent}</PopoverBody>
         {footerContent || (
           <PopoverFooter display="flex" justifyContent="flex-end">
             <HStack spacing={4}>
