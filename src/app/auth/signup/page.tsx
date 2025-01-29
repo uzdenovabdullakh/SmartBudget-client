@@ -88,7 +88,6 @@ export default function SignUpPage() {
 
       showToast({
         title: message,
-        description: "",
         status: "success",
       });
     } catch (error) {

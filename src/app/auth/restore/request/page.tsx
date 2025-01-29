@@ -35,7 +35,6 @@ export default function RestoreRequestPage() {
 
       showToast({
         title: message,
-        description: "",
         status: "success",
       });
     } catch (error) {

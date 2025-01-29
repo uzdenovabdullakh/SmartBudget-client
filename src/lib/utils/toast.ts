@@ -2,15 +2,13 @@ import { createStandaloneToast } from "@chakra-ui/react";
 
 const { toast } = createStandaloneToast();
 
-export const showToast = ({
-  title,
-  description,
-  status,
-}: {
+type ToastType = {
   title: string;
-  description: string;
   status: "success" | "error" | "info" | "warning";
-}) => {
+  description?: string;
+};
+
+export const showToast = ({ title, description, status }: ToastType) => {
   toast({
     title,
     description,
