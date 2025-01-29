@@ -1,4 +1,4 @@
-export enum UnlinkedAccountType {
+export enum AccountType {
   CASH = "cash",
   CARD = "card",
   SAVINGS = "savings",
