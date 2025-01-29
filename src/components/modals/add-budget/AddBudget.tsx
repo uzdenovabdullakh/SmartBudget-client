@@ -68,11 +68,11 @@ export const AddBudgetModal = ({ isOpen, onClose }: DefaultModalProps) => {
             placeholder="Enter budget name"
             {...register("name")}
             error={errors.name?.message}
-            label="Budget Name"
+            label="Budget Name:"
           />
 
           <FormSelectUI
-            label="Currency"
+            label="Currency:"
             {...register("settings.currency")}
             error={errors.settings?.currency?.message}
             options={Object.values(BudgetCurrency).map((currency) => ({
@@ -81,7 +81,7 @@ export const AddBudgetModal = ({ isOpen, onClose }: DefaultModalProps) => {
             }))}
           />
           <FormSelectUI
-            label="Currency Placement"
+            label="Currency Placement:"
             {...register("settings.currencyPlacement")}
             error={errors.settings?.currencyPlacement?.message}
             options={[

@@ -31,13 +31,13 @@ const FormInputUI = forwardRef<HTMLInputElement, Props>(
 
     return (
       <FormControl isInvalid={!!error}>
+        {label && <FormLabel>{label}</FormLabel>}
         <InputGroup flexDir="column">
           {icon && (
             <InputLeftElement>
               <Icon as={icon} color="neutrals.neutral400" />
             </InputLeftElement>
           )}
-          {label && <FormLabel>{label}</FormLabel>}
           <Input
             border="1px solid"
             borderColor="neutrals.neutral400"
