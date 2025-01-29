@@ -9,6 +9,7 @@ import {
   InputLeftElement,
   InputRightElement,
   InputProps,
+  FormLabel,
 } from "@chakra-ui/react";
 import { useState, forwardRef } from "react";
 import { IconType } from "react-icons";
@@ -18,10 +19,11 @@ type Props = {
   placeholder: string;
   icon?: IconType;
   error?: string;
+  label?: string;
 } & InputProps;
 
 const FormInputUI = forwardRef<HTMLInputElement, Props>(
-  ({ type, placeholder, icon, error, ...rest }, ref) => {
+  ({ type, placeholder, icon, error, label, ...rest }, ref) => {
     const [showPassword, setShowPassword] = useState(type);
 
     const togglePasswordVisibility = () =>
@@ -29,7 +31,8 @@ const FormInputUI = forwardRef<HTMLInputElement, Props>(
 
     return (
       <FormControl isInvalid={!!error}>
-        <InputGroup>
+        {label && <FormLabel>{label}</FormLabel>}
+        <InputGroup flexDir="column">
           {icon && (
             <InputLeftElement>
               <Icon as={icon} color="neutrals.neutral400" />

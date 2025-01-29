@@ -1,10 +1,10 @@
 import { z } from "zod";
-import { UnlinkedAccountType } from "../constants/enums";
+import { AccountType } from "../constants/enums";
 
 export const CreateUnlinkedAccountSchema = z.object({
   name: z.string().max(128, "Nickname too long").min(1, "Nickname is required"),
   budgetId: z.string().uuid({ message: "Invalid uuid" }),
-  type: z.nativeEnum(UnlinkedAccountType),
+  type: z.nativeEnum(AccountType),
   amount: z.number({ message: "Excepted number" }).optional().default(0),
 });
 

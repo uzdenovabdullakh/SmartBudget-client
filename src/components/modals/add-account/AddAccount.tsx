@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Flex, Text, Button, IconButton, Select } from "@chakra-ui/react";
+import { Box, Flex, Text, Button, IconButton } from "@chakra-ui/react";
 import { ArrowBackIcon, InfoIcon } from "@chakra-ui/icons";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,8 +9,9 @@ import {
   CreateUnlinkedAccountDto,
   CreateUnlinkedAccountSchema,
 } from "@/lib/validation/account.schema";
-import { UnlinkedAccountType } from "@/lib/constants/enums";
+import { AccountType } from "@/lib/constants/enums";
 import { DefaultModalProps } from "@/lib/types/types";
+import FormSelectUI from "@/components/ui/FormSelectUI";
 import { DefaultModal } from "..";
 import FormInputUI from "../../ui/FormInputUI";
 
@@ -121,36 +122,30 @@ export const AddAccountModal = ({
         account at any time.
       </Text>
       <Box>
-        <Text fontWeight="bold" mb={1}>
-          Give it a nickname
-        </Text>
         <FormInputUI
           type="text"
+          label="Give it a nickname"
           placeholder="Enter a nickname"
           {...register("name")}
           error={errors.name?.message}
         />
       </Box>
       <Box>
-        <Text fontWeight="bold" mb={1}>
-          What type of account are you adding?
-        </Text>
-        <Select
+        <FormSelectUI
           placeholder="Select account type..."
+          label="What type of account are you adding?"
           {...register("type")}
-          isInvalid={!!errors.type}
-        >
-          <option value={UnlinkedAccountType.CASH}>Cash</option>
-          <option value={UnlinkedAccountType.CARD}>Card</option>
-          <option value={UnlinkedAccountType.SAVINGS}>Savings</option>
-        </Select>
+          error={errors.type?.message}
+          options={Object.values(AccountType).map((accountType) => ({
+            value: accountType,
+            label: accountType.charAt(0).toUpperCase() + accountType.slice(1),
+          }))}
+        />
       </Box>
       <Box>
-        <Text fontWeight="bold" mb={1}>
-          What is your current account balance?
-        </Text>
         <FormInputUI
           type="number"
+          label="What is your current account balance?"
           placeholder="Enter balance"
           {...register("amount", { valueAsNumber: true })}
           error={errors.amount?.message}

@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  Button,
-  Card,
-  CardBody,
-  CardFooter,
-  FormControl,
-  FormLabel,
-} from "@chakra-ui/react";
+import { Button, Card, CardBody, CardFooter } from "@chakra-ui/react";
 import PasswordLayout from "@/components/layouts/PasswordLayout";
 import FormInputUI from "@/components/ui/FormInputUI";
 import { FaEnvelope } from "react-icons/fa";
@@ -111,18 +104,14 @@ export default function ForgotPasswordPage() {
           gap={6}
           p={0}
         >
-          <FormControl>
-            <FormLabel fontSize="sm" color="neutrals.neutral500">
-              Email:
-            </FormLabel>
-            <FormInputUI
-              type="email"
-              placeholder="Enter your email"
-              icon={FaEnvelope}
-              error={errors.email?.message}
-              {...register("email")}
-            />
-          </FormControl>
+          <FormInputUI
+            type="email"
+            label="Email:"
+            placeholder="Enter your email"
+            icon={FaEnvelope}
+            error={errors.email?.message}
+            {...register("email")}
+          />
           <Button variant="primaryButton" type="submit" isLoading={isLoading}>
             Send Reset Instructions
           </Button>

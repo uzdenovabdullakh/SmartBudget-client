@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Card, CardBody, FormControl } from "@chakra-ui/react";
+import { Button, Card, CardBody, Flex } from "@chakra-ui/react";
 import PasswordLayout from "@/components/layouts/PasswordLayout";
 import FormInputUI from "@/components/ui/FormInputUI";
 import { FaLock } from "react-icons/fa";
@@ -64,7 +64,7 @@ export default function ConfirmNewPasswordPage() {
           gap={6}
           p={0}
         >
-          <FormControl display="flex" flexDir="column" gap={6} p={0}>
+          <Flex flexDir="column" gap={6} p={0}>
             <FormInputUI
               type="password"
               placeholder="Your new password"
@@ -79,7 +79,7 @@ export default function ConfirmNewPasswordPage() {
               error={errors.confirmNewPassword?.message}
               {...register("confirmNewPassword")}
             />
-          </FormControl>
+          </Flex>
           <Button variant="primaryButton" isLoading={isLoading}>
             Reset password
           </Button>
