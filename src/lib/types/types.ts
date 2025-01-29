@@ -26,3 +26,8 @@ export type PredefinedRange =
   | "Latest 3 Months"
   | "This Year"
   | "Custom";
+
+export type MutationResponse<T> = {
+  data: T;
+  message: string;
+};
