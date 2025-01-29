@@ -34,7 +34,6 @@ export default function WelcomePage() {
 
       showToast({
         title: message,
-        description: "",
         status: "success",
       });
     } catch (error) {

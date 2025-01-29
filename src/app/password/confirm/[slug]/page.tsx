@@ -40,7 +40,6 @@ export default function ConfirmNewPasswordPage() {
 
       showToast({
         title: message,
-        description: "",
         status: "success",
       });
 

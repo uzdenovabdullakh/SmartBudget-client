@@ -10,7 +10,7 @@ export const CreateBudgetSchema = z.object({
   settings: BudgetSettingsSchema.optional(),
 });
 
-export const UpdateBudgetSchema = CreateBudgetSchema.partial().optional();
+export const UpdateBudgetSchema = CreateBudgetSchema.partial();
 
 export type CreateBudgetDto = z.infer<typeof CreateBudgetSchema>;
 export type UpdateBudgetDto = z.infer<typeof UpdateBudgetSchema>;

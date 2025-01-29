@@ -55,7 +55,6 @@ export default function ForgotPasswordPage() {
 
       showToast({
         title: message,
-        description: "",
         status: "success",
       });
     } catch (error) {
@@ -81,7 +80,6 @@ export default function ForgotPasswordPage() {
 
       showToast({
         title: message,
-        description: "",
         status: "success",
       });
     } catch (error) {
