@@ -1,7 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { axiosBaseQuery } from "../axiosBaseQuery";
 import { Budget } from "../types/budget.types";
-import { CreateBudgetDto } from "../validation/budget.schema";
+import { CreateBudgetDto, UpdateBudgetDto } from "../validation/budget.schema";
 import { MutationResponse } from "../types/types";
 
 export const budgetsApi = createApi({
@@ -11,6 +11,9 @@ export const budgetsApi = createApi({
     getBudgets: builder.query<Budget[], void>({
       query: () => ({ url: "/", method: "GET" }),
     }),
+    getBudgetInfo: builder.query<Budget, string>({
+      query: (id: string) => ({ url: `/${id}`, method: "GET" }),
+    }),
     createBudget: builder.mutation<MutationResponse<Budget>, CreateBudgetDto>({
       query: (data: CreateBudgetDto) => ({
         url: "/",
@@ -18,7 +21,22 @@ export const budgetsApi = createApi({
         data,
       }),
     }),
+    updateBudget: builder.mutation<
+      MutationResponse<Budget>,
+      UpdateBudgetDto & { id: string }
+    >({
+      query: ({ id, ...data }: UpdateBudgetDto & { id: string }) => ({
+        url: `/${id}`,
+        method: "PUT",
+        data,
+      }),
+    }),
   }),
 });
 
-export const { useLazyGetBudgetsQuery, useCreateBudgetMutation } = budgetsApi;
+export const {
+  useLazyGetBudgetsQuery,
+  useCreateBudgetMutation,
+  useUpdateBudgetMutation,
+  useLazyGetBudgetInfoQuery,
+} = budgetsApi;
