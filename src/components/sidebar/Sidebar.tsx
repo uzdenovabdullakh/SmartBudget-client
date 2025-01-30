@@ -82,10 +82,7 @@ export const Sidebar = ({ user, budget }: SidebarProps) => {
             <NavigationButtons budgetId={budget?.id || ""} />
             <Divider />
             <Box w="full">
-              <SidebarAccounts
-                budgetName={budget?.name || ""}
-                accounts={accounts}
-              />
+              <SidebarAccounts budget={budget} accounts={accounts} />
               <Button
                 mt={4}
                 size="sm"
