@@ -7,9 +7,11 @@ import { MutationResponse } from "../types/types";
 export const budgetsApi = createApi({
   reducerPath: "budget",
   baseQuery: axiosBaseQuery({ baseUrl: "/budgets" }),
+  tagTypes: ["Budgets"],
   endpoints: (builder) => ({
     getBudgets: builder.query<Budget[], void>({
       query: () => ({ url: "/", method: "GET" }),
+      providesTags: ["Budgets"],
     }),
     getBudgetInfo: builder.query<Budget, string>({
       query: (id: string) => ({ url: `/${id}`, method: "GET" }),
@@ -20,6 +22,7 @@ export const budgetsApi = createApi({
         method: "POST",
         data,
       }),
+      invalidatesTags: ["Budgets"],
     }),
     updateBudget: builder.mutation<
       MutationResponse<Budget>,
@@ -30,6 +33,7 @@ export const budgetsApi = createApi({
         method: "PUT",
         data,
       }),
+      invalidatesTags: ["Budgets"],
     }),
   }),
 });
