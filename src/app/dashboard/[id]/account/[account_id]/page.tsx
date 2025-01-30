@@ -10,6 +10,7 @@ import { Account } from "@/lib/types/account.types";
 import { DateRangePopover } from "@/components/popovers/date-range/DateRangePopover";
 import { SearchInput } from "@/components/ui/SearchInput";
 import { DateRange } from "@/lib/types/types";
+import { PageHeader } from "@/components/ui/PageHeader";
 
 export default function SingleAccount() {
   const params = useParams();
@@ -45,17 +46,7 @@ export default function SingleAccount() {
 
   return (
     <>
-      <Box p={6} textAlign="left" borderBottom="1px solid #e2e8f0">
-        <Text
-          fontSize="xl"
-          fontWeight="bold"
-          color="granite.granite900"
-          fontFamily="figtree"
-        >
-          {account?.name}
-        </Text>
-        <Text>{account?.type}</Text>
-      </Box>
+      <PageHeader text={account?.name} subText={account?.type} />
       <Box p={8}>
         <Text fontSize="lg" fontWeight="bold" mb={4}>
           Balance: {account?.amount}

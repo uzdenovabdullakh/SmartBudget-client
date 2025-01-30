@@ -1,6 +1,7 @@
 "use client";
 
 import { AccountsTable } from "@/components/account/AccountsTable";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { Pagination } from "@/components/ui/Pagination";
 import { SearchInput } from "@/components/ui/SearchInput";
 import { useDebounce } from "@/lib/hooks/useDebounce";
@@ -61,17 +62,7 @@ export default function Accounts() {
 
   return (
     <>
-      <Box p={6} textAlign="left" borderBottom="1px solid #e2e8f0">
-        <Text
-          fontSize="xl"
-          fontWeight="bold"
-          color="granite.granite900"
-          fontFamily="figtree"
-        >
-          All accounts
-        </Text>
-      </Box>
-
+      <PageHeader text="All accounts" />
       <Box p={8}>
         <Text fontSize="lg" fontWeight="bold" mb={4}>
           Total Balance: {totalBalance}
