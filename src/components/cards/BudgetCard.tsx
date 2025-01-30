@@ -22,7 +22,7 @@ export function BudgetCard({ budget }: BudgetCardProps) {
             Created: {new Date(budget.createdAt).toLocaleDateString()}
           </Text>
         </Box>
-        <BudgetCardMenuPopover />
+        <BudgetCardMenuPopover budget={budget} />
       </HStack>
     </BaseCard>
   );
