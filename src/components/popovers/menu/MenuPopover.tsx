@@ -24,13 +24,22 @@ type MenuPopoverProps = {
   user: UserDetails | null;
 };
 
+type PopoverTriggerButtonProps = {
+  user: UserDetails | null;
+  onToggle: () => void;
+};
+
+type PopoverContentBodyProps = {
+  onAddBudgetModalOpen: () => void;
+  onBudgetSettingsOpen: () => void;
+  onNavigateToProfile: () => void;
+  onViewBudgets: () => void;
+};
+
 const PopoverTriggerButton = ({
   user,
   onToggle,
-}: {
-  user: UserDetails | null;
-  onToggle: () => void;
-}) => (
+}: PopoverTriggerButtonProps) => (
   <Box
     display="flex"
     alignItems="center"
@@ -52,15 +61,10 @@ const PopoverTriggerButton = ({
 
 const PopoverContentBody = ({
   onAddBudgetModalOpen,
-  onChangeBudgetSettingsOpen,
+  onBudgetSettingsOpen,
   onNavigateToProfile,
   onViewBudgets,
-}: {
-  onAddBudgetModalOpen: () => void;
-  onChangeBudgetSettingsOpen: () => void;
-  onNavigateToProfile: () => void;
-  onViewBudgets: () => void;
-}) => (
+}: PopoverContentBodyProps) => (
   <VStack spacing={4} align="stretch">
     <Button
       leftIcon={<BsFillPlusCircleFill />}
@@ -89,7 +93,7 @@ const PopoverContentBody = ({
         leftIcon={<FiSettings />}
         variant="ghost"
         justifyContent="start"
-        onClick={onChangeBudgetSettingsOpen}
+        onClick={onBudgetSettingsOpen}
       >
         Budget Settings
       </Button>
@@ -121,16 +125,8 @@ const LogoutButton = ({ onLogout }: { onLogout: () => void }) => (
 
 export const MenuPopover = ({ user }: MenuPopoverProps) => {
   const router = useRouter();
-  const {
-    isOpen: isAddBudgetModalOpen,
-    onOpen: onAddBudgetModalOpen,
-    onClose: onAddBudgetModalClose,
-  } = useDisclosure();
-  const {
-    isOpen: isChangeBudgetSettingsModalOpen,
-    onOpen: onChangeBudgetSettingsOpen,
-    onClose: onChangeBudgetSettingsClose,
-  } = useDisclosure();
+  const addBudgetModal = useDisclosure();
+  const budgetSettingsModal = useDisclosure();
   const { isOpen, onToggle, onClose } = useDisclosure();
 
   const handleLogout = useLogoutHandler();
@@ -143,8 +139,8 @@ export const MenuPopover = ({ user }: MenuPopoverProps) => {
         onClose={onClose}
         bodyContent={
           <PopoverContentBody
-            onAddBudgetModalOpen={onAddBudgetModalOpen}
-            onChangeBudgetSettingsOpen={onChangeBudgetSettingsOpen}
+            onAddBudgetModalOpen={addBudgetModal.onOpen}
+            onBudgetSettingsOpen={budgetSettingsModal.onOpen}
             onNavigateToProfile={() => router.push("/user/")}
             onViewBudgets={() => router.push("/dashboard/")}
           />
@@ -154,12 +150,12 @@ export const MenuPopover = ({ user }: MenuPopoverProps) => {
         bodyProps={{ minH: "495px" }}
       />
       <AddBudgetModal
-        isOpen={isAddBudgetModalOpen}
-        onClose={onAddBudgetModalClose}
+        isOpen={addBudgetModal.isOpen}
+        onClose={addBudgetModal.onClose}
       />
       <ChangeBudgetSettingsModal
-        isOpen={isChangeBudgetSettingsModalOpen}
-        onClose={onChangeBudgetSettingsClose}
+        isOpen={budgetSettingsModal.isOpen}
+        onClose={budgetSettingsModal.onClose}
       />
     </>
   );
