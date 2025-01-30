@@ -2,7 +2,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import { axiosBaseQuery } from "../axiosBaseQuery";
 import { Budget } from "../types/budget.types";
 import { CreateBudgetDto, UpdateBudgetDto } from "../validation/budget.schema";
-import { MutationResponse } from "../types/types";
+import { MutationResponse, ResponseWithoutData } from "../types/types";
 
 export const budgetsApi = createApi({
   reducerPath: "budget",
@@ -35,6 +35,13 @@ export const budgetsApi = createApi({
       }),
       invalidatesTags: ["Budgets"],
     }),
+    deleteBudget: builder.mutation<ResponseWithoutData, string>({
+      query: (id: string) => ({
+        url: `/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Budgets"],
+    }),
   }),
 });
 
@@ -43,4 +50,5 @@ export const {
   useCreateBudgetMutation,
   useUpdateBudgetMutation,
   useLazyGetBudgetInfoQuery,
+  useDeleteBudgetMutation,
 } = budgetsApi;
