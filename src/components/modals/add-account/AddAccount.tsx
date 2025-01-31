@@ -16,7 +16,6 @@ import { DefaultModal } from "..";
 import FormInputUI from "../../ui/FormInputUI";
 
 type AddAccountModalProps = {
-  refreshAccounts: () => Promise<void>;
   budgetId: string;
 };
 
@@ -24,7 +23,6 @@ export const AddAccountModal = ({
   isOpen,
   onClose,
   budgetId,
-  refreshAccounts,
 }: DefaultModalProps & AddAccountModalProps) => {
   const [currentStep, setCurrentStep] = useState<"select" | "unlinked">(
     "select",
@@ -53,7 +51,6 @@ export const AddAccountModal = ({
   ) => {
     try {
       await createUnlinkedAccount(data).unwrap();
-      refreshAccounts();
 
       showToast({
         title: "Success",

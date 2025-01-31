@@ -18,11 +18,11 @@ export const BudgetCardMenuPopover = ({
   const editModal = useDisclosure();
   const deleteModal = useDisclosure();
 
-  const [deleteBudgetMutation] = useDeleteBudgetMutation();
+  const [deleteBudget, { isLoading }] = useDeleteBudgetMutation();
 
   const handleDelete = async () => {
     try {
-      const { message } = await deleteBudgetMutation(budget.id).unwrap();
+      const { message } = await deleteBudget(budget.id).unwrap();
       deleteModal.onClose();
 
       showToast({
@@ -72,6 +72,7 @@ export const BudgetCardMenuPopover = ({
       <DeleteModal
         isOpen={deleteModal.isOpen}
         onClose={deleteModal.onClose}
+        isLoading={isLoading}
         onDelete={handleDelete}
         entity={entity}
       />

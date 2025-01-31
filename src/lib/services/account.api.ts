@@ -7,6 +7,7 @@ import { PaginationParams } from "../types/types";
 export const accountApi = createApi({
   reducerPath: "account",
   baseQuery: axiosBaseQuery({ baseUrl: "/accounts" }),
+  tagTypes: ["Accounts"],
   endpoints: (builder) => ({
     getAccounts: builder.query<
       AccountsResult,
@@ -24,6 +25,7 @@ export const accountApi = createApi({
           method: "GET",
         };
       },
+      providesTags: ["Accounts"],
     }),
     createUnlinkedAccount: builder.mutation<void, CreateUnlinkedAccountDto>({
       query: (data: CreateUnlinkedAccountDto) => ({
@@ -31,6 +33,7 @@ export const accountApi = createApi({
         method: "POST",
         data,
       }),
+      invalidatesTags: ["Accounts"],
     }),
     getAccount: builder.query<Account, string>({
       query: (id: string) => ({ url: `/${id}`, method: "GET" }),
@@ -40,6 +43,6 @@ export const accountApi = createApi({
 
 export const {
   useCreateUnlinkedAccountMutation,
-  useLazyGetAccountsQuery,
-  useLazyGetAccountQuery,
+  useGetAccountQuery,
+  useGetAccountsQuery,
 } = accountApi;

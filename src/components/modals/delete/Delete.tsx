@@ -9,6 +9,7 @@ type DeleteModalProps = {
     name: string;
   };
   onDelete: () => void;
+  isLoading: boolean;
 } & DefaultModalProps;
 
 export const DeleteModal = ({
@@ -16,6 +17,7 @@ export const DeleteModal = ({
   onClose,
   onDelete,
   entity,
+  isLoading,
 }: DeleteModalProps) => (
   <DefaultModal
     isOpen={isOpen}
@@ -24,7 +26,7 @@ export const DeleteModal = ({
     size="sm"
     body={`Do you want to delete ${entity.name}?`}
     footer={
-      <Button colorScheme="red" onClick={onDelete}>
+      <Button colorScheme="red" onClick={onDelete} isLoading={isLoading}>
         Confirm Delete
       </Button>
     }

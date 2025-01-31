@@ -21,7 +21,7 @@ import { TokenType } from "@/lib/types/auth.types";
 import { ErrorCodes } from "@/lib/constants/error-codes";
 
 export default function ForgotPasswordPage() {
-  const [resetPasswordRequest, { isLoading }] =
+  const [resetPasswordRequest, { isLoading: isResetPasswordLoading }] =
     useResetPasswordRequestMutation();
   const [resendEmail, { isLoading: isResendEmailLoading }] =
     useResendEmailMutation();
@@ -110,7 +110,11 @@ export default function ForgotPasswordPage() {
             error={errors.email?.message}
             {...register("email")}
           />
-          <Button variant="primaryButton" type="submit" isLoading={isLoading}>
+          <Button
+            variant="primaryButton"
+            type="submit"
+            isLoading={isResetPasswordLoading}
+          >
             Send Reset Instructions
           </Button>
         </CardBody>
