@@ -8,13 +8,11 @@ import {
   useDisclosure,
   IconButton,
 } from "@chakra-ui/react";
-import { useEffect, useState, useCallback } from "react";
 import { UserDetails } from "@/lib/types/user.types";
 import { IoAddCircleOutline } from "react-icons/io5";
 import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
-import { Account } from "@/lib/types/account.types";
 import { Budget } from "@/lib/types/budget.types";
-import { useLazyGetAccountsQuery } from "@/lib/services/account.api";
+import { useGetAccountsQuery } from "@/lib/services/account.api";
 import { AddAccountModal } from "../modals/add-account/AddAccount";
 import { SidebarAccounts } from "./SidebarAccounts";
 import { NavigationButtons } from "./NavigationButton";
@@ -26,32 +24,18 @@ type SidebarProps = {
 };
 
 export const Sidebar = ({ user, budget }: SidebarProps) => {
-  const [accounts, setAccounts] = useState<Account[]>([]);
-
   const { isOpen, onToggle } = useDisclosure();
   const addAccountModal = useDisclosure();
 
-  const [getAccounts] = useLazyGetAccountsQuery();
-
-  const fetchAccounts = useCallback(async () => {
-    try {
-      if (budget?.id) {
-        const result = await getAccounts({
-          id: budget.id,
-          order: "DESC",
-          page: 1,
-          pageSize: 3,
-        }).unwrap();
-        setAccounts(result.accounts);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }, [budget?.id, getAccounts]);
-
-  useEffect(() => {
-    fetchAccounts();
-  }, [fetchAccounts]);
+  const { data } = useGetAccountsQuery(
+    {
+      id: budget?.id || "",
+      order: "DESC",
+      page: 1,
+      pageSize: 3,
+    },
+    { skip: !budget?.id },
+  );
 
   return (
     <Flex
@@ -82,7 +66,10 @@ export const Sidebar = ({ user, budget }: SidebarProps) => {
             <NavigationButtons budgetId={budget?.id || ""} />
             <Divider />
             <Box w="full">
-              <SidebarAccounts budget={budget} accounts={accounts} />
+              <SidebarAccounts
+                budget={budget}
+                accounts={data?.accounts || []}
+              />
               <Button
                 mt={4}
                 size="sm"
@@ -106,7 +93,6 @@ export const Sidebar = ({ user, budget }: SidebarProps) => {
             isOpen={addAccountModal.isOpen}
             onClose={addAccountModal.onClose}
             budgetId={budget?.id || ""}
-            refreshAccounts={fetchAccounts}
           />
         </>
       )}
