@@ -21,7 +21,11 @@ export default function Dashboard() {
     <>
       <PageHeader text="Your budgets" />
       <Box p={8}>
-        <SimpleGrid minChildWidth="3xs" columnGap={6} rowGap={4}>
+        <SimpleGrid
+          rowGap={4}
+          columnGap={12}
+          templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
+        >
           {budgets.map((budget) => (
             <BudgetCard key={budget.id} budget={budget} />
           ))}
