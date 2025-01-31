@@ -1,16 +1,16 @@
 "use client";
 
 import { Box, Text, Button, HStack } from "@chakra-ui/react";
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { IoAddCircleOutline } from "react-icons/io5";
 import { AiOutlineFile } from "react-icons/ai";
-import { useLazyGetAccountQuery } from "@/lib/services/account.api";
+import { useGetAccountQuery } from "@/lib/services/account.api";
 import { useParams } from "next/navigation";
-import { Account } from "@/lib/types/account.types";
 import { DateRangePopover } from "@/components/popovers/date-range/DateRangePopover";
 import { SearchInput } from "@/components/ui/SearchInput";
 import { DateRange } from "@/lib/types/types";
 import { PageHeader } from "@/components/ui/PageHeader";
+import { SkeletonUI } from "@/components/ui/SkeletonUI";
 
 export default function SingleAccount() {
   const params = useParams();
@@ -18,19 +18,11 @@ export default function SingleAccount() {
     ? params?.account_id[0]
     : params?.account_id;
 
-  const [getAccount] = useLazyGetAccountQuery();
-  const [account, setAccount] = useState<Account | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
+  const { data: account, isLoading } = useGetAccountQuery(accountId!, {
+    skip: !accountId,
+  });
 
-  const fetchAccount = useCallback(async () => {
-    if (!accountId) return;
-    try {
-      const result = await getAccount(accountId).unwrap();
-      setAccount(result);
-    } catch (error) {
-      console.error("Error fetching account:", error);
-    }
-  }, [getAccount, accountId]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleApplyDate = (data: DateRange) => {
     console.log(data);
@@ -40,17 +32,22 @@ export default function SingleAccount() {
     setSearchQuery(e.target.value);
   };
 
-  useEffect(() => {
-    fetchAccount();
-  }, [fetchAccount]);
-
   return (
     <>
-      <PageHeader text={account?.name} subText={account?.type} />
+      <PageHeader
+        text={account?.name}
+        subText={account?.type}
+        isLoading={isLoading}
+      />
       <Box p={8}>
-        <Text fontSize="lg" fontWeight="bold" mb={4}>
-          Balance: {account?.amount}
-        </Text>
+        {isLoading ? (
+          <SkeletonUI height={4} />
+        ) : (
+          <Text fontSize="lg" fontWeight="bold" mb={4}>
+            Balance: {account?.amount}
+          </Text>
+        )}
+
         <Box mb={4} borderBottom="1px solid #e2e8f0" />
 
         <Box
