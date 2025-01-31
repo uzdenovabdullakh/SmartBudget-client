@@ -33,8 +33,9 @@ export default function LoginPage() {
   const { setLocalStorageItem } = useLocalStorage();
 
   const [getUser] = useLazyGetUserQuery();
-  const [login, { isLoading }] = useLoginMutation();
-  const [restoreAccountRequest] = useRestoreAccountRequestMutation();
+  const [login, { isLoading: isLoginLoading }] = useLoginMutation();
+  const [restoreAccountRequest, { isLoading: isRestoreAccountLoading }] =
+    useRestoreAccountRequestMutation();
 
   const {
     register,
@@ -131,7 +132,11 @@ export default function LoginPage() {
             error={errors.password?.message}
             {...register("password")}
           />
-          <Button variant="primaryButton" type="submit" isLoading={isLoading}>
+          <Button
+            variant="primaryButton"
+            type="submit"
+            isLoading={isLoginLoading}
+          >
             Log In
           </Button>
         </CardBody>
@@ -142,7 +147,11 @@ export default function LoginPage() {
             </Text>
           </Link>
           {isRestoreAccountVisible && (
-            <Button variant="callToActionButton" onClick={handleRestoreAccount}>
+            <Button
+              variant="callToActionButton"
+              onClick={handleRestoreAccount}
+              isLoading={isRestoreAccountLoading}
+            >
               Restore Account
             </Button>
           )}
