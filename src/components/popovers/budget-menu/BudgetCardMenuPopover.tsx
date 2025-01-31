@@ -64,7 +64,11 @@ export const BudgetCardMenuPopover = ({
         bodyContent={bodyContent}
         footerContent=""
       />
-      <EditBudgetModal isOpen={editModal.isOpen} onClose={editModal.onClose} />
+      <EditBudgetModal
+        isOpen={editModal.isOpen}
+        onClose={editModal.onClose}
+        budget={budget}
+      />
       <DeleteModal
         isOpen={deleteModal.isOpen}
         onClose={deleteModal.onClose}
