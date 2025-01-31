@@ -77,10 +77,19 @@ export const ChangeBudgetSettingsModal = ({
     try {
       const result = await getBudgetInfo(budgetId).unwrap();
       setBudgetInfo(result);
+
+      reset({
+        settings: {
+          currency: result.settings.currency
+            ? reverseCurrencyMap[result.settings.currency]
+            : undefined,
+          currencyPlacement: result.settings.currencyPlacement,
+        },
+      });
     } catch (error) {
       console.log(error);
     }
-  }, [budgetId, getBudgetInfo]);
+  }, [budgetId, getBudgetInfo, reset]);
 
   useEffect(() => {
     fetchBudgetInfo();
@@ -102,10 +111,6 @@ export const ChangeBudgetSettingsModal = ({
           <FormSelectUI
             label="Currency:"
             {...register("settings.currency")}
-            value={
-              budgetInfo?.settings?.currency &&
-              reverseCurrencyMap[budgetInfo?.settings?.currency]
-            }
             error={errors.settings?.currency?.message}
             options={Object.values(BudgetCurrency).map((currency) => ({
               value: currency,
@@ -115,7 +120,6 @@ export const ChangeBudgetSettingsModal = ({
           <FormSelectUI
             label="Currency Placement:"
             {...register("settings.currencyPlacement")}
-            value={budgetInfo?.settings?.currencyPlacement}
             error={errors.settings?.currencyPlacement?.message}
             options={[
               {
