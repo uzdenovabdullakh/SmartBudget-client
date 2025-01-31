@@ -4,11 +4,8 @@ import { LoginDto } from "../validation/login.schema";
 import { RegisterDto } from "../validation/register.schema";
 import { ResendEmailDto } from "../validation/resend-email.schema";
 import { ConfirmSignUpDto } from "../validation/confirm-signup.schema";
-import {
-  LoginResponse,
-  RegisterResponse,
-  ResponseWithoutData,
-} from "../types/auth.types";
+import { ResponseWithoutData } from "../types/types";
+import { LoginResponse, RegisterResponse } from "../types/auth.types";
 import { ResetPasswordRequestDto } from "../validation/reset-password-request.schema";
 import { ResetPasswordDto } from "../validation/reset-password.schema";
 import { RestoreAccountRequestDto } from "../validation/restore-account-request.schema";

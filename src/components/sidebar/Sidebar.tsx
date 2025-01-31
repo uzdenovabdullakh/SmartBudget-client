@@ -28,8 +28,8 @@ type SidebarProps = {
 export const Sidebar = ({ user, budget }: SidebarProps) => {
   const [accounts, setAccounts] = useState<Account[]>([]);
 
-  const { isOpen: isSidebarOpen, onToggle } = useDisclosure();
-  const { isOpen: isModalOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onToggle } = useDisclosure();
+  const addAccountModal = useDisclosure();
 
   const [getAccounts] = useLazyGetAccountsQuery();
 
@@ -56,7 +56,7 @@ export const Sidebar = ({ user, budget }: SidebarProps) => {
   return (
     <Flex
       direction="column"
-      width={isSidebarOpen ? "300px" : "80px"}
+      width={isOpen ? "300px" : "80px"}
       bg="blue.900"
       color="white"
       height="100vh"
@@ -73,25 +73,22 @@ export const Sidebar = ({ user, budget }: SidebarProps) => {
           onClick={onToggle}
           cursor="pointer"
         />
-        {isSidebarOpen && <MenuPopover user={user} />}
+        {isOpen && <MenuPopover user={user} />}
       </Flex>
       <Divider my={4} />
-      {isSidebarOpen && (
+      {isOpen && (
         <>
           <VStack align="start" spacing={4} w="full">
             <NavigationButtons budgetId={budget?.id || ""} />
             <Divider />
             <Box w="full">
-              <SidebarAccounts
-                budgetName={budget?.name || ""}
-                accounts={accounts}
-              />
+              <SidebarAccounts budget={budget} accounts={accounts} />
               <Button
                 mt={4}
                 size="sm"
                 w="full"
                 leftIcon={<IoAddCircleOutline />}
-                onClick={onOpen}
+                onClick={addAccountModal.onOpen}
               >
                 Add Account
               </Button>
@@ -106,8 +103,8 @@ export const Sidebar = ({ user, budget }: SidebarProps) => {
             </Box>
           </VStack>
           <AddAccountModal
-            isOpen={isModalOpen}
-            onClose={onClose}
+            isOpen={addAccountModal.isOpen}
+            onClose={addAccountModal.onClose}
             budgetId={budget?.id || ""}
             refreshAccounts={fetchAccounts}
           />

@@ -1,29 +1,29 @@
 import { Account } from "@/lib/types/account.types";
+import { Budget } from "@/lib/types/budget.types";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
-import { Text, HStack, VStack, Box, IconButton } from "@chakra-ui/react";
-import { useParams, useRouter } from "next/navigation";
-import { useState } from "react";
+import {
+  Text,
+  HStack,
+  VStack,
+  Box,
+  IconButton,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
 
 type SidebarAccountsProps = {
-  budgetName: string;
+  budget: Budget | null;
   accounts: Account[];
 };
 
-export const SidebarAccounts = ({
-  budgetName,
-  accounts,
-}: SidebarAccountsProps) => {
+export const SidebarAccounts = ({ budget, accounts }: SidebarAccountsProps) => {
   const router = useRouter();
-  const params = useParams();
-  const budgetId = Array.isArray(params?.id) ? params.id[0] : params?.id;
 
-  const [isOpen, setIsOpen] = useState(true);
-
-  const toggleOpen = () => setIsOpen(!isOpen);
+  const { isOpen, onToggle } = useDisclosure();
 
   const handleAccountClick = (accountId: string) => {
-    if (budgetId) {
-      router.push(`/dashboard/${budgetId}/account/${accountId}`);
+    if (budget?.id) {
+      router.push(`/dashboard/${budget?.id}/account/${accountId}`);
     }
   };
 
@@ -31,14 +31,14 @@ export const SidebarAccounts = ({
     <Box w="full">
       <HStack justifyContent="space-between" w="full" mb={2}>
         <Text fontSize="sm" fontWeight="bold">
-          {budgetName}
+          {budget?.name}
         </Text>
         <IconButton
           size="sm"
           variant="ghost"
           aria-label="Toggle accounts"
           icon={isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
-          onClick={toggleOpen}
+          onClick={onToggle}
         />
       </HStack>
 

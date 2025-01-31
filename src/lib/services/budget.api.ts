@@ -2,14 +2,16 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import { axiosBaseQuery } from "../axiosBaseQuery";
 import { Budget } from "../types/budget.types";
 import { CreateBudgetDto, UpdateBudgetDto } from "../validation/budget.schema";
-import { MutationResponse } from "../types/types";
+import { MutationResponse, ResponseWithoutData } from "../types/types";
 
 export const budgetsApi = createApi({
   reducerPath: "budget",
   baseQuery: axiosBaseQuery({ baseUrl: "/budgets" }),
+  tagTypes: ["Budgets"],
   endpoints: (builder) => ({
     getBudgets: builder.query<Budget[], void>({
       query: () => ({ url: "/", method: "GET" }),
+      providesTags: ["Budgets"],
     }),
     getBudgetInfo: builder.query<Budget, string>({
       query: (id: string) => ({ url: `/${id}`, method: "GET" }),
@@ -20,6 +22,7 @@ export const budgetsApi = createApi({
         method: "POST",
         data,
       }),
+      invalidatesTags: ["Budgets"],
     }),
     updateBudget: builder.mutation<
       MutationResponse<Budget>,
@@ -30,6 +33,14 @@ export const budgetsApi = createApi({
         method: "PUT",
         data,
       }),
+      invalidatesTags: ["Budgets"],
+    }),
+    deleteBudget: builder.mutation<ResponseWithoutData, string>({
+      query: (id: string) => ({
+        url: `/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Budgets"],
     }),
   }),
 });
@@ -39,4 +50,5 @@ export const {
   useCreateBudgetMutation,
   useUpdateBudgetMutation,
   useLazyGetBudgetInfoQuery,
+  useDeleteBudgetMutation,
 } = budgetsApi;

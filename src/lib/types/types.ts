@@ -31,3 +31,7 @@ export type MutationResponse<T> = {
   data: T;
   message: string;
 };
+
+export type ResponseWithoutData = {
+  message: string;
+};
