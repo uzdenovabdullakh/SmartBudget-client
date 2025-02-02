@@ -24,11 +24,15 @@ axiosInstance.interceptors.request.use(
   (config) => {
     const { getLocalStorageItem } = useLocalStorage();
     const token = getLocalStorageItem("authAccessToken");
+    const lang = getLocalStorageItem("i18nextLng");
 
     if (token) {
       // eslint-disable-next-line no-param-reassign
       config.headers.Authorization = `Bearer ${safeParseJSON(token)}`;
     }
+
+    // eslint-disable-next-line no-param-reassign
+    config.headers["Accept-Language"] = lang || "en";
     return config;
   },
   (error) => {
