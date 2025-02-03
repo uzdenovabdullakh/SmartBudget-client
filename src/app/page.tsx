@@ -14,6 +14,7 @@ import dynamic from "next/dynamic";
 import { Header } from "@/components/ui/Header";
 import { useEffect } from "react";
 import { useLocalStorage } from "@/lib/hooks/useLocalStorage";
+import { useTranslation } from "react-i18next";
 
 const MoneyOnCard = dynamic(
   () => import("@/components/ui/Animations").then((mod) => mod.MoneyOnCard),
@@ -32,6 +33,7 @@ const WomanWithGraphics = dynamic(
 
 export default function HomePage() {
   const router = useRouter();
+  const { t } = useTranslation();
   const { getLocalStorageItem } = useLocalStorage();
 
   useEffect(() => {
@@ -65,21 +67,22 @@ export default function HomePage() {
             maxWidth={{ base: "100%", lg: "40rem" }}
           >
             <Heading as="h2" variant="title">
-              Take Control of Your Finances Today
+              {t("Take Control of Your Finances Today")}
             </Heading>
             <Text
               fontSize={{ base: "md", lg: "lg" }}
               fontWeight="medium"
               fontStyle="italic"
             >
-              Plan smarter, save better, and achieve your financial goals
-              effortlessly with Smart Budget.
+              {t(
+                "Plan smarter, save better, and achieve your financial goals effortlessly with Smart Budget.",
+              )}
             </Text>
             <Button
               variant="callToActionButton"
               onClick={() => router.push("/auth/signup")}
             >
-              Start using
+              {t("Start using")}
             </Button>
           </VStack>
           <Box
@@ -113,7 +116,7 @@ export default function HomePage() {
             maxWidth={{ base: "100%", lg: "40rem" }}
           >
             <Heading as="h2" variant="title">
-              Your Financial Freedom Starts Here
+              {t("Your Financial Freedom Starts Here")}
             </Heading>
             <Box
               fontSize={{ base: "md", lg: "lg" }}
@@ -121,8 +124,9 @@ export default function HomePage() {
               fontStyle="italic"
             >
               <Text>
-                Smart Budget empowers you with tools to manage your money,
-                reduce stress, and plan for a brighter future.
+                {t(
+                  "Smart Budget empowers you with tools to manage your money, reduce stress, and plan for a brighter future.",
+                )}
               </Text>
               <Divider
                 borderColor="firefly.firefly500"
@@ -130,8 +134,9 @@ export default function HomePage() {
                 opacity={1}
               />
               <Text>
-                Track expenses, set goals, and see where your money goes — all
-                in one easy-to-use platform.
+                {t(
+                  "Track expenses, set goals, and see where your money goes — all in one easy-to-use platform.",
+                )}
               </Text>
             </Box>
           </VStack>

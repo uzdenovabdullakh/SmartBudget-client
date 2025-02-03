@@ -6,21 +6,24 @@ import { useResendEmailMutation } from "@/lib/services/auth.api";
 import { showToast } from "@/lib/utils/toast";
 import { ResendEmailSchema } from "@/lib/validation/resend-email.schema";
 import { TokenType } from "@/lib/types/auth.types";
+import { useTranslation } from "react-i18next";
 
 export default function WelcomePage() {
+  const { t } = useTranslation();
+
   const searchParams = useSearchParams();
   const router = useRouter();
 
   const [resendEmail, { isLoading }] = useResendEmailMutation();
 
-  const name = searchParams.get("name") || "Smart Budget User";
+  const name = searchParams.get("name") || t("user");
   const email = searchParams.get("email");
 
   const handleResendActivationEmail = async () => {
     if (!email) {
       showToast({
-        title: "Error",
-        description: "Email not found in the URL",
+        title: t("email"),
+        description: t("email_not_found"),
         status: "error",
       });
       return;
@@ -43,18 +46,22 @@ export default function WelcomePage() {
 
   return (
     <VStack spacing={6} align="center" mt={10}>
-      <Heading>Welcome, {name}!</Heading>
-      <Text>We are excited to have you on board.</Text>
-      <Text>We send confirmation email to you.</Text>
+      <Heading>
+        {t("Welcome", {
+          message: name,
+        })}
+      </Heading>
+      <Text>{t("We are excited to have you on board.")}</Text>
+      <Text>{t("We send confirmation email to you.")}</Text>
       <Button
         variant="primaryButton"
         isLoading={isLoading}
         onClick={handleResendActivationEmail}
       >
-        Resend Email
+        {t("Resend Email")}
       </Button>
       <Button variant="link" onClick={() => router.push("/auth/signin")}>
-        Go to Login Page
+        {t("Go to Login Page")}
       </Button>
     </VStack>
   );

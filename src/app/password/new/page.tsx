@@ -19,8 +19,11 @@ import { useState } from "react";
 import { ResendEmailSchema } from "@/lib/validation/resend-email.schema";
 import { TokenType } from "@/lib/types/auth.types";
 import { ErrorCodes } from "@/lib/constants/error-codes";
+import { useTranslation } from "react-i18next";
 
 export default function ForgotPasswordPage() {
+  const { t } = useTranslation();
+
   const [resetPasswordRequest, { isLoading: isResetPasswordLoading }] =
     useResetPasswordRequestMutation();
   const [resendEmail, { isLoading: isResendEmailLoading }] =
@@ -65,8 +68,8 @@ export default function ForgotPasswordPage() {
   const handleResendEmailRequest = async () => {
     if (!emailAddress) {
       showToast({
-        title: "Error",
-        description: "Email address is missing.",
+        title: t("error"),
+        description: t("Email address is missing."),
         status: "error",
       });
       return;
@@ -89,9 +92,10 @@ export default function ForgotPasswordPage() {
 
   return (
     <PasswordLayout
-      heading="Forgot your password?"
-      subHeading="No sweat. Enter the email address you signed up with and we'll send
-          you instructions to reset your password."
+      heading={t("Forgot your password?")}
+      subHeading={t(
+        "No sweat. Enter the email address you signed up with and we'll send you instructions to reset your password.",
+      )}
     >
       <Card display="flex" flexDir="column" gap={6} p={0} boxShadow="none">
         <CardBody
@@ -104,8 +108,8 @@ export default function ForgotPasswordPage() {
         >
           <FormInputUI
             type="email"
-            label="Email:"
-            placeholder="Enter your email"
+            label={t("Email:")}
+            placeholder={t("Enter your email")}
             icon={FaEnvelope}
             error={errors.email?.message}
             {...register("email")}
@@ -115,7 +119,7 @@ export default function ForgotPasswordPage() {
             type="submit"
             isLoading={isResetPasswordLoading}
           >
-            Send Reset Instructions
+            {t("Send Reset Instructions")}
           </Button>
         </CardBody>
         {isResendEmailVisible && (
@@ -125,7 +129,7 @@ export default function ForgotPasswordPage() {
               isLoading={isResendEmailLoading}
               onClick={handleResendEmailRequest}
             >
-              Resend Email
+              {t("Resend Email")}
             </Button>
           </CardFooter>
         )}

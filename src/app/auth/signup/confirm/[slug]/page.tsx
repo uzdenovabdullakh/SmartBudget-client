@@ -20,10 +20,12 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { showToast } from "@/lib/utils/toast";
+import { useTranslation } from "react-i18next";
 
 export default function ConfirmRegistrationPage() {
   const params = useParams();
   const router = useRouter();
+  const { t } = useTranslation();
 
   const [confirmRegister, { isLoading }] = useConfirmRegisterMutation();
 
@@ -47,7 +49,7 @@ export default function ConfirmRegistrationPage() {
 
       showToast({
         title: message,
-        description: "You will now be redirected to the login page.",
+        description: t("You will now be redirected to the login page."),
         status: "success",
       });
 
@@ -59,14 +61,16 @@ export default function ConfirmRegistrationPage() {
 
   return (
     <AuthLayout
-      heading="One last step"
-      subHeading="Complete the registration and start managing your finances"
+      heading={t("One last step")}
+      subHeading={t(
+        "Complete the registration and start managing your finances",
+      )}
     >
       <Card width="100%" maxW="md" gap={6} p={8}>
         <CardHeader justifyItems="center" p={0}>
-          <Heading variant="cardHeader">Complete sign up</Heading>
+          <Heading variant="cardHeader">{t("Complete sign up")}</Heading>
           <Text mt={2} fontSize="sm" color="neutrals.neutral400">
-            Create and enter a password to complete signing up{" "}
+            {t("Create and enter a password to complete signing up")}
           </Text>
         </CardHeader>
         <CardBody
@@ -92,7 +96,7 @@ export default function ConfirmRegistrationPage() {
             {...register("confirmPassword")}
           />
           <Button variant="primaryButton" type="submit" isLoading={isLoading}>
-            Confirm
+            {t("Confirm")}
           </Button>
         </CardBody>
       </Card>

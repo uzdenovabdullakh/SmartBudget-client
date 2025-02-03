@@ -3,6 +3,7 @@
 import { Button, Text, Flex } from "@chakra-ui/react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import { useTranslation } from "react-i18next";
 
 const NotFound = dynamic(
   () => import("@/components/ui/Animations").then((mod) => mod.NotFound),
@@ -12,6 +13,8 @@ const NotFound = dynamic(
 );
 
 export default function NotFoundPage() {
+  const { t } = useTranslation();
+
   return (
     <Flex
       width="100vw"
@@ -22,11 +25,12 @@ export default function NotFoundPage() {
     >
       <NotFound />
       <Text variant="error-description">
-        Страница не найдена. Возможно, она была удалена или никогда не
-        существовала.
+        {t(
+          "The page was not found. It may have been deleted or never been. It existed.",
+        )}
       </Text>
       <Link href="/">
-        <Button variant="primaryButton">Вернуться на главную</Button>
+        <Button variant="primaryButton">{t("Go back to the main page")}</Button>
       </Link>
     </Flex>
   );

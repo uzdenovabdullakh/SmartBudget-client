@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { useEffect } from "react";
 import { Box, Button, Heading, Text } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 
 const ErrorAnimation = dynamic(
   () => import("@/components/ui/Animations").then((mod) => mod.ErrorAnimation),
@@ -17,9 +18,11 @@ interface ErrorProps {
 }
 
 export default function ErrorPage({ error, reset }: ErrorProps) {
+  const { t } = useTranslation();
+
   useEffect(() => {
-    console.error("Произошла ошибка:", error);
-  }, [error]);
+    console.error(t("An error has occurred!"), error);
+  }, [error, t]);
 
   return (
     <Box
@@ -34,13 +37,13 @@ export default function ErrorPage({ error, reset }: ErrorProps) {
     >
       <ErrorAnimation />
       <Heading as="h1" size="2xl" color="red.500" mb={4}>
-        Произошла ошибка!
+        {t("An error has occurred!")}
       </Heading>
       <Text variant="error-description">
-        Что-то пошло не так. Пожалуйста, попробуйте снова.
+        {t("Something went wrong. Please try again.")}
       </Text>
       <Button variant="primaryButton" onClick={() => reset()}>
-        Попробовать снова
+        {t("Try again")}
       </Button>
     </Box>
   );

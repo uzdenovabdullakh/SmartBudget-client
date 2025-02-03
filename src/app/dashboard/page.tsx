@@ -6,16 +6,18 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { SkeletonUI } from "@/components/ui/SkeletonUI";
 import { useGetBudgetsQuery } from "@/lib/services/budget.api";
 import { Box, Button, SimpleGrid, Text, useDisclosure } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 import { FiPlus } from "react-icons/fi";
 
 export default function Dashboard() {
+  const { t } = useTranslation();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { data: budgets = [], isLoading } = useGetBudgetsQuery();
 
   return (
     <>
-      <PageHeader text="Your budgets" />
+      <PageHeader text={t("budgets_header")} />
       <Box p={8}>
         <SimpleGrid minChildWidth="3xs" columnGap={6} rowGap={4}>
           {isLoading ? (
@@ -39,7 +41,7 @@ export default function Dashboard() {
             cursor="pointer"
           >
             <FiPlus size={32} />
-            <Text>Create New Budget</Text>
+            <Text>{t("create_budget")}</Text>
           </Box>
         </SimpleGrid>
         <AddBudgetModal isOpen={isOpen} onClose={onClose} />
