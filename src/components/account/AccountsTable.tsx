@@ -1,12 +1,14 @@
 import { Account } from "@/lib/types/account.types";
 import { Table, Thead, Tbody, Tr, Th, Td } from "@chakra-ui/react";
 import { useParams, useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 type AccountTableProps = {
   accounts: Account[];
 };
 
 export const AccountsTable = ({ accounts }: AccountTableProps) => {
+  const { t } = useTranslation();
   const router = useRouter();
   const params = useParams();
   const budgetId = Array.isArray(params?.id) ? params.id[0] : params?.id;
@@ -21,10 +23,10 @@ export const AccountsTable = ({ accounts }: AccountTableProps) => {
     <Table variant="simple">
       <Thead>
         <Tr>
-          <Th>Account</Th>
-          <Th>Date</Th>
-          <Th>Type</Th>
-          <Th>Amount</Th>
+          <Th>{t("Account")}</Th>
+          <Th>{t("Date")}</Th>
+          <Th>{t("Type")}</Th>
+          <Th>{t("Amount")}</Th>
         </Tr>
       </Thead>
       <Tbody>

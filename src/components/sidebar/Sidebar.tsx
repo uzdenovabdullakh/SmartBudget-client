@@ -13,6 +13,7 @@ import { IoAddCircleOutline } from "react-icons/io5";
 import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
 import { Budget } from "@/lib/types/budget.types";
 import { useGetAccountsQuery } from "@/lib/services/account.api";
+import { useTranslation } from "react-i18next";
 import { AddAccountModal } from "../modals/add-account/AddAccount";
 import { SidebarAccounts } from "./SidebarAccounts";
 import { NavigationButtons } from "./NavigationButton";
@@ -24,6 +25,8 @@ type SidebarProps = {
 };
 
 export const Sidebar = ({ user, budget }: SidebarProps) => {
+  const { t } = useTranslation();
+
   const { isOpen, onToggle } = useDisclosure();
   const addAccountModal = useDisclosure();
 
@@ -77,7 +80,7 @@ export const Sidebar = ({ user, budget }: SidebarProps) => {
                 leftIcon={<IoAddCircleOutline />}
                 onClick={addAccountModal.onOpen}
               >
-                Add Account
+                {t("Add Account")}
               </Button>
               <IconButton
                 aria-label="Close Sidebar"

@@ -10,6 +10,7 @@ import { useUpdateBudgetMutation } from "@/lib/services/budget.api";
 import { Budget } from "@/lib/types/budget.types";
 import { Button, VStack } from "@chakra-ui/react";
 import FormInputUI from "@/components/ui/FormInputUI";
+import { useTranslation } from "react-i18next";
 import { DefaultModal } from "..";
 
 type EditBudgetModalProps = {
@@ -21,6 +22,8 @@ export const EditBudgetModal = ({
   onClose,
   budget,
 }: EditBudgetModalProps) => {
+  const { t } = useTranslation();
+
   const [updateBudget, { isLoading }] = useUpdateBudgetMutation();
 
   const {
@@ -55,7 +58,7 @@ export const EditBudgetModal = ({
     <DefaultModal
       isOpen={isOpen}
       onClose={onClose}
-      title="Edit budget name"
+      title={t("Edit budget name")}
       size="sm"
       body={
         <VStack
@@ -66,7 +69,7 @@ export const EditBudgetModal = ({
         >
           <FormInputUI
             type="text"
-            placeholder="Enter new name"
+            placeholder={t("Enter new name")}
             error={errors.name?.message}
             {...register("name")}
           />
@@ -79,7 +82,7 @@ export const EditBudgetModal = ({
           isLoading={isLoading}
           width="full"
         >
-          Save Changes
+          {t("Save Changes")}
         </Button>
       }
     />

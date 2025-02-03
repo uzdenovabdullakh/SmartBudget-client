@@ -5,6 +5,7 @@ import { DeleteModal } from "@/components/modals/delete/Delete";
 import { useDeleteBudgetMutation } from "@/lib/services/budget.api";
 import { Budget } from "@/lib/types/budget.types";
 import { showToast } from "@/lib/utils/toast";
+import { useTranslation } from "react-i18next";
 import { BasePopover } from "..";
 
 type BudgetCardMenuPopoverProps = {
@@ -14,6 +15,8 @@ type BudgetCardMenuPopoverProps = {
 export const BudgetCardMenuPopover = ({
   budget,
 }: BudgetCardMenuPopoverProps) => {
+  const { t } = useTranslation();
+
   const { isOpen, onToggle, onClose } = useDisclosure();
   const editModal = useDisclosure();
   const deleteModal = useDisclosure();
@@ -45,15 +48,17 @@ export const BudgetCardMenuPopover = ({
   const bodyContent = (
     <VStack spacing={4} align="stretch">
       <Button leftIcon={<FiEdit />} onClick={editModal.onOpen}>
-        Edit
+        {t("Edit")}
       </Button>
       <Button leftIcon={<FiTrash2 />} onClick={deleteModal.onOpen}>
-        Delete
+        {t("Delete", {
+          entity: "",
+        })}
       </Button>
     </VStack>
   );
 
-  const entity = { type: "Budget", name: budget.name };
+  const entity = { type: t("budget"), name: budget.name };
 
   return (
     <>

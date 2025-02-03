@@ -12,9 +12,12 @@ import { showToast } from "@/lib/utils/toast";
 import { BudgetCurrency, CurrencyPlacement } from "@/lib/constants/enums";
 import FormInputUI from "@/components/ui/FormInputUI";
 import FormSelectUI from "@/components/ui/FormSelectUI";
+import { useTranslation } from "react-i18next";
 import { DefaultModal } from "..";
 
 export const AddBudgetModal = ({ isOpen, onClose }: DefaultModalProps) => {
+  const { t } = useTranslation();
+
   const [createBudget, { isLoading }] = useCreateBudgetMutation();
 
   const {
@@ -39,7 +42,9 @@ export const AddBudgetModal = ({ isOpen, onClose }: DefaultModalProps) => {
 
       showToast({
         title: message,
-        description: `You have new budget ${newBudget.name}`,
+        description: t("You have new budget", {
+          name: newBudget.name,
+        }),
         status: "success",
       });
 
@@ -54,7 +59,7 @@ export const AddBudgetModal = ({ isOpen, onClose }: DefaultModalProps) => {
     <DefaultModal
       isOpen={isOpen}
       onClose={onClose}
-      title="Create new budget"
+      title={t("Create new budget")}
       size="md"
       body={
         <VStack
@@ -65,14 +70,14 @@ export const AddBudgetModal = ({ isOpen, onClose }: DefaultModalProps) => {
         >
           <FormInputUI
             type="text"
-            placeholder="Enter budget name"
+            placeholder={t("Enter budget name")}
             {...register("name")}
             error={errors.name?.message}
-            label="Budget Name:"
+            label={t("Budget Name:")}
           />
 
           <FormSelectUI
-            label="Currency:"
+            label={t("Currency:")}
             {...register("settings.currency")}
             error={errors.settings?.currency?.message}
             options={Object.values(BudgetCurrency).map((currency) => ({
@@ -81,15 +86,18 @@ export const AddBudgetModal = ({ isOpen, onClose }: DefaultModalProps) => {
             }))}
           />
           <FormSelectUI
-            label="Currency Placement:"
+            label={t("Currency Placement:")}
             {...register("settings.currencyPlacement")}
             error={errors.settings?.currencyPlacement?.message}
             options={[
               {
                 value: CurrencyPlacement.BEFORE,
-                label: "Before Amount ($100)",
+                label: t("Before Amount ($100)"),
               },
-              { value: CurrencyPlacement.AFTER, label: "After Amount (100$)" },
+              {
+                value: CurrencyPlacement.AFTER,
+                label: t("After Amount (100$)"),
+              },
             ]}
           />
         </VStack>
@@ -101,7 +109,7 @@ export const AddBudgetModal = ({ isOpen, onClose }: DefaultModalProps) => {
           isLoading={isLoading}
           width="full"
         >
-          Create Budget
+          {t("Create Budget")}
         </Button>
       }
     />

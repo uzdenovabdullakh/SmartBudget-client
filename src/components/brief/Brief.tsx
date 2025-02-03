@@ -14,9 +14,12 @@ import {
 import { useState } from "react";
 import { AnswerToBriefSchema } from "@/lib/validation/brief.schema";
 import { BriefQuestions, QuestionCategoryMapping } from "@/lib/constants/brief";
+import { useTranslation } from "react-i18next";
 import { BriefImage } from "./BriefImage";
 
 export const Brief = ({ onClose }: { onClose: () => void }) => {
+  const { t } = useTranslation();
+
   const questions = Object.keys(BriefQuestions);
 
   const [answerQuestion, { isLoading }] = useAnswerToBriefMutation();
@@ -126,7 +129,7 @@ export const Brief = ({ onClose }: { onClose: () => void }) => {
             width={image || animation ? "auto" : "100%"}
           >
             <Text fontSize="2xl" mb={4} fontWeight="bold" textAlign="center">
-              {questionText}
+              {t(questionText)}
             </Text>
             {isMultipleChoice ? (
               <CheckboxGroup
@@ -143,7 +146,7 @@ export const Brief = ({ onClose }: { onClose: () => void }) => {
                       value={category}
                       isDisabled={isOptionDisabled(category)}
                     >
-                      {category}
+                      {t(category)}
                     </Checkbox>
                   ))}
                 </SimpleGrid>
@@ -159,7 +162,7 @@ export const Brief = ({ onClose }: { onClose: () => void }) => {
                 >
                   {categories.map((category) => (
                     <Radio key={category} value={category}>
-                      {category}
+                      {t(category)}
                     </Radio>
                   ))}
                 </SimpleGrid>
@@ -172,7 +175,7 @@ export const Brief = ({ onClose }: { onClose: () => void }) => {
                 isDisabled={currentQuestion === 0}
                 variant="outline"
               >
-                Back
+                {t("Back")}
               </Button>
               <Button
                 onClick={handleNext}
@@ -181,8 +184,8 @@ export const Brief = ({ onClose }: { onClose: () => void }) => {
                 variant="primaryButton"
               >
                 {currentQuestion === questions.length - 1
-                  ? "Submit"
-                  : "Continue"}
+                  ? t("Submit")
+                  : t("Continue")}
               </Button>
             </Flex>
           </Flex>

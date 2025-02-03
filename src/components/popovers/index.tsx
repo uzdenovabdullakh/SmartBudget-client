@@ -11,6 +11,7 @@ import {
   PopoverContentProps,
 } from "@chakra-ui/react";
 import { ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 
 type BasePopoverProps = {
   triggerButton: ReactNode;
@@ -38,6 +39,8 @@ export const BasePopover = ({
   onCancel,
   ...props
 }: BasePopoverProps) => {
+  const { t } = useTranslation();
+
   const handleApply = () => {
     if (onApply) onApply();
     onClose();
@@ -62,10 +65,10 @@ export const BasePopover = ({
           <PopoverFooter display="flex" justifyContent="flex-end">
             <HStack spacing={4}>
               <Button variant="ghost" onClick={handleCancel}>
-                Cancel
+                {t("Cancel")}
               </Button>
               <Button colorScheme="blue" onClick={handleApply}>
-                Apply
+                {t("Apply")}
               </Button>
             </HStack>
           </PopoverFooter>

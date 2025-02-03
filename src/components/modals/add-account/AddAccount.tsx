@@ -12,6 +12,7 @@ import {
 import { AccountType } from "@/lib/constants/enums";
 import { DefaultModalProps } from "@/lib/types/types";
 import FormSelectUI from "@/components/ui/FormSelectUI";
+import { useTranslation } from "react-i18next";
 import { DefaultModal } from "..";
 import FormInputUI from "../../ui/FormInputUI";
 
@@ -24,6 +25,8 @@ export const AddAccountModal = ({
   onClose,
   budgetId,
 }: DefaultModalProps & AddAccountModalProps) => {
+  const { t } = useTranslation();
+
   const [currentStep, setCurrentStep] = useState<"select" | "unlinked">(
     "select",
   );
@@ -53,8 +56,8 @@ export const AddAccountModal = ({
       await createUnlinkedAccount(data).unwrap();
 
       showToast({
-        title: "Success",
-        description: "Account created successfully!",
+        title: t("success"),
+        description: t("Account created successfully!"),
         status: "success",
       });
 
@@ -78,16 +81,16 @@ export const AddAccountModal = ({
         _hover={{ bg: "blue.100" }}
       >
         <Text fontSize="lg" fontWeight="bold" color="blue.600">
-          Linked
+          {t("Linked")}
         </Text>
         <Text fontSize="sm" color="gray.600" textAlign="center">
-          Connect to your bank and automatically import transactions.
+          {t("Connect to your bank and automatically import transactions.")}
         </Text>
       </Flex>
 
       <Flex align="center" gap={2} color="gray.500" fontSize="sm">
         <Box flex="1" height="1px" bg="gray.300" />
-        <Text>or</Text>
+        <Text>{t("or")}</Text>
         <Box flex="1" height="1px" bg="gray.300" />
       </Flex>
 
@@ -103,10 +106,12 @@ export const AddAccountModal = ({
         onClick={goToUnlinked}
       >
         <Text fontSize="lg" fontWeight="bold" color="blue.600">
-          Unlinked
+          {t("Unlinked")}
         </Text>
         <Text fontSize="sm" color="gray.600" textAlign="center">
-          Start with your current balance and enter your own transactions.
+          {t(
+            "Start with your current balance and enter your own transactions.",
+          )}
         </Text>
       </Flex>
     </Flex>
@@ -115,35 +120,38 @@ export const AddAccountModal = ({
   const unlinkedScreen = (
     <Flex direction="column" gap={4}>
       <Text>
-        Let’s go! And don’t worry — if you change your mind, you can link your
-        account at any time.
+        {t(
+          "Let’s go! And don’t worry — if you change your mind, you can link your account at any time.",
+        )}
       </Text>
       <Box>
         <FormInputUI
           type="text"
-          label="Give it a nickname"
-          placeholder="Enter a nickname"
+          label={t("Give it a nickname")}
+          placeholder={t("Enter a nickname")}
           {...register("name")}
           error={errors.name?.message}
         />
       </Box>
       <Box>
         <FormSelectUI
-          placeholder="Select account type..."
-          label="What type of account are you adding?"
+          placeholder={t("Select account type...")}
+          label={t("What type of account are you adding?")}
           {...register("type")}
           error={errors.type?.message}
           options={Object.values(AccountType).map((accountType) => ({
             value: accountType,
-            label: accountType.charAt(0).toUpperCase() + accountType.slice(1),
+            label: t(
+              accountType.charAt(0).toUpperCase() + accountType.slice(1),
+            ),
           }))}
         />
       </Box>
       <Box>
         <FormInputUI
           type="number"
-          label="What is your current account balance?"
-          placeholder="Enter balance"
+          label={t("What is your current account balance?")}
+          placeholder={t("Enter balance")}
           {...register("amount", { valueAsNumber: true })}
           error={errors.amount?.message}
         />
@@ -158,7 +166,7 @@ export const AddAccountModal = ({
       onClick={handleSubmit(onSubmit)}
       isLoading={isLoading}
     >
-      Next
+      {t("Next")}
     </Button>
   );
 
@@ -172,9 +180,9 @@ export const AddAccountModal = ({
     >
       <InfoIcon color="blue.400" />
       <Text>
-        Linked is your bank account (credit card)
+        {t("Linked is your bank account (credit card)")}
         <br />
-        Unlinked. You will have to enter all transactions manually.
+        {t("Unlinked. You will have to enter all transactions manually.")}
       </Text>
     </Flex>
   );
@@ -192,10 +200,10 @@ export const AddAccountModal = ({
               variant="ghost"
               onClick={goBack}
             />
-            <Text>Add Unlinked Account</Text>
+            <Text>{t("Add Unlinked Account")}</Text>
           </Flex>
         ) : (
-          "Add Account"
+          t("Add Account")
         )
       }
       body={currentStep === "select" ? selectScreen : unlinkedScreen}

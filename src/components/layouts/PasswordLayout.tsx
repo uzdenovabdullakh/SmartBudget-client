@@ -1,12 +1,15 @@
 import { LayoutProps } from "@/lib/types/types";
 import { VStack, Box, Heading, Text } from "@chakra-ui/react";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 
 export default function PasswordLayout({
   children,
   heading,
   subHeading,
 }: LayoutProps) {
+  const { t } = useTranslation();
+
   return (
     <VStack
       width="100vw"
@@ -39,7 +42,7 @@ export default function PasswordLayout({
         </Text>
         {children}
         <Text as="span" fontSize="sm" textAlign="center" variant="link-text">
-          <Link href="/auth/signin">Return to log in</Link>
+          <Link href="/auth/signin">{t("Return to log in")}</Link>
         </Text>
       </VStack>
     </VStack>

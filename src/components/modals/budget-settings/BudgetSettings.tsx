@@ -16,6 +16,7 @@ import { BudgetCurrency, CurrencyPlacement } from "@/lib/constants/enums";
 import FormSelectUI from "@/components/ui/FormSelectUI";
 import { useParams } from "next/navigation";
 import { Budget } from "@/lib/types/budget.types";
+import { useTranslation } from "react-i18next";
 import { DefaultModal } from "..";
 
 const reverseCurrencyMap = {
@@ -28,6 +29,8 @@ export const ChangeBudgetSettingsModal = ({
   isOpen,
   onClose,
 }: DefaultModalProps) => {
+  const { t } = useTranslation();
+
   const params = useParams();
   const budgetId = Array.isArray(params?.id) ? params?.id[0] : params?.id;
 
@@ -99,7 +102,7 @@ export const ChangeBudgetSettingsModal = ({
     <DefaultModal
       isOpen={isOpen}
       onClose={onClose}
-      title="Change budget settings"
+      title={t("Change budget settings")}
       size="md"
       body={
         <VStack
@@ -109,7 +112,7 @@ export const ChangeBudgetSettingsModal = ({
           align="stretch"
         >
           <FormSelectUI
-            label="Currency:"
+            label={t("Currency:")}
             {...register("settings.currency")}
             error={errors.settings?.currency?.message}
             options={Object.values(BudgetCurrency).map((currency) => ({
@@ -118,17 +121,17 @@ export const ChangeBudgetSettingsModal = ({
             }))}
           />
           <FormSelectUI
-            label="Currency Placement:"
+            label={t("Currency Placement:")}
             {...register("settings.currencyPlacement")}
             error={errors.settings?.currencyPlacement?.message}
             options={[
               {
                 value: CurrencyPlacement.BEFORE,
-                label: "Before Amount ($100)",
+                label: t("Before Amount ($100)"),
               },
               {
                 value: CurrencyPlacement.AFTER,
-                label: "After Amount (100$)",
+                label: t("After Amount (100$)"),
               },
             ]}
           />
@@ -141,7 +144,7 @@ export const ChangeBudgetSettingsModal = ({
           isLoading={isLoading}
           width="full"
         >
-          Save Changes
+          {t("Save Changes")}
         </Button>
       }
     />
