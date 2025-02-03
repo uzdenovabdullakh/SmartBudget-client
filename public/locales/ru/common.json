@@ -185,5 +185,15 @@
   "What are some expenses that always sneak up on you?": "Какие расходы часто оказываются неожиданными для вас?",
   "Are you saving, or planning to, for any of these?": "Вы откладываете или планируете откладывать на что-то из этого?",
   "What else do you want to include - without stress or guilt?": "Что еще вы хотите включить — без стресса и чувства вины?",
-  "budget": "бюджет"
+  "budget": "бюджет",
+  "Balance": "Баланс",
+  "Add Transaction": "Добавить транзакцию",
+  "File Import": "Импорт файла",
+  "Search all transactions": "Поиск всех транзакций",
+  "All accounts": "Все счета",
+  "Total Balance": "Общий Баланс",
+  "Search all accounts": "Поиск всех счетов",
+  "cash": "Наличные",
+  "card": "Карточка",
+  "savings": "Сбережения"
 }

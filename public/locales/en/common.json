@@ -185,5 +185,15 @@
   "What are some expenses that always sneak up on you?": "What are some expenses that always sneak up on you?",
   "Are you saving, or planning to, for any of these?": "Are you saving, or planning to, for any of these?",
   "What else do you want to include - without stress or guilt?": "What else do you want to include - without stress or guilt?",
-  "budget": "budget"
+  "budget": "budget",
+  "Balance": "Balance",
+  "Add Transaction": "Add Transaction",
+  "File Import": "File Import",
+  "Search all transactions": "Search all transactions",
+  "All accounts": "All accounts",
+  "Total Balance": "Total Balance",
+  "Search all accounts": "Search all accounts",
+  "cash": "Cash",
+  "card": "Card",
+  "savings": "Savings"
 }

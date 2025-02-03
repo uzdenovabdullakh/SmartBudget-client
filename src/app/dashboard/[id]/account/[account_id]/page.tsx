@@ -11,8 +11,10 @@ import { SearchInput } from "@/components/ui/SearchInput";
 import { DateRange } from "@/lib/types/types";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SkeletonUI } from "@/components/ui/SkeletonUI";
+import { useTranslation } from "react-i18next";
 
 export default function SingleAccount() {
+  const { t } = useTranslation();
   const params = useParams();
   const accountId = Array.isArray(params?.account_id)
     ? params?.account_id[0]
@@ -36,7 +38,7 @@ export default function SingleAccount() {
     <>
       <PageHeader
         text={account?.name}
-        subText={account?.type}
+        subText={t(account?.type || "")}
         isLoading={isLoading}
       />
       <Box p={8}>
@@ -44,7 +46,7 @@ export default function SingleAccount() {
           <SkeletonUI height={4} />
         ) : (
           <Text fontSize="lg" fontWeight="bold" mb={4}>
-            Balance: {account?.amount}
+            {t("Balance")}: {account?.amount}
           </Text>
         )}
 
@@ -62,14 +64,14 @@ export default function SingleAccount() {
               colorScheme="blue"
               variant="solid"
             >
-              Add Transaction
+              {t("Add Transaction")}
             </Button>
             <Button
               leftIcon={<AiOutlineFile />}
               colorScheme="gray"
               variant="outline"
             >
-              File Import
+              {t("File Import")}
             </Button>
           </HStack>
 
@@ -77,7 +79,7 @@ export default function SingleAccount() {
             <DateRangePopover applyDate={handleApplyDate} />
             <SearchInput
               searchQuery={searchQuery}
-              placeholder="Search all transactions"
+              placeholder={t("Search all transactions")}
               onSearchChange={handleSearchChange}
             />
           </HStack>
