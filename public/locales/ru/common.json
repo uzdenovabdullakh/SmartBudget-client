@@ -85,7 +85,7 @@
   "Create new budget": "Создать новый бюджет",
   "Enter budget name": "Введите название бюджета",
   "Budget Name:": "Название бюджета:",
-  "Currency:": "Валюта:",
+  "Currency": "Валюта:",
   "Currency Placement:": "Расположение валюты:",
   "Before Amount ($100)": "Перед суммой ($100)",
   "After Amount (100$)": "После суммы (100$)",

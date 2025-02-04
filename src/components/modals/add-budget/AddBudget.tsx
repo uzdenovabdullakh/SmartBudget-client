@@ -77,7 +77,7 @@ export const AddBudgetModal = ({ isOpen, onClose }: DefaultModalProps) => {
           />
 
           <FormSelectUI
-            label={t("Currency:")}
+            label={t("Currency")}
             {...register("settings.currency")}
             error={errors.settings?.currency?.message}
             options={Object.values(BudgetCurrency).map((currency) => ({
