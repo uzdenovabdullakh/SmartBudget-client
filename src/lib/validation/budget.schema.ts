@@ -1,3 +1,4 @@
+import i18n from "@/app/i18n";
 import { z } from "zod";
 
 const BudgetSettingsSchema = z.object({
@@ -6,7 +7,10 @@ const BudgetSettingsSchema = z.object({
 });
 
 export const CreateBudgetSchema = z.object({
-  name: z.string().max(128, "Name is too long").min(1, "Name is required"),
+  name: z
+    .string()
+    .max(128, i18n.t("validation.Nickname too long"))
+    .min(1, i18n.t("validation.Nickname is required")),
   settings: BudgetSettingsSchema.optional(),
 });
 
