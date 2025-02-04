@@ -4,6 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Text, Button, HStack, VStack, useDisclosure } from "@chakra-ui/react";
 import { DateRange, PredefinedRange } from "@/lib/types/types";
 import { getDateRange } from "@/lib/utils/helpers";
+import { useTranslation } from "react-i18next";
 import { BasePopover } from "..";
 
 type DateRangePopoverProps = {
@@ -11,6 +12,8 @@ type DateRangePopoverProps = {
 };
 
 export const DateRangePopover = ({ applyDate }: DateRangePopoverProps) => {
+  const { t } = useTranslation();
+
   const { isOpen, onToggle, onClose } = useDisclosure();
 
   const [dateRange, setDateRange] = useState<DateRange>({
@@ -57,7 +60,7 @@ export const DateRangePopover = ({ applyDate }: DateRangePopoverProps) => {
 
   const triggerButton = (
     <Button pr={6} pl={6} onClick={onToggle}>
-      View Options
+      {t("View Options")}
     </Button>
   );
 
@@ -71,7 +74,7 @@ export const DateRangePopover = ({ applyDate }: DateRangePopoverProps) => {
             onClick={() => handleRangeSelection(range)}
             flex="1"
           >
-            {range}
+            {t(range)}
           </Button>
         ))}
       </HStack>
@@ -79,7 +82,7 @@ export const DateRangePopover = ({ applyDate }: DateRangePopoverProps) => {
       {selectedRange === "Custom" && (
         <HStack spacing={4} justifyContent="space-between">
           <HStack spacing={4} align="center">
-            <Text>From:</Text>
+            <Text>{t("From:")}</Text>
             <DatePicker
               selected={dateRange.from}
               onChange={(date) => {
@@ -88,11 +91,11 @@ export const DateRangePopover = ({ applyDate }: DateRangePopoverProps) => {
               }}
               maxDate={dateRange.to ? dateRange.to : undefined}
               isClearable
-              placeholderText="Select start date"
+              placeholderText={t("Select start date")}
             />
           </HStack>
           <HStack spacing={4} align="center">
-            <Text>To:</Text>
+            <Text>{t("To:")}</Text>
             <DatePicker
               selected={dateRange.to}
               onChange={(date) => {
@@ -101,7 +104,7 @@ export const DateRangePopover = ({ applyDate }: DateRangePopoverProps) => {
               }}
               minDate={dateRange.from ? dateRange.from : undefined}
               isClearable
-              placeholderText="Select end date"
+              placeholderText={t("Select end date")}
             />
           </HStack>
         </HStack>

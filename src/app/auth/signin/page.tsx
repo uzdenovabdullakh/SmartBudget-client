@@ -27,9 +27,11 @@ import { showToast } from "@/lib/utils/toast";
 import { useState } from "react";
 import { RestoreAccountRequestSchema } from "@/lib/validation/restore-account-request.schema";
 import { ErrorCodes } from "@/lib/constants/error-codes";
+import { useTranslation } from "react-i18next";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { t } = useTranslation();
   const { setLocalStorageItem } = useLocalStorage();
 
   const [getUser] = useLazyGetUserQuery();
@@ -68,8 +70,10 @@ export default function LoginPage() {
       const { login: name } = await getUser().unwrap();
 
       showToast({
-        title: "Login Successful",
-        description: `Welcome back, ${name}!`,
+        title: t("Login Successful"),
+        description: t("Welcome back", {
+          message: name,
+        }),
         status: "success",
       });
 
@@ -95,17 +99,19 @@ export default function LoginPage() {
 
   return (
     <AuthLayout
-      heading="Transform your finances."
-      subHeading="Smart Budget empowers you to master spending, saving, and living with confidence through a straightforward system of impactful habits."
+      heading={t("Transform your finances.")}
+      subHeading={t(
+        "Smart Budget empowers you to master spending, saving, and living with confidence through a straightforward system of impactful habits.",
+      )}
     >
       <Card width="100%" maxW="md" gap={6} p={8}>
         <CardHeader justifyItems="center" p={0}>
-          <Heading variant="cardHeader">Log In</Heading>
+          <Heading variant="cardHeader">{t("Log In")}</Heading>
           <Text mt={2} fontSize="sm" color="neutrals.neutral400">
-            New to Smart Budget?{" "}
+            {t("New to Smart Budget?")}
             <Link href="/auth/signup">
               <Text as="span" variant="link-text">
-                Sign up today.
+                {t("Sign up today.")}
               </Text>
             </Link>
           </Text>
@@ -137,13 +143,13 @@ export default function LoginPage() {
             type="submit"
             isLoading={isLoginLoading}
           >
-            Log In
+            {t("Log In")}
           </Button>
         </CardBody>
         <CardFooter flexDir="column" gap={2} alignItems="end" p={0}>
           <Link href="/password/new">
             <Text variant="link-text" fontSize="sm" textAlign="right" mt={-2}>
-              Forgot password?
+              {t("Forgot password?")}
             </Text>
           </Link>
           {isRestoreAccountVisible && (
@@ -152,7 +158,7 @@ export default function LoginPage() {
               onClick={handleRestoreAccount}
               isLoading={isRestoreAccountLoading}
             >
-              Restore Account
+              {t("Restore Account")}
             </Button>
           )}
         </CardFooter>

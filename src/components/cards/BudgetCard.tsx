@@ -1,6 +1,7 @@
 import { Budget } from "@/lib/types/budget.types";
 import { Box, Text, HStack } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 import { BudgetCardMenuPopover } from "../popovers/budget-menu/BudgetCardMenuPopover";
 import { BaseCard } from "../ui/BaseCard";
 
@@ -9,6 +10,7 @@ type BudgetCardProps = {
 };
 
 export function BudgetCard({ budget }: BudgetCardProps) {
+  const { t } = useTranslation();
   const router = useRouter();
 
   return (
@@ -19,7 +21,7 @@ export function BudgetCard({ budget }: BudgetCardProps) {
             {budget.name}
           </Text>
           <Text fontSize="md">
-            Created: {new Date(budget.createdAt).toLocaleDateString()}
+            {t("created")}: {new Date(budget.createdAt).toLocaleDateString()}
           </Text>
         </Box>
         <BudgetCardMenuPopover budget={budget} />

@@ -13,10 +13,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useResetPasswordMutation } from "@/lib/services/auth.api";
 import { useParams, useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 export default function ConfirmNewPasswordPage() {
   const params = useParams();
   const router = useRouter();
+  const { t } = useTranslation();
 
   const [resetPassword, { isLoading }] = useResetPasswordMutation();
 
@@ -51,8 +53,10 @@ export default function ConfirmNewPasswordPage() {
 
   return (
     <PasswordLayout
-      heading="Confirm password resetting"
-      subHeading="Enter your new password. Keep it safe, and don't forget it again:)"
+      heading={t("Confirm password resetting")}
+      subHeading={t(
+        "Enter your new password. Keep it safe, and don't forget it again:)",
+      )}
     >
       <Card>
         <CardBody
@@ -66,21 +70,21 @@ export default function ConfirmNewPasswordPage() {
           <Flex flexDir="column" gap={6} p={0}>
             <FormInputUI
               type="password"
-              placeholder="Your new password"
+              placeholder={t("Your new password")}
               icon={FaLock}
               error={errors.newPassword?.message}
               {...register("newPassword")}
             />
             <FormInputUI
               type="password"
-              placeholder="Repeat your password"
+              placeholder={t("Repeat your password")}
               icon={FaLock}
               error={errors.confirmNewPassword?.message}
               {...register("confirmNewPassword")}
             />
           </Flex>
           <Button variant="primaryButton" isLoading={isLoading}>
-            Reset password
+            {t("Reset password")}
           </Button>
         </CardBody>
       </Card>

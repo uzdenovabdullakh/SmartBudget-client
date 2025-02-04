@@ -6,18 +6,20 @@ import { useParams, useRouter } from "next/navigation";
 import { useRestoreAccountMutation } from "@/lib/services/auth.api";
 import { showToast } from "@/lib/utils/toast";
 import { RestoreAccountSchema } from "@/lib/validation/restore-account.schema";
+import { useTranslation } from "react-i18next";
 
 export default function ConfirmRestoreAccountPage() {
   const params = useParams();
   const router = useRouter();
+  const { t } = useTranslation();
 
   const [restoreAccount, { isLoading }] = useRestoreAccountMutation();
 
   const handleConfirmRestore = async () => {
     if (!params.slug) {
       showToast({
-        title: "Error",
-        description: "Token not found in the URL",
+        title: t("error"),
+        description: t("token_not_found"),
         status: "error",
       });
       return;
@@ -30,7 +32,7 @@ export default function ConfirmRestoreAccountPage() {
 
       showToast({
         title: message,
-        description: "You will now be redirected to the login page.",
+        description: t("You will now be redirected to the login page."),
         status: "success",
       });
 
@@ -42,12 +44,12 @@ export default function ConfirmRestoreAccountPage() {
 
   return (
     <AuthLayout
-      heading="Recover your removed account"
-      subHeading="Confirm restoring and continue managing your finances"
+      heading={t("Recover your removed account")}
+      subHeading={t("Confirm restoring and continue managing your finances")}
     >
       <Card width="100%" maxW="md" gap={6} p={8}>
         <CardHeader justifyItems="center" p={0}>
-          <Heading variant="cardHeader">Complete restoring</Heading>
+          <Heading variant="cardHeader">{t("Complete restoring")}</Heading>
         </CardHeader>
         <CardBody display="flex" flexDir="column" gap={6} p={0}>
           <Button
@@ -55,7 +57,7 @@ export default function ConfirmRestoreAccountPage() {
             onClick={handleConfirmRestore}
             isLoading={isLoading}
           >
-            Confirm restore
+            {t("Confirm restore")}
           </Button>
         </CardBody>
       </Card>

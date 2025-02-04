@@ -18,6 +18,7 @@ import { AddBudgetModal } from "@/components/modals/add-budget/AddBudget";
 import { ChangeBudgetSettingsModal } from "@/components/modals/budget-settings/BudgetSettings";
 import { UserDetails } from "@/lib/types/user.types";
 import { useLogoutHandler } from "@/lib/hooks/useLogoutHandler";
+import { useTranslation } from "react-i18next";
 import { BasePopover } from "..";
 
 type MenuPopoverProps = {
@@ -49,7 +50,7 @@ const PopoverTriggerButton = ({
   >
     <Box>
       <Text fontSize="lg" fontWeight="bold" whiteSpace="nowrap">
-        {user?.login} Budget
+        {user?.login}
       </Text>
       <Text fontSize="sm" color="gray.400" whiteSpace="nowrap">
         {user?.email}
@@ -64,64 +65,72 @@ const PopoverContentBody = ({
   onBudgetSettingsOpen,
   onNavigateToProfile,
   onViewBudgets,
-}: PopoverContentBodyProps) => (
-  <VStack spacing={4} align="stretch">
-    <Button
-      leftIcon={<BsFillPlusCircleFill />}
-      variant="ghost"
-      justifyContent="start"
-      onClick={onAddBudgetModalOpen}
-    >
-      New Budget
-    </Button>
-    <Button
-      leftIcon={<RiFileList2Line />}
-      variant="ghost"
-      justifyContent="start"
-      onClick={onViewBudgets}
-    >
-      View All Budgets
-    </Button>
+}: PopoverContentBodyProps) => {
+  const { t } = useTranslation();
 
-    <Divider />
-
-    <Box>
-      <Text fontSize="sm" fontWeight="bold" color="gray.500" mb={2}>
-        Current Budget
-      </Text>
+  return (
+    <VStack spacing={4} align="stretch">
       <Button
-        leftIcon={<FiSettings />}
+        leftIcon={<BsFillPlusCircleFill />}
         variant="ghost"
         justifyContent="start"
-        onClick={onBudgetSettingsOpen}
+        onClick={onAddBudgetModalOpen}
       >
-        Budget Settings
+        {t("New Budget")}
       </Button>
-    </Box>
-
-    <Divider />
-
-    <Box>
-      <Text fontSize="sm" fontWeight="bold" color="gray.500" mb={2}>
-        Profile
-      </Text>
       <Button
-        leftIcon={<FiUser />}
+        leftIcon={<RiFileList2Line />}
         variant="ghost"
         justifyContent="start"
-        onClick={onNavigateToProfile}
+        onClick={onViewBudgets}
       >
-        Profile Settings
+        {t("View All Budgets")}
       </Button>
-    </Box>
-  </VStack>
-);
 
-const LogoutButton = ({ onLogout }: { onLogout: () => void }) => (
-  <IconButton aria-label="Logout" icon={<CiLogout />} onClick={onLogout}>
-    Logout
-  </IconButton>
-);
+      <Divider />
+
+      <Box>
+        <Text fontSize="sm" fontWeight="bold" color="gray.500" mb={2}>
+          {t("Current Budget")}
+        </Text>
+        <Button
+          leftIcon={<FiSettings />}
+          variant="ghost"
+          justifyContent="start"
+          onClick={onBudgetSettingsOpen}
+        >
+          {t("Budget Settings")}
+        </Button>
+      </Box>
+
+      <Divider />
+
+      <Box>
+        <Text fontSize="sm" fontWeight="bold" color="gray.500" mb={2}>
+          {t("Profile")}
+        </Text>
+        <Button
+          leftIcon={<FiUser />}
+          variant="ghost"
+          justifyContent="start"
+          onClick={onNavigateToProfile}
+        >
+          {t("Profile Settings")}
+        </Button>
+      </Box>
+    </VStack>
+  );
+};
+
+const LogoutButton = ({ onLogout }: { onLogout: () => void }) => {
+  const { t } = useTranslation();
+
+  return (
+    <IconButton aria-label="Logout" icon={<CiLogout />} onClick={onLogout}>
+      {t("Logout")}
+    </IconButton>
+  );
+};
 
 export const MenuPopover = ({ user }: MenuPopoverProps) => {
   const router = useRouter();

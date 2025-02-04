@@ -1,9 +1,11 @@
 import { Flex, Button, Heading, HStack } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 export const Header = () => {
   const router = useRouter();
+  const { t } = useTranslation();
 
   return (
     <Flex
@@ -34,13 +36,13 @@ export const Header = () => {
           }}
           onClick={() => router.push("auth/signin")}
         >
-          Log In
+          {t("Log In")}
         </Button>
         <Button
           variant="callToActionButton"
           onClick={() => router.push("/auth/signup")}
         >
-          Sign Up Now
+          {t("Sign Up Now")}
         </Button>
       </HStack>
     </Flex>

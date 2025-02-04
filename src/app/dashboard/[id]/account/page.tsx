@@ -11,11 +11,13 @@ import { Account } from "@/lib/types/account.types";
 import { Box, Stack, Text } from "@chakra-ui/react";
 import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 const PAGE_SIZE = 10;
 const DEBOUNCE_DELAY = 500;
 
 export default function Accounts() {
+  const { t } = useTranslation();
   const params = useParams();
   const budgetId = Array.isArray(params?.id) ? params.id[0] : params?.id;
 
@@ -57,13 +59,13 @@ export default function Accounts() {
 
   return (
     <>
-      <PageHeader text="All accounts" />
+      <PageHeader text={t("All accounts")} />
       <Box p={8}>
         {isLoading ? (
           <SkeletonUI height={4} />
         ) : (
           <Text fontSize="lg" fontWeight="bold" mb={4}>
-            Total Balance: {totalBalance}
+            {t("Total Balance")}: {totalBalance}
           </Text>
         )}
 
@@ -72,7 +74,7 @@ export default function Accounts() {
         <Box mb={4} display="flex" alignItems="center">
           <SearchInput
             searchQuery={searchQuery}
-            placeholder="Search all accounts"
+            placeholder={t("Search all accounts")}
             onSearchChange={handleSearchChange}
           />
         </Box>

@@ -1,5 +1,6 @@
 import { Button } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 import {
   IoWalletOutline,
   IoAnalyticsOutline,
@@ -18,6 +19,7 @@ type NavigationButtonsProps = {
 
 export const NavigationButtons = ({ budgetId }: NavigationButtonsProps) => {
   const router = useRouter();
+  const { t } = useTranslation();
 
   return (
     <>
@@ -29,7 +31,7 @@ export const NavigationButtons = ({ budgetId }: NavigationButtonsProps) => {
           leftIcon={button.icon}
           onClick={() => router.push(`/dashboard/${budgetId}/${button.path}`)}
         >
-          {button.label}
+          {t(button.label)}
         </Button>
       ))}
     </>

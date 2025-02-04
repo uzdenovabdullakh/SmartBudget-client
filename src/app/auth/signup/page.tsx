@@ -26,9 +26,11 @@ import { showToast } from "@/lib/utils/toast";
 import { ResendEmailSchema } from "@/lib/validation/resend-email.schema";
 import { TokenType } from "@/lib/types/auth.types";
 import { ErrorCodes } from "@/lib/constants/error-codes";
+import { useTranslation } from "react-i18next";
 
 export default function SignUpPage() {
   const router = useRouter();
+  const { t } = useTranslation();
 
   const [registerUser, { isLoading: isRegisterLoading }] =
     useRegisterMutation();
@@ -73,8 +75,8 @@ export default function SignUpPage() {
   const handleResendEmailRequest = async () => {
     if (!emailAddress) {
       showToast({
-        title: "Error",
-        description: "Email address is missing.",
+        title: t("error"),
+        description: t("Email address is missing."),
         status: "error",
       });
       return;
@@ -97,17 +99,19 @@ export default function SignUpPage() {
 
   return (
     <AuthLayout
-      heading="Try Smart Budget."
-      subHeading="Just enter your email. We will send you an email with instructions for further registration."
+      heading={t("Try Smart Budget.")}
+      subHeading={t(
+        "Just enter your email. We will send you an email with instructions for further registration.",
+      )}
     >
       <Card width="100%" maxW="md" gap={6} p={8}>
         <CardHeader justifyItems="center" p={0}>
-          <Heading variant="cardHeader">Sign Up</Heading>
+          <Heading variant="cardHeader">{t("Sign Up")}</Heading>
           <Text mt={2} fontSize="sm" color="neutrals.neutral400">
-            Have an account?{" "}
+            {t("Have an account?")}
             <Link href="/auth/signin">
               <Text as="span" variant="link-text">
-                Log in.
+                {t("Log In")}
               </Text>
             </Link>
           </Text>
@@ -141,7 +145,7 @@ export default function SignUpPage() {
             type="submit"
             isLoading={isRegisterLoading}
           >
-            Sign Up
+            {t("Sign Up")}
           </Button>
         </CardBody>
 
@@ -152,7 +156,7 @@ export default function SignUpPage() {
               isLoading={isResendEmailLoading}
               onClick={handleResendEmailRequest}
             >
-              Resend Email
+              {t("Resend Email")}
             </Button>
           </CardFooter>
         )}
