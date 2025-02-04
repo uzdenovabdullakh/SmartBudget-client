@@ -195,5 +195,24 @@
   "Search all accounts": "Поиск всех счетов",
   "cash": "Наличные",
   "card": "Карточка",
-  "savings": "Сбережения"
+  "savings": "Сбережения",
+  "validation": {
+    "Expected number": "Ожидалось число",
+    "Cash, card or savings": "Наличные, кредитная карточка или сбережения",
+    "Nickname is required": "Название обязательно",
+    "Nickname too long": "Название слишком длинное",
+    "Invalid uuid": "Неверный uuid",
+    "Token is required": "Токен обязателен",
+    "Passwords must match": "Пароли должны совпадать",
+    "Invalid email address": "Неверная почта",
+    "Password must be at least 8 characters long": "Пароль должен содержать не менее 8 символов",
+    "Password must be less than 32 characters long": "Пароль должен содержать не более 32 символов",
+    "Password must contain at least one uppercase letter": "Пароль должен содержать хотя бы одну заглавную букву",
+    "Password must contain at least one lowercase letter": "Пароль должен содержать хотя бы одну строчную букву",
+    "Password must contain at least one number": "Пароль должен содержать хотя бы одну цифру",
+    "Password must contain at least one special character": "Пароль должен содержать хотя бы один специальный символ",
+    "Email is too long": "Почта слишком длинная",
+    "Login is too short": "Логин слишком короткий",
+    "Login is too long": "Логин слишком длинный"
+  }
 }

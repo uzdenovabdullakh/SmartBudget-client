@@ -195,5 +195,24 @@
   "Search all accounts": "Search all accounts",
   "cash": "Cash",
   "card": "Card",
-  "savings": "Savings"
+  "savings": "Savings",
+  "validation": {
+    "Expected number": "Excepted number",
+    "Cash, card or savings": "Cash, card or savings",
+    "Nickname is required": "Nickname is required",
+    "Nickname too long": "Nickname too long",
+    "Invalid uuid": "Invalid uuid",
+    "Token is required": "Token is required",
+    "Passwords must match": "Passwords must match",
+    "Invalid email address": "Invalid email address",
+    "Password must be at least 8 characters long": "Password must be at least 8 characters long",
+    "Password must be less than 32 characters long": "Password must be less than 32 characters long",
+    "Password must contain at least one uppercase letter": "Password must contain at least one uppercase letter",
+    "Password must contain at least one lowercase letter": "Password must contain at least one lowercase letter",
+    "Password must contain at least one number": "Password must contain at least one number",
+    "Password must contain at least one special character": "Password must contain at least one special character",
+    "Email is too long": "Email is too long",
+    "Login is too short": "Login is too short",
+    "Login is too long": "Login is too long"
+  }
 }
