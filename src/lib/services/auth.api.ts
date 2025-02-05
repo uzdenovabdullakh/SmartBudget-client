@@ -11,6 +11,7 @@ import { ResetPasswordDto } from "../validation/reset-password.schema";
 import { RestoreAccountRequestDto } from "../validation/restore-account-request.schema";
 import { RestoreAccountDto } from "../validation/restore-account.schema";
 import { TokenDto } from "../validation/logout.schema";
+import { OauthDto } from "../validation/oauth.schema";
 
 export const authApi = createApi({
   reducerPath: "auth",
@@ -91,6 +92,13 @@ export const authApi = createApi({
         data,
       }),
     }),
+    oauth: builder.mutation<LoginResponse, OauthDto>({
+      query: (data: OauthDto) => ({
+        url: "/oauth",
+        method: "POST",
+        data,
+      }),
+    }),
   }),
 });
 
@@ -104,4 +112,5 @@ export const {
   useRestoreAccountRequestMutation,
   useRestoreAccountMutation,
   useLogoutMutation,
+  useOauthMutation,
 } = authApi;
