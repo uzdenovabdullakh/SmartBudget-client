@@ -196,6 +196,7 @@
   "cash": "Наличные",
   "card": "Карточка",
   "savings": "Сбережения",
+  "Authorize by Yandex": "Войти с Яндекс ID",
   "validation": {
     "Expected number": "Ожидалось число",
     "Cash, card or savings": "Наличные, кредитная карточка или сбережения",
