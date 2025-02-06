@@ -13,7 +13,7 @@ import { CiLogout } from "react-icons/ci";
 import { FiSettings, FiUser } from "react-icons/fi";
 import { BsFillPlusCircleFill } from "react-icons/bs";
 import { RiFileList2Line } from "react-icons/ri";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { AddBudgetModal } from "@/components/modals/add-budget/AddBudget";
 import { ChangeBudgetSettingsModal } from "@/components/modals/budget-settings/BudgetSettings";
 import { UserDetails } from "@/lib/types/user.types";
@@ -68,6 +68,9 @@ const PopoverContentBody = ({
 }: PopoverContentBodyProps) => {
   const { t } = useTranslation();
 
+  const params = useParams();
+  const budgetId = Array.isArray(params?.id) ? params?.id[0] : params?.id;
+
   return (
     <VStack spacing={4} align="stretch">
       <Button
@@ -89,21 +92,24 @@ const PopoverContentBody = ({
 
       <Divider />
 
-      <Box>
-        <Text fontSize="sm" fontWeight="bold" color="gray.500" mb={2}>
-          {t("Current Budget")}
-        </Text>
-        <Button
-          leftIcon={<FiSettings />}
-          variant="ghost"
-          justifyContent="start"
-          onClick={onBudgetSettingsOpen}
-        >
-          {t("Budget Settings")}
-        </Button>
-      </Box>
-
-      <Divider />
+      {budgetId && (
+        <>
+          <Box>
+            <Text fontSize="sm" fontWeight="bold" color="gray.500" mb={2}>
+              {t("Current Budget")}
+            </Text>
+            <Button
+              leftIcon={<FiSettings />}
+              variant="ghost"
+              justifyContent="start"
+              onClick={onBudgetSettingsOpen}
+            >
+              {t("Budget Settings")}
+            </Button>
+          </Box>
+          <Divider />
+        </>
+      )}
 
       <Box>
         <Text fontSize="sm" fontWeight="bold" color="gray.500" mb={2}>
