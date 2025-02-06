@@ -28,6 +28,7 @@ import { useState } from "react";
 import { RestoreAccountRequestSchema } from "@/lib/validation/restore-account-request.schema";
 import { ErrorCodes } from "@/lib/constants/error-codes";
 import { useTranslation } from "react-i18next";
+import { YandexLoginButton } from "@/components/yandex-button/YandexLoginButton";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -145,6 +146,8 @@ export default function LoginPage() {
           >
             {t("Log In")}
           </Button>
+
+          <YandexLoginButton />
         </CardBody>
         <CardFooter flexDir="column" gap={2} alignItems="end" p={0}>
           <Link href="/password/new">

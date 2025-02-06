@@ -27,6 +27,7 @@ import { ResendEmailSchema } from "@/lib/validation/resend-email.schema";
 import { TokenType } from "@/lib/types/auth.types";
 import { ErrorCodes } from "@/lib/constants/error-codes";
 import { useTranslation } from "react-i18next";
+import { YandexLoginButton } from "@/components/yandex-button/YandexLoginButton";
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -147,6 +148,8 @@ export default function SignUpPage() {
           >
             {t("Sign Up")}
           </Button>
+
+          <YandexLoginButton />
         </CardBody>
 
         {isResendEmailVisible && (
