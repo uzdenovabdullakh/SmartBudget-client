@@ -1,17 +1,11 @@
-import { DefaultModalProps } from "@/lib/types/types";
-import { showToast } from "@/lib/utils/toast";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useUpdateBudgetMutation } from "@/lib/services/budget.api";
 import {
   UpdateBudgetDto,
   UpdateBudgetSchema,
 } from "@/lib/validation/budget.schema";
-import { useUpdateBudgetMutation } from "@/lib/services/budget.api";
 import { Budget } from "@/lib/types/budget.types";
-import { Button, VStack } from "@chakra-ui/react";
-import FormInputUI from "@/components/ui/FormInputUI";
-import { useTranslation } from "react-i18next";
-import { DefaultModal } from "..";
+import { DefaultModalProps } from "@/lib/types/types";
+import { EditEntityModal } from "../EditEntityModal";
 
 type EditBudgetModalProps = {
   budget: Budget;
@@ -22,69 +16,19 @@ export const EditBudgetModal = ({
   onClose,
   budget,
 }: EditBudgetModalProps) => {
-  const { t } = useTranslation();
-
-  const [updateBudget, { isLoading }] = useUpdateBudgetMutation();
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm<UpdateBudgetDto>({
-    resolver: zodResolver(UpdateBudgetSchema),
-    defaultValues: {
-      name: budget.name,
-    },
-  });
-
-  const onSubmit = async (data: UpdateBudgetDto) => {
-    try {
-      const { message } = await updateBudget({
-        id: budget.id,
-        ...data,
-      }).unwrap();
-
-      showToast({ title: message, status: "success" });
-
-      reset();
-      onClose();
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const [updateBudget] = useUpdateBudgetMutation();
 
   return (
-    <DefaultModal
+    <EditEntityModal<UpdateBudgetDto>
       isOpen={isOpen}
       onClose={onClose}
-      title={t("Edit budget name")}
-      size="sm"
-      body={
-        <VStack
-          as="form"
-          onSubmit={handleSubmit(onSubmit)}
-          spacing={5}
-          align="stretch"
-        >
-          <FormInputUI
-            type="text"
-            placeholder={t("Enter new name")}
-            error={errors.name?.message}
-            {...register("name")}
-          />
-        </VStack>
+      title="Edit budget name"
+      defaultValues={{ name: budget.name }}
+      validationSchema={UpdateBudgetSchema}
+      updateMutation={(data) =>
+        updateBudget({ id: budget.id, ...data }).unwrap()
       }
-      footer={
-        <Button
-          onClick={handleSubmit(onSubmit)}
-          colorScheme="blue"
-          isLoading={isLoading}
-          width="full"
-        >
-          {t("Save Changes")}
-        </Button>
-      }
+      fields={[{ name: "name", placeholder: "Enter new name", type: "text" }]}
     />
   );
 };
