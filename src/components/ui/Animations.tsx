@@ -41,7 +41,7 @@ export const WomanWithGraphics = () => (
   <LottieAnimation
     animationData="/animations/woman-and-graphics.json"
     width={600}
-    height={600}
+    height={700}
   />
 );
 export const NotFound = () => (
