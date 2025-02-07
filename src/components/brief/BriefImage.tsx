@@ -1,19 +1,5 @@
 import { Box, Image } from "@chakra-ui/react";
-import dynamic from "next/dynamic";
-
-const Bus = dynamic(
-  () => import("@/components/ui/Animations").then((mod) => mod.Bus),
-  {
-    ssr: false,
-  },
-);
-
-const Home = dynamic(
-  () => import("@/components/ui/Animations").then((mod) => mod.Home),
-  {
-    ssr: false,
-  },
-);
+import { Bus, Home } from "../ui/Animations";
 
 const animationsMap: Record<string, JSX.Element> = {
   Bus: <Bus />,
