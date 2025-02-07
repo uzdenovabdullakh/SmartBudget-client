@@ -2,7 +2,11 @@ import { Button, Image } from "@chakra-ui/react";
 import { signIn } from "next-auth/react";
 import { useTranslation } from "react-i18next";
 
-export const YandexLoginButton = () => {
+interface YandexLoginButtonProps {
+  isDisabled?: boolean;
+}
+
+export const YandexLoginButton = ({ isDisabled }: YandexLoginButtonProps) => {
   const { t } = useTranslation();
 
   return (
@@ -20,6 +24,7 @@ export const YandexLoginButton = () => {
           borderRadius="50%"
         />
       }
+      isDisabled={isDisabled}
     >
       {t("Authorize by Yandex")}
     </Button>
