@@ -12,6 +12,7 @@ import { RestoreAccountRequestDto } from "../validation/restore-account-request.
 import { RestoreAccountDto } from "../validation/restore-account.schema";
 import { TokenDto } from "../validation/logout.schema";
 import { OauthDto } from "../validation/oauth.schema";
+import { ChangePasswordDto } from "../validation/change-password.schema";
 
 export const authApi = createApi({
   reducerPath: "auth",
@@ -99,6 +100,16 @@ export const authApi = createApi({
         data,
       }),
     }),
+    changePassword: builder.mutation<
+      ResponseWithoutData,
+      Omit<ChangePasswordDto, "confirmNewPassword">
+    >({
+      query: (data: Omit<ChangePasswordDto, "confirmNewPassword">) => ({
+        url: "/change-password",
+        method: "PATCH",
+        data,
+      }),
+    }),
   }),
 });
 
@@ -113,4 +124,5 @@ export const {
   useRestoreAccountMutation,
   useLogoutMutation,
   useOauthMutation,
+  useChangePasswordMutation,
 } = authApi;

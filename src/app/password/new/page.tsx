@@ -108,7 +108,7 @@ export default function ForgotPasswordPage() {
         >
           <FormInputUI
             type="email"
-            label={t("Email:")}
+            label={t("Email")}
             placeholder={t("Enter your email")}
             icon={FaEnvelope}
             error={errors.email?.message}
