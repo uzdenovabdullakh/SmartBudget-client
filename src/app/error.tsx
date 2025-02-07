@@ -1,16 +1,9 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { useEffect } from "react";
 import { Box, Button, Heading, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-
-const ErrorAnimation = dynamic(
-  () => import("@/components/ui/Animations").then((mod) => mod.ErrorAnimation),
-  {
-    ssr: false,
-  },
-);
+import { ErrorAnimation } from "@/components/ui/Animations";
 
 interface ErrorProps {
   error?: Error;

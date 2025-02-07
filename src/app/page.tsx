@@ -10,26 +10,11 @@ import {
   Divider,
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import dynamic from "next/dynamic";
 import { Header } from "@/components/ui/Header";
 import { useEffect } from "react";
 import { useLocalStorage } from "@/lib/hooks/useLocalStorage";
 import { useTranslation } from "react-i18next";
-
-const MoneyOnCard = dynamic(
-  () => import("@/components/ui/Animations").then((mod) => mod.MoneyOnCard),
-  {
-    ssr: false,
-  },
-);
-
-const WomanWithGraphics = dynamic(
-  () =>
-    import("@/components/ui/Animations").then((mod) => mod.WomanWithGraphics),
-  {
-    ssr: false,
-  },
-);
+import { MoneyOnCard, WomanWithGraphics } from "@/components/ui/Animations";
 
 export default function HomePage() {
   const router = useRouter();
