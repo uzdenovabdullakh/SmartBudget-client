@@ -72,6 +72,7 @@
         "trailingComma": "all",
         "endOfLine": "auto"
       }
-    ]
+    ],
+    "no-console": "off"
   }
 }
