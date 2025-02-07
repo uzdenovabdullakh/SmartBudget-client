@@ -214,6 +214,7 @@
   "Repeat your new password": "Повторите ваш новый пароль",
   "Edit login": "Обновление логина",
   "Enter new login": "Введите новый логин",
+  "account": "счет",
   "validation": {
     "Expected number": "Ожидалось число",
     "Cash, card or savings": "Наличные, кредитная карточка или сбережения",

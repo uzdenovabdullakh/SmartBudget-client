@@ -214,6 +214,7 @@
   "Repeat your new password": "Repeat your new password",
   "Edit login": "Edit login",
   "Enter new login": "Enter new login",
+  "account": "account",
   "validation": {
     "Expected number": "Excepted number",
     "Cash, card or savings": "Cash, card or savings",
