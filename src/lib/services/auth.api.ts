@@ -25,7 +25,10 @@ export const authApi = createApi({
         data,
       }),
     }),
-    register: builder.mutation<RegisterResponse, RegisterDto>({
+    register: builder.mutation<
+      RegisterResponse,
+      Omit<RegisterDto, "agreement">
+    >({
       query: (data: RegisterDto) => ({
         url: "/signup",
         method: "POST",
