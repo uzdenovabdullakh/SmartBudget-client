@@ -9,9 +9,16 @@ import { useLazyGetUserQuery } from "@/lib/services/user.api";
 import { Budget } from "@/lib/types/budget.types";
 import { UserDetails } from "@/lib/types/user.types";
 import { Flex } from "@chakra-ui/react";
-import { Brief } from "@/components/brief/Brief";
 import { Sidebar } from "@/components/sidebar/Sidebar";
 import { useParams } from "next/navigation";
+import dynamic from "next/dynamic";
+
+const Brief = dynamic(
+  () => import("@/components/brief/Brief").then((mod) => mod.Brief),
+  {
+    ssr: false,
+  },
+);
 
 export default function DashboardLayout({
   children,

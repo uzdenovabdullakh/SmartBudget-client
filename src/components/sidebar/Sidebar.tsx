@@ -14,10 +14,19 @@ import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
 import { Budget } from "@/lib/types/budget.types";
 import { useGetAccountsQuery } from "@/lib/services/account.api";
 import { useTranslation } from "react-i18next";
+import dynamic from "next/dynamic";
 import { AddAccountModal } from "../modals/add-account/AddAccount";
 import { SidebarAccounts } from "./SidebarAccounts";
 import { NavigationButtons } from "./NavigationButton";
-import { MenuPopover } from "../popovers/menu/MenuPopover";
+import { SkeletonUI } from "../ui/SkeletonUI";
+
+const MenuPopover = dynamic(
+  () => import("../popovers/menu/MenuPopover").then((mod) => mod.MenuPopover),
+  {
+    ssr: true,
+    loading: () => <SkeletonUI height="40px" width="200px" />,
+  },
+);
 
 type SidebarProps = {
   user: UserDetails | null;
