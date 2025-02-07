@@ -215,6 +215,11 @@
   "Edit login": "Edit login",
   "Enter new login": "Enter new login",
   "account": "account",
+  "privacyPolicy": "privacy policy",
+  "userAgreement": "user agreement",
+  "I agree with the terms of the": "I agree with the terms of the",
+  "and the": "and the",
+  "You must agree to the terms of the Privacy Policy and user agreement": "You must agree to the terms of the Privacy Policy and user agreement",
   "validation": {
     "Expected number": "Excepted number",
     "Cash, card or savings": "Cash, card or savings",
