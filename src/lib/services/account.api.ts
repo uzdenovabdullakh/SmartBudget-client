@@ -2,7 +2,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import { axiosBaseQuery } from "../axiosBaseQuery";
 import { CreateUnlinkedAccountDto } from "../validation/account.schema";
 import { Account, AccountsResult } from "../types/account.types";
-import { PaginationParams } from "../types/types";
+import { PaginationParams, ResponseWithoutData } from "../types/types";
 
 export const accountApi = createApi({
   reducerPath: "account",
@@ -38,6 +38,13 @@ export const accountApi = createApi({
     getAccount: builder.query<Account, string>({
       query: (id: string) => ({ url: `/${id}`, method: "GET" }),
     }),
+    deleteAccount: builder.mutation<ResponseWithoutData, string>({
+      query: (id: string) => ({
+        url: `/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Accounts"],
+    }),
   }),
 });
 
@@ -45,4 +52,5 @@ export const {
   useCreateUnlinkedAccountMutation,
   useGetAccountQuery,
   useGetAccountsQuery,
+  useDeleteAccountMutation,
 } = accountApi;
