@@ -9,7 +9,7 @@ export default function AuthLayout({
 }: LayoutProps) {
   return (
     <VStack width="100vw" height="100vh" bg="blue.900">
-      <HStack width="100%" align="start" padding={4} mb={14}>
+      <HStack width="100%" align="start" padding={4} mb={2}>
         <Link href="/">
           <Heading color="white" cursor="pointer">
             Smart Budget.
