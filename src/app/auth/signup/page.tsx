@@ -28,6 +28,7 @@ import { TokenType } from "@/lib/types/auth.types";
 import { ErrorCodes } from "@/lib/constants/error-codes";
 import { useTranslation } from "react-i18next";
 import { YandexLoginButton } from "@/components/yandex-button/YandexLoginButton";
+import { AgreementCheckbox } from "@/components/ui/AgreementCheckbox";
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -41,6 +42,7 @@ export default function SignUpPage() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<RegisterDto>({
     resolver: zodResolver(RegisterSchema),
@@ -63,7 +65,10 @@ export default function SignUpPage() {
     setEmailAddress(data.email);
 
     try {
-      const { login, email } = await registerUser(data).unwrap();
+      const { login, email } = await registerUser({
+        login: data.login,
+        email: data.email,
+      }).unwrap();
 
       router.push(
         `/auth/signup/welcome?name=${encodeURIComponent(login)}&email=${email}`,
@@ -141,6 +146,11 @@ export default function SignUpPage() {
             {...register("email")}
           />
 
+          <AgreementCheckbox
+            error={errors.agreement?.message}
+            {...register("agreement")}
+          />
+
           <Button
             variant="primaryButton"
             type="submit"
@@ -149,7 +159,7 @@ export default function SignUpPage() {
             {t("Sign Up")}
           </Button>
 
-          <YandexLoginButton />
+          <YandexLoginButton isDisabled={!watch("agreement")} />
         </CardBody>
 
         {isResendEmailVisible && (

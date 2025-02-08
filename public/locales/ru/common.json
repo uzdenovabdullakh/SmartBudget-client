@@ -215,6 +215,11 @@
   "Edit login": "Обновление логина",
   "Enter new login": "Введите новый логин",
   "account": "счет",
+  "privacyPolicy": "политикой конфиденциальности",
+  "userAgreement": "пользовательски соглашением",
+  "I agree with the terms of the": "Согласен с",
+  "and the": "и",
+  "You must agree to the terms of the Privacy Policy and user agreement": "Вы должны согласиться с условиями Политики конфиденциальности и пользовательского соглашения",
   "validation": {
     "Expected number": "Ожидалось число",
     "Cash, card or savings": "Наличные, кредитная карточка или сбережения",
