@@ -19,9 +19,7 @@ export const CreateAccountSchema = z.object({
 
 export const UpdateAccountSchema = CreateAccountSchema.pick({
   name: true,
-})
-  .partial()
-  .optional();
+}).partial();
 
 export type CreateAccountDto = z.infer<typeof CreateAccountSchema>;
 export type UpdateAccountDto = z.infer<typeof UpdateAccountSchema>;
