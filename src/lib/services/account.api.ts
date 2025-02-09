@@ -1,13 +1,20 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { axiosBaseQuery } from "../axiosBaseQuery";
-import { CreateUnlinkedAccountDto } from "../validation/account.schema";
+import {
+  CreateAccountDto,
+  UpdateAccountDto,
+} from "../validation/account.schema";
 import { Account, AccountsResult } from "../types/account.types";
-import { PaginationParams, ResponseWithoutData } from "../types/types";
+import {
+  MutationResponse,
+  PaginationParams,
+  ResponseWithoutData,
+} from "../types/types";
 
 export const accountApi = createApi({
   reducerPath: "account",
   baseQuery: axiosBaseQuery({ baseUrl: "/accounts" }),
-  tagTypes: ["Accounts"],
+  tagTypes: ["Accounts", "Account"],
   endpoints: (builder) => ({
     getAccounts: builder.query<
       AccountsResult,
@@ -27,9 +34,9 @@ export const accountApi = createApi({
       },
       providesTags: ["Accounts"],
     }),
-    createUnlinkedAccount: builder.mutation<void, CreateUnlinkedAccountDto>({
-      query: (data: CreateUnlinkedAccountDto) => ({
-        url: "/unlinked-account",
+    createAccount: builder.mutation<void, CreateAccountDto>({
+      query: (data: CreateAccountDto) => ({
+        url: "/",
         method: "POST",
         data,
       }),
@@ -37,6 +44,18 @@ export const accountApi = createApi({
     }),
     getAccount: builder.query<Account, string>({
       query: (id: string) => ({ url: `/${id}`, method: "GET" }),
+      providesTags: ["Account"],
+    }),
+    updateAccount: builder.mutation<
+      MutationResponse<Account>,
+      UpdateAccountDto & { id: string }
+    >({
+      query: ({ id, ...data }: UpdateAccountDto & { id: string }) => ({
+        url: `/${id}`,
+        method: "PATCH",
+        data,
+      }),
+      invalidatesTags: ["Accounts", "Account"],
     }),
     deleteAccount: builder.mutation<ResponseWithoutData, string>({
       query: (id: string) => ({
@@ -49,8 +68,9 @@ export const accountApi = createApi({
 });
 
 export const {
-  useCreateUnlinkedAccountMutation,
+  useCreateAccountMutation,
   useGetAccountQuery,
   useGetAccountsQuery,
   useDeleteAccountMutation,
+  useUpdateAccountMutation,
 } = accountApi;

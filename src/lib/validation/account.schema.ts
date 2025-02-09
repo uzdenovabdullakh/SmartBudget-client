@@ -2,7 +2,7 @@ import { z } from "zod";
 import i18n from "@/app/i18n";
 import { AccountType } from "../constants/enums";
 
-export const CreateUnlinkedAccountSchema = z.object({
+export const CreateAccountSchema = z.object({
   name: z
     .string()
     .max(128, i18n.t("validation.Nickname too long"))
@@ -17,6 +17,11 @@ export const CreateUnlinkedAccountSchema = z.object({
     .default(0),
 });
 
-export type CreateUnlinkedAccountDto = z.infer<
-  typeof CreateUnlinkedAccountSchema
->;
+export const UpdateAccountSchema = CreateAccountSchema.pick({
+  name: true,
+})
+  .partial()
+  .optional();
+
+export type CreateAccountDto = z.infer<typeof CreateAccountSchema>;
+export type UpdateAccountDto = z.infer<typeof UpdateAccountSchema>;
