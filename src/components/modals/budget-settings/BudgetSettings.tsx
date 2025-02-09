@@ -15,7 +15,7 @@ import { showToast } from "@/lib/utils/toast";
 import { BudgetCurrency, CurrencyPlacement } from "@/lib/constants/enums";
 import FormSelectUI from "@/components/ui/FormSelectUI";
 import { useParams } from "next/navigation";
-import { Budget } from "@/lib/types/budget.types";
+import { ExtendedBudget } from "@/lib/types/budget.types";
 import { useTranslation } from "react-i18next";
 import { DefaultModal } from "..";
 
@@ -37,7 +37,7 @@ export const ChangeBudgetSettingsModal = ({
   const [getBudgetInfo] = useLazyGetBudgetInfoQuery();
   const [updateBudget, { isLoading }] = useUpdateBudgetMutation();
 
-  const [budgetInfo, setBudgetInfo] = useState<Budget | null>(null);
+  const [budgetInfo, setBudgetInfo] = useState<ExtendedBudget | null>(null);
 
   const {
     register,

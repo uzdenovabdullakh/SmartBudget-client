@@ -1,12 +1,12 @@
-import { Budget } from "@/lib/types/budget.types";
 import { Box, Text, HStack } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
+import { BaseBudget } from "@/lib/types/budget.types";
 import { useTranslation } from "react-i18next";
 import { BudgetCardMenuPopover } from "../popovers/budget-menu/BudgetCardMenuPopover";
 import { BaseCard } from "../ui/BaseCard";
 
 type BudgetCardProps = {
-  budget: Budget;
+  budget: BaseBudget;
 };
 
 export function BudgetCard({ budget }: BudgetCardProps) {

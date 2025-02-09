@@ -1,5 +1,5 @@
 import { Account } from "@/lib/types/account.types";
-import { Budget } from "@/lib/types/budget.types";
+import { BudgetData } from "@/lib/types/budget.types";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import {
   Text,
@@ -12,7 +12,7 @@ import {
 import { useRouter } from "next/navigation";
 
 type SidebarAccountsProps = {
-  budget: Budget | null;
+  budget: BudgetData;
   accounts: Account[];
 };
 

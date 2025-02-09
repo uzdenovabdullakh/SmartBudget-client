@@ -3,12 +3,12 @@ import {
   UpdateBudgetDto,
   UpdateBudgetSchema,
 } from "@/lib/validation/budget.schema";
-import { Budget } from "@/lib/types/budget.types";
+import { BaseBudget } from "@/lib/types/budget.types";
 import { DefaultModalProps } from "@/lib/types/types";
 import { EditEntityModal } from "../EditEntityModal";
 
 type EditBudgetModalProps = {
-  budget: Budget;
+  budget: BaseBudget;
 } & DefaultModalProps;
 
 export const EditBudgetModal = ({
