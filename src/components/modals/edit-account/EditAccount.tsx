@@ -8,7 +8,7 @@ import { Account } from "@/lib/types/account.types";
 import { EditEntityModal } from "../EditEntityModal";
 
 type EditUserModalProps = {
-  account?: Account;
+  account?: Omit<Account, "createdAt">;
 } & DefaultModalProps;
 
 export const EditAccountModal = ({
