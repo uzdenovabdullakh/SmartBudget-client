@@ -27,6 +27,7 @@ export default function YandexAuth() {
         router.push("/dashboard");
       } catch (error) {
         console.log(error);
+        router.push("/auth/signin");
       }
     };
 

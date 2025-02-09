@@ -3,11 +3,11 @@ import { Box, Flex, Text, Button, IconButton } from "@chakra-ui/react";
 import { ArrowBackIcon, InfoIcon } from "@chakra-ui/icons";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCreateUnlinkedAccountMutation } from "@/lib/services/account.api";
+import { useCreateAccountMutation } from "@/lib/services/account.api";
 import { showToast } from "@/lib/utils/toast";
 import {
-  CreateUnlinkedAccountDto,
-  CreateUnlinkedAccountSchema,
+  CreateAccountDto,
+  CreateAccountSchema,
 } from "@/lib/validation/account.schema";
 import { AccountType } from "@/lib/constants/enums";
 import { DefaultModalProps } from "@/lib/types/types";
@@ -31,16 +31,15 @@ export const AddAccountModal = ({
     "select",
   );
 
-  const [createUnlinkedAccount, { isLoading }] =
-    useCreateUnlinkedAccountMutation();
+  const [createAccount, { isLoading }] = useCreateAccountMutation();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<CreateUnlinkedAccountDto>({
-    resolver: zodResolver(CreateUnlinkedAccountSchema),
+  } = useForm<CreateAccountDto>({
+    resolver: zodResolver(CreateAccountSchema),
     defaultValues: {
       budgetId,
     },
@@ -49,11 +48,11 @@ export const AddAccountModal = ({
   const goToUnlinked = () => setCurrentStep("unlinked");
   const goBack = () => setCurrentStep("select");
 
-  const onSubmit: SubmitHandler<CreateUnlinkedAccountDto> = async (
-    data: CreateUnlinkedAccountDto,
+  const onSubmit: SubmitHandler<CreateAccountDto> = async (
+    data: CreateAccountDto,
   ) => {
     try {
-      await createUnlinkedAccount(data).unwrap();
+      await createAccount(data).unwrap();
 
       showToast({
         title: t("success"),
