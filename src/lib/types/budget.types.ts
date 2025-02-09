@@ -1,13 +1,19 @@
-type BudgetSettings = {
-  currency?: "$" | "₽" | "€";
-  currencyPlacement?: "before" | "after";
+export type Currency = "$" | "₽" | "€";
+export type CurrencyPlacement = "before" | "after";
+
+export type BudgetSettings = {
+  currency?: Currency;
+  currencyPlacement?: CurrencyPlacement;
 };
 
-export type Budget = {
+export type BaseBudget = {
   id: string;
   name: string;
-  settings: BudgetSettings;
   createdAt: Date;
-  updatedAt: Date;
-  deletedAt: Date;
 };
+
+export type ExtendedBudget = BaseBudget & {
+  settings: BudgetSettings;
+};
+
+export type BudgetData = BaseBudget | ExtendedBudget | null;
