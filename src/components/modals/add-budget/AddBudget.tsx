@@ -38,13 +38,10 @@ export const AddBudgetModal = ({ isOpen, onClose }: DefaultModalProps) => {
 
   const onSubmit = async (data: CreateBudgetDto) => {
     try {
-      const { message, data: newBudget } = await createBudget(data).unwrap();
+      const { message } = await createBudget(data).unwrap();
 
       showToast({
         title: message,
-        description: t("You have new budget", {
-          name: newBudget.name,
-        }),
         status: "success",
       });
 
