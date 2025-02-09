@@ -11,6 +11,7 @@ import {
 import { useState } from "react";
 import { IoAddCircleOutline } from "react-icons/io5";
 import { AiOutlineFile, AiOutlineDelete } from "react-icons/ai";
+import { FiEdit } from "react-icons/fi";
 import {
   useGetAccountQuery,
   useDeleteAccountMutation,
@@ -23,13 +24,16 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { SkeletonUI } from "@/components/ui/SkeletonUI";
 import { useTranslation } from "react-i18next";
 import { DeleteModal } from "@/components/modals/delete/Delete";
+import { EditAccountModal } from "@/components/modals/edit-account/EditAccount";
 import { showToast } from "@/lib/utils/toast";
 
 export default function SingleAccount() {
   const { t } = useTranslation();
   const params = useParams();
   const router = useRouter();
-  const { isOpen, onClose, onOpen } = useDisclosure();
+
+  const deleteAccountModal = useDisclosure();
+  const editAccountModal = useDisclosure();
 
   const accountId = Array.isArray(params?.account_id)
     ? params?.account_id[0]
@@ -72,8 +76,40 @@ export default function SingleAccount() {
     <>
       <PageHeader
         text={account?.name}
-        subText={t(account?.type || "")}
+        subText={account?.type && t(account?.type)}
         isLoading={isLoading}
+        buttons={
+          <HStack gap={2}>
+            <IconButton
+              variant="outline"
+              aria-label="Edit account"
+              icon={<FiEdit />}
+              onClick={editAccountModal.onOpen}
+              colorScheme="teal"
+            />
+            <EditAccountModal
+              isOpen={editAccountModal.isOpen}
+              onClose={editAccountModal.onClose}
+              account={account}
+            />
+            <IconButton
+              aria-label="Delete account"
+              icon={<AiOutlineDelete />}
+              colorScheme="red"
+              onClick={deleteAccountModal.onOpen}
+            />
+            <DeleteModal
+              isLoading={isDeleteAccountLoadgin}
+              isOpen={deleteAccountModal.isOpen}
+              onClose={deleteAccountModal.onClose}
+              onDelete={handleDeleteAccount}
+              entity={{
+                type: t("account"),
+                name: account?.name || "",
+              }}
+            />
+          </HStack>
+        }
       />
       <Box p={8}>
         {isLoading ? (
@@ -83,22 +119,6 @@ export default function SingleAccount() {
             <Text fontSize="lg" fontWeight="bold" mb={4}>
               {t("Balance")}: {account?.amount}
             </Text>
-            <IconButton
-              aria-label="Delete account"
-              icon={<AiOutlineDelete />}
-              colorScheme="red"
-              onClick={onOpen}
-            />
-            <DeleteModal
-              isLoading={isDeleteAccountLoadgin}
-              isOpen={isOpen}
-              onClose={onClose}
-              onDelete={handleDeleteAccount}
-              entity={{
-                type: t("account"),
-                name: account?.name || "",
-              }}
-            />
           </HStack>
         )}
 
