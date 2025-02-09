@@ -6,12 +6,12 @@ import {
   useLazyGetBudgetsQuery,
 } from "@/lib/services/budget.api";
 import { useLazyGetUserQuery } from "@/lib/services/user.api";
-import { Budget } from "@/lib/types/budget.types";
 import { UserDetails } from "@/lib/types/user.types";
 import { Flex } from "@chakra-ui/react";
 import { Sidebar } from "@/components/sidebar/Sidebar";
 import { useParams } from "next/navigation";
 import dynamic from "next/dynamic";
+import { BudgetData } from "@/lib/types/budget.types";
 
 const Brief = dynamic(
   () => import("@/components/brief/Brief").then((mod) => mod.Brief),
@@ -33,7 +33,7 @@ export default function DashboardLayout({
   const [getBudgetInfo] = useLazyGetBudgetInfoQuery();
 
   const [isBriefVisible, setBriefVisible] = useState(false);
-  const [budget, setBudget] = useState<Budget | null>(null);
+  const [budget, setBudget] = useState<BudgetData>(null);
   const [user, setUser] = useState<UserDetails | null>(null);
 
   const fetchBudget = useCallback(async () => {

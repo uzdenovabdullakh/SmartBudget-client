@@ -52,11 +52,10 @@ export const AddAccountModal = ({
     data: CreateAccountDto,
   ) => {
     try {
-      await createAccount(data).unwrap();
+      const { message } = await createAccount(data).unwrap();
 
       showToast({
-        title: t("success"),
-        description: t("Account created successfully!"),
+        title: message,
         status: "success",
       });
 

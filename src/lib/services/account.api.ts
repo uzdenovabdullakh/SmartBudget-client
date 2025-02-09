@@ -5,11 +5,7 @@ import {
   UpdateAccountDto,
 } from "../validation/account.schema";
 import { Account, AccountsResult } from "../types/account.types";
-import {
-  MutationResponse,
-  PaginationParams,
-  ResponseWithoutData,
-} from "../types/types";
+import { PaginationParams, ResponseWithoutData } from "../types/types";
 
 export const accountApi = createApi({
   reducerPath: "account",
@@ -34,7 +30,7 @@ export const accountApi = createApi({
       },
       providesTags: ["Accounts"],
     }),
-    createAccount: builder.mutation<void, CreateAccountDto>({
+    createAccount: builder.mutation<ResponseWithoutData, CreateAccountDto>({
       query: (data: CreateAccountDto) => ({
         url: "/",
         method: "POST",
@@ -42,12 +38,12 @@ export const accountApi = createApi({
       }),
       invalidatesTags: ["Accounts"],
     }),
-    getAccount: builder.query<Account, string>({
+    getAccount: builder.query<Omit<Account, "createdAt">, string>({
       query: (id: string) => ({ url: `/${id}`, method: "GET" }),
       providesTags: ["Account"],
     }),
     updateAccount: builder.mutation<
-      MutationResponse<Account>,
+      ResponseWithoutData,
       UpdateAccountDto & { id: string }
     >({
       query: ({ id, ...data }: UpdateAccountDto & { id: string }) => ({

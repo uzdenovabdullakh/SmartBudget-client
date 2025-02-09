@@ -11,7 +11,7 @@ import {
 import { UserDetails } from "@/lib/types/user.types";
 import { IoAddCircleOutline } from "react-icons/io5";
 import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
-import { Budget } from "@/lib/types/budget.types";
+import { BudgetData } from "@/lib/types/budget.types";
 import { useGetAccountsQuery } from "@/lib/services/account.api";
 import { useTranslation } from "react-i18next";
 import dynamic from "next/dynamic";
@@ -30,7 +30,7 @@ const MenuPopover = dynamic(
 
 type SidebarProps = {
   user: UserDetails | null;
-  budget: Budget | null;
+  budget: BudgetData;
 };
 
 export const Sidebar = ({ user, budget }: SidebarProps) => {

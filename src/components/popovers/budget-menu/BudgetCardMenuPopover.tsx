@@ -3,13 +3,13 @@ import { FiEdit, FiTrash2, FiMoreVertical } from "react-icons/fi";
 import { EditBudgetModal } from "@/components/modals/edit-budget/EditBudget";
 import { DeleteModal } from "@/components/modals/delete/Delete";
 import { useDeleteBudgetMutation } from "@/lib/services/budget.api";
-import { Budget } from "@/lib/types/budget.types";
+import { BaseBudget } from "@/lib/types/budget.types";
 import { showToast } from "@/lib/utils/toast";
 import { useTranslation } from "react-i18next";
 import { BasePopover } from "..";
 
 type BudgetCardMenuPopoverProps = {
-  budget: Budget;
+  budget: BaseBudget;
 };
 
 export const BudgetCardMenuPopover = ({
