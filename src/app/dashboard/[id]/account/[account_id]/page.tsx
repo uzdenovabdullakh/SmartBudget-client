@@ -1,31 +1,20 @@
 "use client";
 
-import {
-  Box,
-  Text,
-  Button,
-  HStack,
-  IconButton,
-  useDisclosure,
-} from "@chakra-ui/react";
-import { useState } from "react";
-import { IoAddCircleOutline } from "react-icons/io5";
-import { AiOutlineFile, AiOutlineDelete } from "react-icons/ai";
+import { Box, Text, HStack, IconButton, useDisclosure } from "@chakra-ui/react";
+import { AiOutlineDelete } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
 import {
   useGetAccountQuery,
   useDeleteAccountMutation,
 } from "@/lib/services/account.api";
 import { useParams, useRouter } from "next/navigation";
-import { DateRangePopover } from "@/components/popovers/date-range/DateRangePopover";
-import { SearchInput } from "@/components/ui/SearchInput";
-import { DateRange } from "@/lib/types/types";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SkeletonUI } from "@/components/ui/SkeletonUI";
 import { useTranslation } from "react-i18next";
 import { DeleteModal } from "@/components/modals/delete/Delete";
 import { EditAccountModal } from "@/components/modals/edit-account/EditAccount";
 import { showToast } from "@/lib/utils/toast";
+import { AccountPanel } from "@/components/account/AccountPanel";
 
 export default function SingleAccount() {
   const { t } = useTranslation();
@@ -45,16 +34,6 @@ export default function SingleAccount() {
   });
   const [deleteAccount, { isLoading: isDeleteAccountLoadgin }] =
     useDeleteAccountMutation();
-
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const handleApplyDate = (data: DateRange) => {
-    console.log(data);
-  };
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-  };
 
   const handleDeleteAccount = async () => {
     if (accountId) {
@@ -124,38 +103,7 @@ export default function SingleAccount() {
 
         <Box mb={4} borderBottom="1px solid #e2e8f0" />
 
-        <Box
-          mb={4}
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          <HStack spacing={4}>
-            <Button
-              leftIcon={<IoAddCircleOutline />}
-              colorScheme="blue"
-              variant="solid"
-            >
-              {t("Add Transaction")}
-            </Button>
-            <Button
-              leftIcon={<AiOutlineFile />}
-              colorScheme="gray"
-              variant="outline"
-            >
-              {t("File Import")}
-            </Button>
-          </HStack>
-
-          <HStack spacing={4}>
-            <DateRangePopover applyDate={handleApplyDate} />
-            <SearchInput
-              searchQuery={searchQuery}
-              placeholder={t("Search all transactions")}
-              onSearchChange={handleSearchChange}
-            />
-          </HStack>
-        </Box>
+        <AccountPanel accountId={account?.id} />
 
         <Box mb={4} borderBottom="1px solid #e2e8f0" />
       </Box>
