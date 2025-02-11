@@ -230,6 +230,7 @@
   "Description": "Описание",
   "Enter transaction description": "Введите описание транзакции",
   "Select date": "Выберите дату",
+  "Delete Selected": "Удалить выбранное",
   "validation": {
     "Expected number": "Ожидалось число",
     "Cash, card or savings": "Наличные, кредитная карточка или сбережения",

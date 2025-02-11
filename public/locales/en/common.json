@@ -230,6 +230,7 @@
   "Description": "Description",
   "Enter transaction description": "Enter transaction description",
   "Select date": "Select date",
+  "Delete Selected": "Delete Selected",
   "validation": {
     "Expected number": "Excepted number",
     "Cash, card or savings": "Cash, card or savings",
