@@ -6,9 +6,10 @@ import { DateRange } from "@/lib/types/types";
 import { DateRangePopover } from "../popovers/date-range/DateRangePopover";
 import { SearchInput } from "../ui/SearchInput";
 import { ImportFile } from "../modals/import-file/ImportFile";
+import { AddTransactionModal } from "../modals/add-transaction/AddTransactionModal";
 
 type AccountPanelProps = {
-  accountId?: string;
+  accountId: string;
   searchQuery: string;
   onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
@@ -19,6 +20,7 @@ export const AccountPanel = ({
   onSearchChange,
 }: AccountPanelProps) => {
   const importFileModal = useDisclosure();
+  const addTransactionModal = useDisclosure();
 
   const handleApplyDate = (data: DateRange) => {
     console.log(data);
@@ -36,9 +38,15 @@ export const AccountPanel = ({
           leftIcon={<IoAddCircleOutline />}
           colorScheme="blue"
           variant="solid"
+          onClick={addTransactionModal.onOpen}
         >
           {t("Add Transaction")}
         </Button>
+        <AddTransactionModal
+          accountId={accountId}
+          isOpen={addTransactionModal.isOpen}
+          onClose={addTransactionModal.onClose}
+        />
         <Button
           leftIcon={<AiOutlineFile />}
           colorScheme="gray"

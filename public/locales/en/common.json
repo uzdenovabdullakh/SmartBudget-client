@@ -224,6 +224,12 @@
   "No file chosen": "No file chosen",
   "Supported formats: XLSX and CSV": "Supported formats: XLSX and CSV",
   "To import transactions without linking your financial institution,  first download download a bank statement.": "To import transactions without linking your financial institution,  first download download a bank statement.",
+  "Create new transaction": "Create new transaction",
+  "Create Transaction": "Create Transaction",
+  "Enter transaction amount": "Enter transaction amount",
+  "Description": "Description",
+  "Enter transaction description": "Enter transaction description",
+  "Select date": "Select date",
   "validation": {
     "Expected number": "Excepted number",
     "Cash, card or savings": "Cash, card or savings",
