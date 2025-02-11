@@ -218,6 +218,12 @@
   "and the": "и",
   "You must agree to the terms of the Privacy Policy and user agreement": "Вы должны согласиться с условиями Политики конфиденциальности и пользовательского соглашения",
   "Edit name": "Обновить название",
+  "Upload Bank Statement": "Загрузить банковскую выписку",
+  "Select a file": "Выберите файл",
+  "Upload": "Загрузить",
+  "No file chosen": "Файл не выбран",
+  "Supported formats: XLSX and CSV": "Поддерживаемые форматы: XLSX и CSV",
+  "To import transactions without linking your financial institution,  first download download a bank statement.": "Чтобы импортировать транзакции без привязки к вашему финансовому учреждению, сначала загрузите банковскую выписку",
   "validation": {
     "Expected number": "Ожидалось число",
     "Cash, card or savings": "Наличные, кредитная карточка или сбережения",

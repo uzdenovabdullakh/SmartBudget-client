@@ -1,10 +1,11 @@
-import { Box, HStack, Button } from "@chakra-ui/react";
+import { Box, HStack, Button, useDisclosure } from "@chakra-ui/react";
 import { t } from "i18next";
 import { AiOutlineFile } from "react-icons/ai";
 import { IoAddCircleOutline } from "react-icons/io5";
 import { DateRange } from "@/lib/types/types";
 import { DateRangePopover } from "../popovers/date-range/DateRangePopover";
 import { SearchInput } from "../ui/SearchInput";
+import { ImportFile } from "../modals/import-file/ImportFile";
 
 type AccountPanelProps = {
   accountId?: string;
@@ -17,6 +18,8 @@ export const AccountPanel = ({
   searchQuery,
   onSearchChange,
 }: AccountPanelProps) => {
+  const importFileModal = useDisclosure();
+
   const handleApplyDate = (data: DateRange) => {
     console.log(data);
   };
@@ -40,9 +43,15 @@ export const AccountPanel = ({
           leftIcon={<AiOutlineFile />}
           colorScheme="gray"
           variant="outline"
+          onClick={importFileModal.onOpen}
         >
           {t("File Import")}
         </Button>
+        <ImportFile
+          accountId={accountId}
+          isOpen={importFileModal.isOpen}
+          onClose={importFileModal.onClose}
+        />
       </HStack>
 
       <HStack spacing={4}>

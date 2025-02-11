@@ -218,6 +218,12 @@
   "and the": "and the",
   "You must agree to the terms of the Privacy Policy and user agreement": "You must agree to the terms of the Privacy Policy and user agreement",
   "Edit name": "Edit name",
+  "Upload Bank Statement": "Upload Bank Statement",
+  "Select a file": "Select a file",
+  "Upload": "Upload",
+  "No file chosen": "No file chosen",
+  "Supported formats: XLSX and CSV": "Supported formats: XLSX and CSV",
+  "To import transactions without linking your financial institution,  first download download a bank statement.": "To import transactions without linking your financial institution,  first download download a bank statement.",
   "validation": {
     "Expected number": "Excepted number",
     "Cash, card or savings": "Cash, card or savings",
