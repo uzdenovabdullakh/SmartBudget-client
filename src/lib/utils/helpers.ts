@@ -30,3 +30,22 @@ export const getDateRange = (range: PredefinedRange): DateRange => {
 
   return selectedRange();
 };
+
+export const transactionsTableReduce = (state: any, action: any) => {
+  switch (action.type) {
+    case "SET_PAGE":
+      return { ...state, currentPage: action.page };
+    case "SET_EDITING":
+      return {
+        ...state,
+        editingCell: action.payload,
+        editedValue: action.payload?.value || "",
+      };
+    case "SET_SELECTED":
+      return { ...state, selected: action.selected };
+    case "UPDATE_VALUE":
+      return { ...state, editedValue: action.value };
+    default:
+      return state;
+  }
+};
