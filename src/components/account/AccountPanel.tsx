@@ -12,19 +12,17 @@ type AccountPanelProps = {
   accountId: string;
   searchQuery: string;
   onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onApplyDate: (data: DateRange) => void;
 };
 
 export const AccountPanel = ({
   accountId,
   searchQuery,
   onSearchChange,
+  onApplyDate,
 }: AccountPanelProps) => {
   const importFileModal = useDisclosure();
   const addTransactionModal = useDisclosure();
-
-  const handleApplyDate = (data: DateRange) => {
-    console.log(data);
-  };
 
   return (
     <Box
@@ -63,7 +61,7 @@ export const AccountPanel = ({
       </HStack>
 
       <HStack spacing={4}>
-        <DateRangePopover applyDate={handleApplyDate} />
+        <DateRangePopover applyDate={onApplyDate} />
         <SearchInput
           searchQuery={searchQuery}
           placeholder={t("Search all transactions")}

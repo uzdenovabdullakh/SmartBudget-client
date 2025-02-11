@@ -24,6 +24,7 @@ import { showToast } from "@/lib/utils/toast";
 import { AccountPanel } from "@/components/account/AccountPanel";
 import { useState } from "react";
 import dynamic from "next/dynamic";
+import { DateRange } from "@/lib/types/types";
 
 const TransactionsTable = dynamic(
   () =>
@@ -51,6 +52,7 @@ export default function SingleAccount() {
   const budgetId = Array.isArray(params?.id) ? params.id[0] : params?.id;
 
   const [searchQuery, setSearchQuery] = useState("");
+  const [dateRange, setDateRange] = useState<DateRange | null>(null);
 
   const deleteAccountModal = useDisclosure();
   const editAccountModal = useDisclosure();
@@ -79,6 +81,10 @@ export default function SingleAccount() {
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
+  };
+
+  const handleApplyDate = (data: DateRange) => {
+    setDateRange(data);
   };
 
   return (
@@ -137,6 +143,7 @@ export default function SingleAccount() {
           accountId={accountId || ""}
           searchQuery={searchQuery}
           onSearchChange={handleSearchChange}
+          onApplyDate={handleApplyDate}
         />
 
         <Box mb={4} borderBottom="1px solid #e2e8f0" />
@@ -144,6 +151,8 @@ export default function SingleAccount() {
         <TransactionsTable
           accountId={accountId || ""}
           searchQuery={searchQuery}
+          startDate={dateRange?.from}
+          endDate={dateRange?.to}
         />
       </Box>
     </>

@@ -17,13 +17,14 @@ import {
   Button,
   Checkbox,
 } from "@chakra-ui/react";
-import { useCallback, useMemo, useReducer } from "react";
+import { useCallback, useMemo, useReducer, useState } from "react";
 import { Transaction } from "@/lib/types/transaction.types";
 import { showToast } from "@/lib/utils/toast";
 import { useDebounce } from "@/lib/hooks/useDebounce";
 import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
 import { useTranslation } from "react-i18next";
 import { transactionsTableReduce } from "@/lib/utils/helpers";
+import { TransactionType } from "@/lib/constants/enums";
 import { SkeletonUI } from "../ui/SkeletonUI";
 import { Pagination } from "../ui/Pagination";
 import { EditableCell } from "./EditableCell";
@@ -31,7 +32,12 @@ import { EditableCell } from "./EditableCell";
 const PAGE_SIZE = 10;
 const DEBOUNCE_DELAY = 500;
 
-type TransactionsTableProps = { accountId: string; searchQuery: string };
+type TransactionsTableProps = {
+  accountId: string;
+  searchQuery: string;
+  startDate?: Date | null;
+  endDate?: Date | null;
+};
 type EditState = {
   rowId: string;
   field: keyof Transaction;
@@ -41,6 +47,8 @@ type EditState = {
 export const TransactionsTable = ({
   accountId,
   searchQuery,
+  startDate,
+  endDate,
 }: TransactionsTableProps) => {
   const { t } = useTranslation();
   const debouncedSearchQuery = useDebounce(searchQuery, DEBOUNCE_DELAY);
@@ -50,6 +58,7 @@ export const TransactionsTable = ({
     editedValue: "",
     selected: [] as string[],
   });
+  const [typeFilter, setTypeFilter] = useState<"" | TransactionType>("");
 
   const { data, isLoading } = useGetTransactionsQuery(
     {
@@ -57,6 +66,9 @@ export const TransactionsTable = ({
       page: state.currentPage,
       pageSize: PAGE_SIZE,
       search: debouncedSearchQuery,
+      startDate: startDate?.toISOString(),
+      endDate: endDate?.toISOString(),
+      type: typeFilter || undefined,
     },
     { skip: !accountId },
   );
@@ -127,6 +139,14 @@ export const TransactionsTable = ({
     [state.editedValue, state.editingCell],
   );
 
+  const toggleTypeFilter = useCallback(() => {
+    setTypeFilter((prev) => {
+      if (prev === TransactionType.INCOME) return TransactionType.EXPENSE;
+      if (prev === TransactionType.EXPENSE) return "";
+      return TransactionType.INCOME;
+    });
+  }, []);
+
   const isAllSelected = useMemo(
     () =>
       state.selected.length === transactions.length &&
@@ -166,7 +186,9 @@ export const TransactionsTable = ({
               />
             </Th>
             <Th>{t("Amount")}</Th>
-            <Th>{t("Type")}</Th>
+            <Th onClick={toggleTypeFilter} cursor="pointer">
+              {t("Type")} ({typeFilter})
+            </Th>
             <Th>{t("Date")}</Th>
             <Th>{t("Description")}</Th>
           </Tr>
