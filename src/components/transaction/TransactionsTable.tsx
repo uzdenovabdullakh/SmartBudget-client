@@ -187,7 +187,7 @@ export const TransactionsTable = ({
             </Th>
             <Th>{t("Amount")}</Th>
             <Th onClick={toggleTypeFilter} cursor="pointer">
-              {t("Type")} ({typeFilter})
+              {t("Type")} ({t(typeFilter) || t("All")})
             </Th>
             <Th>{t("Date")}</Th>
             <Th>{t("Description")}</Th>

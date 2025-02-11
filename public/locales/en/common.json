@@ -231,6 +231,9 @@
   "Enter transaction description": "Enter transaction description",
   "Select date": "Select date",
   "Delete Selected": "Delete Selected",
+  "All": "All",
+  "income": "income",
+  "expense": "expense",
   "validation": {
     "Expected number": "Excepted number",
     "Cash, card or savings": "Cash, card or savings",
