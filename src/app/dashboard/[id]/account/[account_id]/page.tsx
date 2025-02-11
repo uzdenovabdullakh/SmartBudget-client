@@ -111,7 +111,7 @@ export default function SingleAccount() {
         <Box mb={4} borderBottom="1px solid #e2e8f0" />
 
         <AccountPanel
-          accountId={account?.id}
+          accountId={accountId || ""}
           searchQuery={searchQuery}
           onSearchChange={handleSearchChange}
         />
