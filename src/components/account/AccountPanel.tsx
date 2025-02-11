@@ -3,21 +3,22 @@ import { t } from "i18next";
 import { AiOutlineFile } from "react-icons/ai";
 import { IoAddCircleOutline } from "react-icons/io5";
 import { DateRange } from "@/lib/types/types";
-import { useState } from "react";
 import { DateRangePopover } from "../popovers/date-range/DateRangePopover";
 import { SearchInput } from "../ui/SearchInput";
 
-type AccountPanelProps = { accountId?: string };
+type AccountPanelProps = {
+  accountId?: string;
+  searchQuery: string;
+  onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
 
-export const AccountPanel = ({ accountId }: AccountPanelProps) => {
-  const [searchQuery, setSearchQuery] = useState("");
-
+export const AccountPanel = ({
+  accountId,
+  searchQuery,
+  onSearchChange,
+}: AccountPanelProps) => {
   const handleApplyDate = (data: DateRange) => {
     console.log(data);
-  };
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
   };
 
   return (
@@ -49,7 +50,7 @@ export const AccountPanel = ({ accountId }: AccountPanelProps) => {
         <SearchInput
           searchQuery={searchQuery}
           placeholder={t("Search all transactions")}
-          onSearchChange={handleSearchChange}
+          onSearchChange={onSearchChange}
         />
       </HStack>
     </Box>

@@ -15,19 +15,22 @@ import { DeleteModal } from "@/components/modals/delete/Delete";
 import { EditAccountModal } from "@/components/modals/edit-account/EditAccount";
 import { showToast } from "@/lib/utils/toast";
 import { AccountPanel } from "@/components/account/AccountPanel";
+import { useState } from "react";
 
 export default function SingleAccount() {
   const { t } = useTranslation();
   const params = useParams();
   const router = useRouter();
 
-  const deleteAccountModal = useDisclosure();
-  const editAccountModal = useDisclosure();
-
   const accountId = Array.isArray(params?.account_id)
     ? params?.account_id[0]
     : params?.account_id;
   const budgetId = Array.isArray(params?.id) ? params.id[0] : params?.id;
+
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const deleteAccountModal = useDisclosure();
+  const editAccountModal = useDisclosure();
 
   const { data: account, isLoading } = useGetAccountQuery(accountId!, {
     skip: !accountId,
@@ -49,6 +52,10 @@ export default function SingleAccount() {
         console.log(error);
       }
     }
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
   };
 
   return (
@@ -103,7 +110,11 @@ export default function SingleAccount() {
 
         <Box mb={4} borderBottom="1px solid #e2e8f0" />
 
-        <AccountPanel accountId={account?.id} />
+        <AccountPanel
+          accountId={account?.id}
+          searchQuery={searchQuery}
+          onSearchChange={handleSearchChange}
+        />
 
         <Box mb={4} borderBottom="1px solid #e2e8f0" />
       </Box>
