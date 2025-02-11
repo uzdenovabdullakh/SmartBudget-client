@@ -3,7 +3,7 @@ import { z } from "zod";
 import { TransactionType } from "../constants/enums";
 
 const transactionSchema = z.object({
-  amount: z.string(),
+  amount: z.number({ message: i18n.t("validation.Expected number") }),
   type: z.nativeEnum(TransactionType),
   description: z.string(),
   date: z.string(),
