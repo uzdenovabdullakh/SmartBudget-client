@@ -1,6 +1,13 @@
 "use client";
 
-import { Box, Text, HStack, IconButton, useDisclosure } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  HStack,
+  IconButton,
+  useDisclosure,
+  Stack,
+} from "@chakra-ui/react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
 import {
@@ -16,6 +23,22 @@ import { EditAccountModal } from "@/components/modals/edit-account/EditAccount";
 import { showToast } from "@/lib/utils/toast";
 import { AccountPanel } from "@/components/account/AccountPanel";
 import { useState } from "react";
+import dynamic from "next/dynamic";
+
+const TransactionsTable = dynamic(
+  () =>
+    import("@/components/transaction/TransactionsTable").then(
+      (mod) => mod.TransactionsTable,
+    ),
+  {
+    ssr: false,
+    loading: () => (
+      <Stack>
+        <SkeletonUI length={10} height={8} />
+      </Stack>
+    ),
+  },
+);
 
 export default function SingleAccount() {
   const { t } = useTranslation();
@@ -117,6 +140,11 @@ export default function SingleAccount() {
         />
 
         <Box mb={4} borderBottom="1px solid #e2e8f0" />
+
+        <TransactionsTable
+          accountId={accountId || ""}
+          searchQuery={searchQuery}
+        />
       </Box>
     </>
   );
