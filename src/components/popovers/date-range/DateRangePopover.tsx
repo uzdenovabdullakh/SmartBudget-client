@@ -81,7 +81,7 @@ export const DateRangePopover = ({ applyDate }: DateRangePopoverProps) => {
       {selectedRange === "Custom" && (
         <HStack spacing={4} justifyContent="space-between">
           <HStack spacing={4} align="center">
-            <Text>{t("From:")}</Text>
+            <Text>{t("From")}</Text>
             <DatePickerUI
               selected={dateRange.from}
               onChange={(date) => {
@@ -94,7 +94,7 @@ export const DateRangePopover = ({ applyDate }: DateRangePopoverProps) => {
             />
           </HStack>
           <HStack spacing={4} align="center">
-            <Text>{t("To:")}</Text>
+            <Text>{t("To")}</Text>
             <DatePickerUI
               selected={dateRange.to}
               onChange={(date) => {
