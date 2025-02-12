@@ -1,6 +1,7 @@
 import { Flex, Input, Select } from "@chakra-ui/react";
 import { TransactionType } from "@/lib/constants/enums";
 import { Transaction } from "@/lib/types/transaction.types";
+import { useTranslation } from "react-i18next";
 import DatePickerUI from "../ui/DatePickerUI";
 
 type EditableCellProps = {
@@ -18,7 +19,12 @@ export const EditableCell = ({
   editedValue,
   onValueChange,
 }: EditableCellProps) => {
+  const { t } = useTranslation();
+
   if (!isEditing) {
+    if (value === TransactionType.EXPENSE || value === TransactionType.INCOME) {
+      return t(value);
+    }
     return value;
   }
 
@@ -44,7 +50,7 @@ export const EditableCell = ({
         >
           {Object.values(TransactionType).map((type) => (
             <option key={type} value={type}>
-              {type}
+              {t(type)}
             </option>
           ))}
         </Select>
@@ -55,7 +61,6 @@ export const EditableCell = ({
         <DatePickerUI
           selected={editedValue ? new Date(editedValue) : null}
           onChange={(date) => {
-            console.log(date);
             if (date) {
               onValueChange(date.toISOString());
             }
