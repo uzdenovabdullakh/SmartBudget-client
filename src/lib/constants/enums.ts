@@ -14,3 +14,8 @@ export enum CurrencyPlacement {
   BEFORE = "before",
   AFTER = "after",
 }
+
+export enum TransactionType {
+  INCOME = "income",
+  EXPENSE = "expense",
+}

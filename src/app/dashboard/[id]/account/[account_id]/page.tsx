@@ -3,58 +3,65 @@
 import {
   Box,
   Text,
-  Button,
   HStack,
   IconButton,
   useDisclosure,
+  Stack,
 } from "@chakra-ui/react";
-import { useState } from "react";
-import { IoAddCircleOutline } from "react-icons/io5";
-import { AiOutlineFile, AiOutlineDelete } from "react-icons/ai";
+import { AiOutlineDelete } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
 import {
   useGetAccountQuery,
   useDeleteAccountMutation,
 } from "@/lib/services/account.api";
 import { useParams, useRouter } from "next/navigation";
-import { DateRangePopover } from "@/components/popovers/date-range/DateRangePopover";
-import { SearchInput } from "@/components/ui/SearchInput";
-import { DateRange } from "@/lib/types/types";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SkeletonUI } from "@/components/ui/SkeletonUI";
 import { useTranslation } from "react-i18next";
 import { DeleteModal } from "@/components/modals/delete/Delete";
 import { EditAccountModal } from "@/components/modals/edit-account/EditAccount";
 import { showToast } from "@/lib/utils/toast";
+import { AccountPanel } from "@/components/account/AccountPanel";
+import { useState } from "react";
+import dynamic from "next/dynamic";
+import { DateRange } from "@/lib/types/types";
+
+const TransactionsTable = dynamic(
+  () =>
+    import("@/components/transaction/TransactionsTable").then(
+      (mod) => mod.TransactionsTable,
+    ),
+  {
+    ssr: false,
+    loading: () => (
+      <Stack>
+        <SkeletonUI length={10} height={8} />
+      </Stack>
+    ),
+  },
+);
 
 export default function SingleAccount() {
   const { t } = useTranslation();
   const params = useParams();
   const router = useRouter();
 
-  const deleteAccountModal = useDisclosure();
-  const editAccountModal = useDisclosure();
-
   const accountId = Array.isArray(params?.account_id)
     ? params?.account_id[0]
     : params?.account_id;
   const budgetId = Array.isArray(params?.id) ? params.id[0] : params?.id;
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [dateRange, setDateRange] = useState<DateRange | null>(null);
+
+  const deleteAccountModal = useDisclosure();
+  const editAccountModal = useDisclosure();
 
   const { data: account, isLoading } = useGetAccountQuery(accountId!, {
     skip: !accountId,
   });
   const [deleteAccount, { isLoading: isDeleteAccountLoadgin }] =
     useDeleteAccountMutation();
-
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const handleApplyDate = (data: DateRange) => {
-    console.log(data);
-  };
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-  };
 
   const handleDeleteAccount = async () => {
     if (accountId) {
@@ -70,6 +77,14 @@ export default function SingleAccount() {
         console.log(error);
       }
     }
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleApplyDate = (data: DateRange) => {
+    setDateRange(data);
   };
 
   return (
@@ -124,40 +139,21 @@ export default function SingleAccount() {
 
         <Box mb={4} borderBottom="1px solid #e2e8f0" />
 
-        <Box
-          mb={4}
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          <HStack spacing={4}>
-            <Button
-              leftIcon={<IoAddCircleOutline />}
-              colorScheme="blue"
-              variant="solid"
-            >
-              {t("Add Transaction")}
-            </Button>
-            <Button
-              leftIcon={<AiOutlineFile />}
-              colorScheme="gray"
-              variant="outline"
-            >
-              {t("File Import")}
-            </Button>
-          </HStack>
-
-          <HStack spacing={4}>
-            <DateRangePopover applyDate={handleApplyDate} />
-            <SearchInput
-              searchQuery={searchQuery}
-              placeholder={t("Search all transactions")}
-              onSearchChange={handleSearchChange}
-            />
-          </HStack>
-        </Box>
+        <AccountPanel
+          accountId={accountId || ""}
+          searchQuery={searchQuery}
+          onSearchChange={handleSearchChange}
+          onApplyDate={handleApplyDate}
+        />
 
         <Box mb={4} borderBottom="1px solid #e2e8f0" />
+
+        <TransactionsTable
+          accountId={accountId || ""}
+          searchQuery={searchQuery}
+          startDate={dateRange?.from}
+          endDate={dateRange?.to}
+        />
       </Box>
     </>
   );

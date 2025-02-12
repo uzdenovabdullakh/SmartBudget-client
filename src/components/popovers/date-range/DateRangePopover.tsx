@@ -1,10 +1,9 @@
 import { useState } from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import { Text, Button, HStack, VStack, useDisclosure } from "@chakra-ui/react";
 import { DateRange, PredefinedRange } from "@/lib/types/types";
 import { getDateRange } from "@/lib/utils/helpers";
 import { useTranslation } from "react-i18next";
+import DatePickerUI from "@/components/ui/DatePickerUI";
 import { BasePopover } from "..";
 
 type DateRangePopoverProps = {
@@ -82,8 +81,8 @@ export const DateRangePopover = ({ applyDate }: DateRangePopoverProps) => {
       {selectedRange === "Custom" && (
         <HStack spacing={4} justifyContent="space-between">
           <HStack spacing={4} align="center">
-            <Text>{t("From:")}</Text>
-            <DatePicker
+            <Text>{t("From")}</Text>
+            <DatePickerUI
               selected={dateRange.from}
               onChange={(date) => {
                 if (dateRange.to && date && date > dateRange.to) return;
@@ -95,8 +94,8 @@ export const DateRangePopover = ({ applyDate }: DateRangePopoverProps) => {
             />
           </HStack>
           <HStack spacing={4} align="center">
-            <Text>{t("To:")}</Text>
-            <DatePicker
+            <Text>{t("To")}</Text>
+            <DatePickerUI
               selected={dateRange.to}
               onChange={(date) => {
                 if (dateRange.from && date && date < dateRange.from) return;
