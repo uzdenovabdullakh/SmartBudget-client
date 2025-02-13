@@ -35,7 +35,7 @@ export const QuestionCategoryMapping = {
       "Bike",
       "Public transit",
       "Walk",
-      "Rideshare (Uber/Lyft/etc.)",
+      "Rideshare or taxi",
       "Wheelchair",
       "Motorcycle",
       "None of these apply to me",
