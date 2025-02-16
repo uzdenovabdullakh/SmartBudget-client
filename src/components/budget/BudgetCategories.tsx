@@ -17,9 +17,10 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { useParams } from "next/navigation";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Category, CategoryGroup } from "@/lib/types/category.types";
+import { useGetBudgetInfoQuery } from "@/lib/services/budget.api";
 import { SkeletonUI } from "../ui/SkeletonUI";
 
 export const BudgetCategories = () => {
@@ -28,6 +29,9 @@ export const BudgetCategories = () => {
   const budgetId = Array.isArray(params?.id) ? params?.id[0] : params?.id;
 
   const [getCategoryGroup, { isLoading }] = useLazyGetCategoryGroupQuery();
+  const { data: budgetInfo } = useGetBudgetInfoQuery(budgetId!, {
+    skip: !budgetId,
+  });
 
   const [categoryGroups, setCategoryGroups] = useState<CategoryGroup[]>([]);
   const [editingCategory, setEditingCategory] = useState<string | null>(null);
@@ -52,6 +56,18 @@ export const BudgetCategories = () => {
       }),
     );
   };
+
+  const currency = budgetInfo?.settings?.currency || "$";
+  const currencyPlacement = budgetInfo?.settings?.currencyPlacement || "before";
+
+  const formatCurrency = useCallback(
+    (value: number) => {
+      return currencyPlacement === "before"
+        ? `${currency}${value}`
+        : `${value}${currency}`;
+    },
+    [currency, currencyPlacement],
+  );
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -105,7 +121,7 @@ export const BudgetCategories = () => {
           );
           return (
             <AccordionItem key={group.id} border="none">
-              <AccordionButton>
+              <AccordionButton backgroundColor="#edf1f5">
                 <AccordionIcon />
                 <Box
                   flex="1"
@@ -117,13 +133,13 @@ export const BudgetCategories = () => {
                   {group.name}
                 </Box>
                 <Box width="20%" textAlign="center">
-                  {totalAssigned}
+                  {formatCurrency(totalAssigned)}
                 </Box>
                 <Box width="20%" textAlign="center">
-                  {totalActivity}
+                  {formatCurrency(totalActivity)}
                 </Box>
                 <Box width="20%" textAlign="center">
-                  {totalAvailable}
+                  {formatCurrency(totalAvailable)}
                 </Box>
               </AccordionButton>
               <AccordionPanel>
@@ -156,21 +172,15 @@ export const BudgetCategories = () => {
                               textAlign="center"
                               display="inline-block"
                             >
-                              {category.assigned}
+                              {formatCurrency(category.assigned)}
                             </Box>
                           )}
                         </Td>
                         <Td width="20%" textAlign="center">
-                          {category.activity}
+                          {formatCurrency(category.activity)}
                         </Td>
-                        <Td
-                          width="20%"
-                          textAlign="center"
-                          color={
-                            category.available > 0 ? "green.500" : "red.500"
-                          }
-                        >
-                          {category.available}
+                        <Td width="20%" textAlign="center">
+                          {formatCurrency(category.available)}
                         </Td>
                       </Tr>
                     ))}
