@@ -6,6 +6,7 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { ru, enUS } from "date-fns/locale";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
+import { BudgetBalance } from "@/components/budget/BudgetBalance";
 
 export default function Budget() {
   const { i18n } = useTranslation();
@@ -21,7 +22,7 @@ export default function Budget() {
 
   return (
     <>
-      <PageHeader text={date} />
+      <PageHeader text={date} buttons={<BudgetBalance />} />
       <Box p={8}>Dashboard Overview Content</Box>
     </>
   );
