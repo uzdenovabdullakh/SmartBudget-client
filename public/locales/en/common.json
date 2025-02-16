@@ -234,6 +234,10 @@
   "All": "All",
   "income": "income",
   "expense": "expense",
+  "Assigned": "Assigned",
+  "Activity": "Activity",
+  "Available": "Available",
+  "Category": "Category",
   "validation": {
     "Expected number": "Excepted number",
     "Cash, card or savings": "Cash, card or savings",
