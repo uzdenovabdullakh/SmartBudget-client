@@ -49,6 +49,7 @@ export const budgetsApi = createApi({
 export const {
   useLazyGetBudgetsQuery,
   useLazyGetBudgetInfoQuery,
+  useGetBudgetInfoQuery,
   useGetBudgetsQuery,
   useCreateBudgetMutation,
   useUpdateBudgetMutation,
