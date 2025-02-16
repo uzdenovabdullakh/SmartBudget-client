@@ -5,3 +5,9 @@ export type Category = {
   activity: number;
   available: number;
 };
+
+export type CategoryGroup = {
+  id: string;
+  name: string;
+  categories: Category[];
+};
