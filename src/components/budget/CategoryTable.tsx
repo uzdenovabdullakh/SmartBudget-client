@@ -6,18 +6,33 @@ import {
 } from "@dnd-kit/sortable";
 import { ChangeEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useAssignChangeMutation } from "@/lib/services/category.api";
+import { useCallbackDebounce } from "@/lib/hooks/useCallbackDebounce";
 import { SortableItem } from "../dnd/SortableItem";
 
 export const CategoryTable = ({
   group,
   formatCurrency,
+  handleCategoryGroupsChange,
 }: {
   group: CategoryGroup;
   formatCurrency: (value: number) => string;
+  handleCategoryGroupsChange: React.Dispatch<
+    React.SetStateAction<CategoryGroup[]>
+  >;
 }) => {
   const { t } = useTranslation();
 
+  const [assignChange] = useAssignChangeMutation();
+
   const [editingCategory, setEditingCategory] = useState<string | null>(null);
+
+  const assignChangeDebounced = useCallbackDebounce(
+    (id: string, newValue: number) => {
+      assignChange({ id, assigned: newValue });
+    },
+    500,
+  );
 
   const handleChangeAssigned = (
     e: ChangeEvent<HTMLInputElement>,
@@ -26,7 +41,33 @@ export const CategoryTable = ({
   ) => {
     const newValue = Number(e.target.value);
 
-    console.log(newValue);
+    handleCategoryGroupsChange((prevGroups) =>
+      prevGroups.map((g) => {
+        if (g.id !== groupId) {
+          return g;
+        }
+
+        const updatedCategories = g.categories.map((c) => {
+          if (c.id !== categoryId) {
+            return c;
+          }
+
+          const assignedDifference = newValue - c.assigned;
+
+          return {
+            ...c,
+            assigned: newValue,
+            available: c.available + assignedDifference,
+          };
+        });
+        return {
+          ...g,
+          categories: updatedCategories,
+        };
+      }),
+    );
+
+    assignChangeDebounced(categoryId, newValue);
   };
 
   return (

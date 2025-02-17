@@ -133,6 +133,7 @@ export const BudgetCategories = () => {
                   <AccordionPanel>
                     <CategoryTable
                       group={group}
+                      handleCategoryGroupsChange={setCategoryGroups}
                       formatCurrency={(value) =>
                         formatCurrency(
                           value,

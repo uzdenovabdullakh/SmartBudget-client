@@ -50,6 +50,7 @@ export const categoryApi = createApi({
         method: "PATCH",
         data,
       }),
+      invalidatesTags: ["DefaultCategory"],
     }),
     moveAvailable: builder.mutation<ResponseWithoutData, MoveAvaliableDto>({
       query: (data: MoveAvaliableDto) => ({
