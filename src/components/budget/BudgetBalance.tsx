@@ -3,7 +3,7 @@ import { Box, HStack, VStack, Text } from "@chakra-ui/react";
 import { FaWallet } from "react-icons/fa";
 import { useParams } from "next/navigation";
 import { useGetBudgetInfoQuery } from "@/lib/services/budget.api";
-import { useMemo } from "react";
+import { formatCurrency } from "@/lib/utils/helpers";
 import { SkeletonUI } from "../ui/SkeletonUI";
 
 export const BudgetBalance = () => {
@@ -19,18 +19,6 @@ export const BudgetBalance = () => {
   const { data: budgetInfo } = useGetBudgetInfoQuery(budgetId!, {
     skip: !budgetId,
   });
-
-  const balance = useMemo(
-    () =>
-      budgetInfo?.settings.currencyPlacement === "before"
-        ? `${budgetInfo?.settings.currency}${budgetBalance?.available}`
-        : `${budgetBalance?.available}${budgetInfo?.settings.currency}`,
-    [
-      budgetBalance?.available,
-      budgetInfo?.settings.currency,
-      budgetInfo?.settings.currencyPlacement,
-    ],
-  );
 
   return (
     <Box
@@ -51,7 +39,11 @@ export const BudgetBalance = () => {
         ) : (
           <VStack spacing={1} align="flex-start">
             <Text fontSize="lg" fontWeight="bold" color="green.800">
-              {balance}
+              {formatCurrency(
+                budgetBalance?.available || 0,
+                budgetInfo?.settings.currency || "$",
+                budgetInfo?.settings.currencyPlacement || "before",
+              )}
             </Text>
             <Text fontSize="sm" color="green.600">
               {budgetBalance?.name}
