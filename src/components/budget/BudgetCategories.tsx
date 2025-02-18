@@ -1,8 +1,4 @@
-import {
-  useLazyGetCategoryGroupQuery,
-  useRemoveCategoryGroupMutation,
-  useUpdateCategoryGroupMutation,
-} from "@/lib/services/category-group.api";
+import { useLazyGetCategoryGroupQuery } from "@/lib/services/category-group.api";
 import {
   Box,
   Table,
@@ -15,9 +11,10 @@ import {
   AccordionPanel,
   AccordionIcon,
   Stack,
+  HStack,
 } from "@chakra-ui/react";
 import { useParams } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CategoryGroup } from "@/lib/types/category.types";
 import { useGetBudgetInfoQuery } from "@/lib/services/budget.api";
@@ -36,11 +33,12 @@ import {
 } from "@dnd-kit/sortable";
 import { useDragEnd } from "@/lib/hooks/useDragEnd";
 import { formatCurrency } from "@/lib/utils/helpers";
-import { showToast } from "@/lib/utils/toast";
+import { useCategoryManagement } from "@/lib/hooks/useCategoryManagment";
 import { SkeletonUI } from "../ui/SkeletonUI";
 import { SortableItem } from "../dnd/SortableItem";
 import { CategoryTable } from "./CategoryTable";
 import { CategoryChangePopover } from "../popovers/category/CategoryChangePopover";
+import { CategoryCreatePopover } from "../popovers/category/CategoryCreatePopover";
 
 export const BudgetCategories = () => {
   const { t } = useTranslation();
@@ -60,10 +58,12 @@ export const BudgetCategories = () => {
   const { data: budgetInfo } = useGetBudgetInfoQuery(budgetId!, {
     skip: !budgetId,
   });
-  const [updateCategoryGroup] = useUpdateCategoryGroupMutation();
-  const [removeCategoryGroup] = useRemoveCategoryGroupMutation();
 
   const [categoryGroups, setCategoryGroups] = useState<CategoryGroup[]>([]);
+  const [hoveredGroupId, setHoveredGroupId] = useState<string | null>(null);
+  const [openPopoverGroupId, setOpenPopoverGroupId] = useState<string | null>(
+    null,
+  );
 
   const { handleDragEnd } = useDragEnd(categoryGroups, setCategoryGroups);
 
@@ -75,50 +75,20 @@ export const BudgetCategories = () => {
     }
   };
 
-  const handleUpdateGroupName = useCallback(
-    async (id: string, newName: string) => {
-      setCategoryGroups((prev) =>
-        prev.map((g) => (g.id === id ? { ...g, name: newName } : g)),
-      );
-
-      const { message } = await updateCategoryGroup({
-        id,
-        name: newName,
-      }).unwrap();
-      showToast({
-        title: message,
-        status: "success",
-      });
-    },
-    [updateCategoryGroup],
-  );
-
-  const handleDeleteGroup = useCallback(
-    async (id: string) => {
-      setCategoryGroups((prev) => prev.filter((g) => g.id !== id));
-
-      const { message } = await removeCategoryGroup(id).unwrap();
-      showToast({
-        title: message,
-        status: "success",
-      });
-    },
-    [removeCategoryGroup],
-  );
+  const { handleUpdateGroupName, handleDeleteGroup, handleCreateCategory } =
+    useCategoryManagement();
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      if (budgetId) {
-        const data = await getCategoryGroup(budgetId).unwrap();
-        setCategoryGroups(data);
-      }
-    };
-    fetchCategories();
+    if (!budgetId) return;
+    getCategoryGroup(budgetId)
+      .unwrap()
+      .then(setCategoryGroups)
+      .catch(console.error);
   }, [budgetId, getCategoryGroup]);
 
   if (isLoading)
     return (
-      <Stack>
+      <Stack p={4}>
         <SkeletonUI length={10} height={10} />;
       </Stack>
     );
@@ -182,12 +152,28 @@ export const BudgetCategories = () => {
                         fontWeight="semibold"
                         width="40%"
                         onClick={(e) => e.stopPropagation()}
+                        onMouseEnter={() => setHoveredGroupId(group.id)}
+                        onMouseLeave={() => setHoveredGroupId(null)}
                       >
-                        <CategoryChangePopover
-                          entity={group}
-                          onUpdate={handleUpdateGroupName}
-                          onDelete={handleDeleteGroup}
-                        />
+                        <HStack spacing={2} align="center">
+                          <CategoryChangePopover
+                            entity={group}
+                            onUpdate={handleUpdateGroupName}
+                            onDelete={handleDeleteGroup}
+                          />
+                          {(hoveredGroupId === group.id ||
+                            openPopoverGroupId === group.id) && (
+                            <CategoryCreatePopover
+                              isCategoryGroup={false}
+                              groupId={group.id}
+                              onCreate={handleCreateCategory as any}
+                              onOpenPopover={() =>
+                                setOpenPopoverGroupId(group.id)
+                              }
+                              onClosePopover={() => setOpenPopoverGroupId(null)}
+                            />
+                          )}
+                        </HStack>
                       </Box>
                       <Box width="20%" textAlign="center">
                         {formatCurrency(
