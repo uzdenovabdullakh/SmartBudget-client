@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { BudgetBalance } from "@/components/budget/BudgetBalance";
 import { BudgetCategories } from "@/components/budget/BudgetCategories";
+import { CategoryPanel } from "@/components/budget/CategoryPanel";
 
 export default function Budget() {
   const { i18n } = useTranslation();
@@ -23,6 +24,7 @@ export default function Budget() {
   return (
     <>
       <PageHeader text={date} buttons={<BudgetBalance />} />
+      <CategoryPanel />
       <BudgetCategories />
     </>
   );
