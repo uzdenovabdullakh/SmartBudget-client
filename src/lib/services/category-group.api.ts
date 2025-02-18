@@ -20,7 +20,7 @@ export const categoryGroupApi = createApi({
         method: "DELETE",
       }),
     }),
-    createCategory: builder.mutation<
+    createCategoryGroup: builder.mutation<
       ResponseWithoutData,
       CreateCategoryGroupDto
     >({
@@ -30,7 +30,7 @@ export const categoryGroupApi = createApi({
         data,
       }),
     }),
-    updateCategory: builder.mutation<
+    updateCategoryGroup: builder.mutation<
       ResponseWithoutData,
       { id: string } & UpdateCategoryGroupDto
     >({
@@ -45,7 +45,7 @@ export const categoryGroupApi = createApi({
 
 export const {
   useLazyGetCategoryGroupQuery,
-  useCreateCategoryMutation,
+  useCreateCategoryGroupMutation,
   useRemoveCategoryGroupMutation,
-  useUpdateCategoryMutation,
+  useUpdateCategoryGroupMutation,
 } = categoryGroupApi;

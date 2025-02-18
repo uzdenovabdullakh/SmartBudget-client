@@ -239,6 +239,7 @@
   "Available": "Available",
   "Category": "Category",
   "Create or drag a category here": "Create or drag a category here",
+  "OK": "OK",
   "validation": {
     "Expected number": "Excepted number",
     "Cash, card or savings": "Cash, card or savings",
@@ -256,6 +257,8 @@
     "Password must contain at least one special character": "Password must contain at least one special character",
     "Email is too long": "Email is too long",
     "Login is too short": "Login is too short",
-    "Login is too long": "Login is too long"
+    "Login is too long": "Login is too long",
+    "Name too long": "Name too long",
+    "Name is required": "Name is required"
   }
 }

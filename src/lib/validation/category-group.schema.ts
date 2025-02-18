@@ -5,11 +5,9 @@ export const CreateCategoryGroupSchema = z
   .object({
     name: z
       .string()
-      .max(128, i18n.t("validation.Name too long", { ns: "common" }))
-      .min(1, i18n.t("validation.Name is required", { ns: "common" })),
-    budgetId: z
-      .string()
-      .uuid(i18n.t("validation.Invalid uuid", { ns: "common" })),
+      .max(128, i18n.t("validation.Name too long"))
+      .min(1, i18n.t("validation.Name is required")),
+    budgetId: z.string().uuid(i18n.t("validation.Invalid uuid")),
   })
   .required();
 
