@@ -44,7 +44,7 @@ export const CategoryChangePopover = ({
   });
 
   const handleApply = useCallback(
-    (data: UpdateCategoryGroupDto) => {
+    (data: UpdateCategoryGroupDto | UpdateCategoryDto) => {
       if (data?.name) {
         onUpdate(entity.id, data?.name);
       }
