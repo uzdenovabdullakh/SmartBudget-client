@@ -1,4 +1,8 @@
-import { useLazyGetCategoryGroupQuery } from "@/lib/services/category-group.api";
+import {
+  useLazyGetCategoryGroupQuery,
+  useRemoveCategoryGroupMutation,
+  useUpdateCategoryGroupMutation,
+} from "@/lib/services/category-group.api";
 import {
   Box,
   Table,
@@ -13,7 +17,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CategoryGroup } from "@/lib/types/category.types";
 import { useGetBudgetInfoQuery } from "@/lib/services/budget.api";
@@ -32,9 +36,11 @@ import {
 } from "@dnd-kit/sortable";
 import { useDragEnd } from "@/lib/hooks/useDragEnd";
 import { formatCurrency } from "@/lib/utils/helpers";
+import { showToast } from "@/lib/utils/toast";
 import { SkeletonUI } from "../ui/SkeletonUI";
 import { SortableItem } from "../dnd/SortableItem";
 import { CategoryTable } from "./CategoryTable";
+import { CategoryChangePopover } from "../popovers/category/CategoryChangePopover";
 
 export const BudgetCategories = () => {
   const { t } = useTranslation();
@@ -54,6 +60,8 @@ export const BudgetCategories = () => {
   const { data: budgetInfo } = useGetBudgetInfoQuery(budgetId!, {
     skip: !budgetId,
   });
+  const [updateCategoryGroup] = useUpdateCategoryGroupMutation();
+  const [removeCategoryGroup] = useRemoveCategoryGroupMutation();
 
   const [categoryGroups, setCategoryGroups] = useState<CategoryGroup[]>([]);
 
@@ -66,6 +74,37 @@ export const BudgetCategories = () => {
       return;
     }
   };
+
+  const handleUpdateGroupName = useCallback(
+    async (id: string, newName: string) => {
+      setCategoryGroups((prev) =>
+        prev.map((g) => (g.id === id ? { ...g, name: newName } : g)),
+      );
+
+      const { message } = await updateCategoryGroup({
+        id,
+        name: newName,
+      }).unwrap();
+      showToast({
+        title: message,
+        status: "success",
+      });
+    },
+    [updateCategoryGroup],
+  );
+
+  const handleDeleteGroup = useCallback(
+    async (id: string) => {
+      setCategoryGroups((prev) => prev.filter((g) => g.id !== id));
+
+      const { message } = await removeCategoryGroup(id).unwrap();
+      showToast({
+        title: message,
+        status: "success",
+      });
+    },
+    [removeCategoryGroup],
+  );
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -116,36 +155,79 @@ export const BudgetCategories = () => {
                 </Tr>
               </Thead>
             </Table>
-            {categoryGroups.map((group) => (
-              <SortableItem key={group.id} id={group.id} nodeType="box">
-                <AccordionItem key={group.id} border="none">
-                  <AccordionButton backgroundColor="#edf1f5" data-no-dnd="true">
-                    <AccordionIcon />
-                    <Box
-                      flex="1"
-                      textAlign="left"
-                      fontWeight="semibold"
-                      width="40%"
+            {categoryGroups.map((group) => {
+              const totalAssigned = group.categories.reduce(
+                (sum, category) => sum + (category.assigned || 0),
+                0,
+              );
+              const totalActivity = group.categories.reduce(
+                (sum, category) => sum + (category.activity || 0),
+                0,
+              );
+              const totalAvailable = group.categories.reduce(
+                (sum, category) => sum + (category.available || 0),
+                0,
+              );
+              return (
+                <SortableItem key={group.id} id={group.id} nodeType="box">
+                  <AccordionItem key={group.id} border="none">
+                    <AccordionButton
+                      backgroundColor="#edf1f5"
+                      data-no-dnd="true"
                     >
-                      {group.name}
-                    </Box>
-                  </AccordionButton>
-                  <AccordionPanel>
-                    <CategoryTable
-                      group={group}
-                      handleCategoryGroupsChange={setCategoryGroups}
-                      formatCurrency={(value) =>
-                        formatCurrency(
-                          value,
+                      <AccordionIcon />
+                      <Box
+                        flex="1"
+                        textAlign="left"
+                        fontWeight="semibold"
+                        width="40%"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <CategoryChangePopover
+                          entity={group}
+                          onUpdate={handleUpdateGroupName}
+                          onDelete={handleDeleteGroup}
+                        />
+                      </Box>
+                      <Box width="20%" textAlign="center">
+                        {formatCurrency(
+                          totalAssigned,
                           budgetInfo?.settings?.currency || "$",
                           budgetInfo?.settings?.currencyPlacement || "before",
-                        )
-                      }
-                    />
-                  </AccordionPanel>
-                </AccordionItem>
-              </SortableItem>
-            ))}
+                        )}
+                      </Box>
+                      <Box width="20%" textAlign="center">
+                        {formatCurrency(
+                          totalActivity,
+                          budgetInfo?.settings?.currency || "$",
+                          budgetInfo?.settings?.currencyPlacement || "before",
+                        )}
+                      </Box>
+                      <Box width="20%" textAlign="center">
+                        {formatCurrency(
+                          totalAvailable,
+                          budgetInfo?.settings?.currency || "$",
+                          budgetInfo?.settings?.currencyPlacement || "before",
+                        )}
+                      </Box>
+                    </AccordionButton>
+                    <AccordionPanel>
+                      <CategoryTable
+                        group={group}
+                        handleCategoryGroupsChange={setCategoryGroups}
+                        formatCurrency={(value) =>
+                          formatCurrency(
+                            value,
+                            budgetInfo?.settings?.currency || "$",
+                            budgetInfo?.settings?.currencyPlacement || "before",
+                          )
+                        }
+                      />
+                    </AccordionPanel>
+                  </AccordionItem>
+                </SortableItem>
+              );
+            })}
           </Accordion>
         </SortableContext>
       </Box>
