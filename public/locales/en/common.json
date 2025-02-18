@@ -240,6 +240,8 @@
   "Category": "Category",
   "Create or drag a category here": "Create or drag a category here",
   "OK": "OK",
+  "Create category group": "Create category group",
+  "Create category": "Create category",
   "validation": {
     "Expected number": "Excepted number",
     "Cash, card or savings": "Cash, card or savings",

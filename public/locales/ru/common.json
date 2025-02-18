@@ -240,6 +240,8 @@
   "Category": "Категория",
   "Create or drag a category here": "Создайте или перетащите сюда категорию",
   "OK": "OK",
+  "Create category group": "Создать группу",
+  "Create category": "Создать категорию",
   "validation": {
     "Expected number": "Ожидалось число",
     "Cash, card or savings": "Наличные, кредитная карточка или сбережения",
