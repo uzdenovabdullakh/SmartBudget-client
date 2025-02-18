@@ -1,14 +1,25 @@
-import { CategoryGroup } from "@/lib/types/category.types";
-import { Table, Tbody, Td, Box, Flex, Input } from "@chakra-ui/react";
+import { Category, CategoryGroup } from "@/lib/types/category.types";
+import { Table, Tbody, Td, Box, Input } from "@chakra-ui/react";
 import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { ChangeEvent, useState } from "react";
+import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useAssignChangeMutation } from "@/lib/services/category.api";
-import { useCallbackDebounce } from "@/lib/hooks/useCallbackDebounce";
+import {
+  useAssignChangeMutation,
+  useRemoveCategoryMutation,
+  useUpdateCategoryMutation,
+} from "@/lib/services/category.api";
+import {
+  AssigningChangeDto,
+  AssigningChangeSchema,
+} from "@/lib/validation/category.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
+import { showToast } from "@/lib/utils/toast";
 import { SortableItem } from "../dnd/SortableItem";
+import { CategoryChangePopover } from "../popovers/category/CategoryChangePopover";
 
 export const CategoryTable = ({
   group,
@@ -23,52 +34,105 @@ export const CategoryTable = ({
 }) => {
   const { t } = useTranslation();
 
+  const { handleSubmit, control, setValue } = useForm<AssigningChangeDto>({
+    resolver: zodResolver(AssigningChangeSchema),
+  });
+
   const [assignChange] = useAssignChangeMutation();
+  const [removeCategory] = useRemoveCategoryMutation();
+  const [updateCategory] = useUpdateCategoryMutation();
 
   const [editingCategory, setEditingCategory] = useState<string | null>(null);
 
-  const assignChangeDebounced = useCallbackDebounce(
-    (id: string, newValue: number) => {
-      assignChange({ id, assigned: newValue });
+  const onSubmit = useCallback(
+    (categoryId: string) => async (data: AssigningChangeDto) => {
+      setEditingCategory(null);
+
+      handleCategoryGroupsChange((prevGroups) =>
+        prevGroups.map((g) => {
+          const updatedCategories = g.categories.map((c) => {
+            if (c.id !== categoryId) {
+              return c;
+            }
+
+            const assignedDifference = data.assigned - c.assigned;
+
+            return {
+              ...c,
+              assigned: data.assigned,
+              available: c.available + assignedDifference,
+            };
+          });
+          return {
+            ...g,
+            categories: updatedCategories,
+          };
+        }),
+      );
+
+      await assignChange({ id: categoryId, assigned: data.assigned });
     },
-    500,
+    [assignChange, handleCategoryGroupsChange],
   );
 
-  const handleChangeAssigned = (
-    e: ChangeEvent<HTMLInputElement>,
-    groupId: string,
-    categoryId: string,
-  ) => {
-    const newValue = Number(e.target.value);
-
-    handleCategoryGroupsChange((prevGroups) =>
-      prevGroups.map((g) => {
-        if (g.id !== groupId) {
-          return g;
-        }
-
-        const updatedCategories = g.categories.map((c) => {
-          if (c.id !== categoryId) {
-            return c;
-          }
-
-          const assignedDifference = newValue - c.assigned;
-
-          return {
-            ...c,
-            assigned: newValue,
-            available: c.available + assignedDifference,
-          };
-        });
-        return {
-          ...g,
-          categories: updatedCategories,
-        };
-      }),
-    );
-
-    assignChangeDebounced(categoryId, newValue);
+  const handleEditStart = (category: Category) => {
+    setEditingCategory(category.id);
+    setValue("assigned", category.assigned);
   };
+
+  const handleUpdateGroupName = useCallback(
+    async (id: string, newName: string) => {
+      handleCategoryGroupsChange((prevGroups) =>
+        prevGroups.map((g) => {
+          const updatedCategories = g.categories.map((c) => {
+            if (c.id !== id) {
+              return c;
+            }
+
+            return {
+              ...c,
+              name: newName,
+            };
+          });
+          return {
+            ...g,
+            categories: updatedCategories,
+          };
+        }),
+      );
+
+      const { message } = await updateCategory({
+        id,
+        name: newName,
+      }).unwrap();
+      showToast({
+        title: message,
+        status: "success",
+      });
+    },
+    [handleCategoryGroupsChange, updateCategory],
+  );
+
+  const handleDeleteGroup = useCallback(
+    async (id: string) => {
+      handleCategoryGroupsChange((prevGroups) =>
+        prevGroups.map((g) => {
+          const updatedCategories = g.categories.filter((c) => c.id !== id);
+          return {
+            ...g,
+            categories: updatedCategories,
+          };
+        }),
+      );
+
+      const { message } = await removeCategory(id).unwrap();
+      showToast({
+        title: message,
+        status: "success",
+      });
+    },
+    [handleCategoryGroupsChange, removeCategory],
+  );
 
   return (
     <SortableContext
@@ -99,27 +163,38 @@ export const CategoryTable = ({
             group.categories.map((category) => (
               <SortableItem key={category.id} id={category.id} nodeType="table">
                 <Td width="40%">
-                  <Flex align="center">{category.name}</Flex>
+                  <CategoryChangePopover
+                    entity={category}
+                    onUpdate={handleUpdateGroupName}
+                    onDelete={handleDeleteGroup}
+                  />
                 </Td>
                 <Td width="20%" textAlign="center">
                   {editingCategory === category.id ? (
-                    <Input
-                      type="number"
-                      size="sm"
-                      value={category.assigned}
-                      onChange={(e) =>
-                        handleChangeAssigned(e, group.id, category.id)
-                      }
-                      onBlur={() => setEditingCategory(null)}
-                      autoFocus
-                      width="80px"
-                      textAlign="center"
+                    <Controller
+                      name="assigned"
+                      control={control}
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          type="number"
+                          value={field.value ?? ""}
+                          size="sm"
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
+                          onBlur={handleSubmit(onSubmit(category.id))}
+                          autoFocus
+                          width="80px"
+                          textAlign="center"
+                        />
+                      )}
                     />
                   ) : (
                     <Box
                       onClick={(e) => {
                         e.stopPropagation();
-                        setEditingCategory(category.id);
+                        handleEditStart(category);
                       }}
                       cursor="pointer"
                       width="80px"
