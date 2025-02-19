@@ -7,6 +7,7 @@ import {
   UpdateCategoryDto,
   AssigningChangeDto,
   MoveAvaliableDto,
+  ReorderCategoriesDto,
 } from "../validation/category.schema";
 
 export const categoryApi = createApi({
@@ -59,6 +60,13 @@ export const categoryApi = createApi({
         data,
       }),
     }),
+    reorderCategories: builder.mutation<void, ReorderCategoriesDto>({
+      query: (data: ReorderCategoriesDto) => ({
+        url: "/reorder",
+        method: "POST",
+        data,
+      }),
+    }),
   }),
 });
 
@@ -69,4 +77,5 @@ export const {
   useCreateCategoryMutation,
   useMoveAvailableMutation,
   useRemoveCategoryMutation,
+  useReorderCategoriesMutation,
 } = categoryApi;

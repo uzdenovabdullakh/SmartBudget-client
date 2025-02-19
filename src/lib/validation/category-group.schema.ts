@@ -16,8 +16,13 @@ export const UpdateCategoryGroupSchema =
 
 export type CreateCategoryGroupDto = z.infer<typeof CreateCategoryGroupSchema>;
 export type UpdateCategoryGroupDto = z.infer<typeof UpdateCategoryGroupSchema>;
-
 export type GetCategoryGroup = {
   id: string;
   defaultCategory?: boolean;
+};
+export type ReorderCategoryGroupsDto = {
+  groups: {
+    id: string;
+    order: number;
+  }[];
 };

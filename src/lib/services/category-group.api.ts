@@ -5,6 +5,7 @@ import { ResponseWithoutData } from "../types/types";
 import {
   CreateCategoryGroupDto,
   GetCategoryGroup,
+  ReorderCategoryGroupsDto,
   UpdateCategoryGroupDto,
 } from "../validation/category-group.schema";
 
@@ -52,6 +53,13 @@ export const categoryGroupApi = createApi({
         data,
       }),
     }),
+    reorderCategoryGroups: builder.mutation<void, ReorderCategoryGroupsDto>({
+      query: (data: ReorderCategoryGroupsDto) => ({
+        url: "/reorder",
+        method: "POST",
+        data,
+      }),
+    }),
   }),
 });
 
@@ -60,4 +68,5 @@ export const {
   useCreateCategoryGroupMutation,
   useRemoveCategoryGroupMutation,
   useUpdateCategoryGroupMutation,
+  useReorderCategoryGroupsMutation,
 } = categoryGroupApi;

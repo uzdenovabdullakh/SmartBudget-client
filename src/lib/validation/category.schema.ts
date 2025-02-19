@@ -32,3 +32,10 @@ export type CreateCategoryDto = z.infer<typeof CreateCategorySchema>;
 export type UpdateCategoryDto = z.infer<typeof UpdateCategorySchema>;
 export type AssigningChangeDto = z.infer<typeof AssigningChangeSchema>;
 export type MoveAvaliableDto = z.infer<typeof MoveAvaliableSchema>;
+export type ReorderCategoriesDto = {
+  categories: {
+    id: string;
+    order: number;
+    groupId: string;
+  }[];
+};
