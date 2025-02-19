@@ -238,6 +238,14 @@
   "Outflow": "Outflow",
   "Category": "Category",
   "Not selected": "Not selected",
+  "Assigned": "Assigned",
+  "Activity": "Activity",
+  "Available": "Available",
+  "Category": "Category",
+  "Create or drag a category here": "Create or drag a category here",
+  "OK": "OK",
+  "Create category group": "Create category group",
+  "Create category": "Create category",
   "validation": {
     "Expected number": "Excepted number",
     "Cash, card or savings": "Cash, card or savings",
@@ -255,6 +263,8 @@
     "Password must contain at least one special character": "Password must contain at least one special character",
     "Email is too long": "Email is too long",
     "Login is too short": "Login is too short",
-    "Login is too long": "Login is too long"
+    "Login is too long": "Login is too long",
+    "Name too long": "Name too long",
+    "Name is required": "Name is required"
   }
 }

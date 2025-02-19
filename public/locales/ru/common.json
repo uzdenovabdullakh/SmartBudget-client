@@ -238,6 +238,14 @@
   "Outflow": "Расход",
   "Category": "Категория",
   "Not selected": "Не выбрано",
+  "Assigned": "Распределено",
+  "Activity": "Активно",
+  "Available": "Доступно",
+  "Category": "Категория",
+  "Create or drag a category here": "Создайте или перетащите сюда категорию",
+  "OK": "OK",
+  "Create category group": "Создать группу",
+  "Create category": "Создать категорию",
   "validation": {
     "Expected number": "Ожидалось число",
     "Cash, card or savings": "Наличные, кредитная карточка или сбережения",
@@ -255,6 +263,8 @@
     "Password must contain at least one special character": "Пароль должен содержать хотя бы один специальный символ",
     "Email is too long": "Почта слишком длинная",
     "Login is too short": "Логин слишком короткий",
-    "Login is too long": "Логин слишком длинный"
+    "Login is too long": "Логин слишком длинный",
+    "Name too long": "Название слишком длинное",
+    "Name is required": "Название обязательно"
   }
 }

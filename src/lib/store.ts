@@ -6,6 +6,8 @@ import { briefApi } from "./services/brief.api";
 import { budgetsApi } from "./services/budget.api";
 import { accountApi } from "./services/account.api";
 import { transactionsApi } from "./services/transaction.api";
+import { categoryApi } from "./services/category.api";
+import { categoryGroupApi } from "./services/category-group.api";
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +17,8 @@ export const store = configureStore({
     [budgetsApi.reducerPath]: budgetsApi.reducer,
     [accountApi.reducerPath]: accountApi.reducer,
     [transactionsApi.reducerPath]: transactionsApi.reducer,
+    [categoryApi.reducerPath]: categoryApi.reducer,
+    [categoryGroupApi.reducerPath]: categoryGroupApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -24,6 +28,8 @@ export const store = configureStore({
       budgetsApi.middleware,
       accountApi.middleware,
       transactionsApi.middleware,
+      categoryApi.middleware,
+      categoryGroupApi.middleware,
     ),
 });
 
