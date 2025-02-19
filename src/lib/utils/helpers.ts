@@ -31,6 +31,14 @@ export const getDateRange = (range: PredefinedRange): DateRange => {
   return selectedRange();
 };
 
+export const formatCurrency = (
+  value: number,
+  currency: string,
+  placement: "before" | "after",
+) => {
+  return placement === "before" ? `${currency}${value}` : `${value}${currency}`;
+};
+
 export const transactionsTableReduce = (state: any, action: any) => {
   switch (action.type) {
     case "SET_PAGE":

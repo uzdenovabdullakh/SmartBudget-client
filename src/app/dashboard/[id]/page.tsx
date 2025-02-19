@@ -1,12 +1,13 @@
 "use client";
 
 import { format } from "date-fns";
-import { Box } from "@chakra-ui/react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { ru, enUS } from "date-fns/locale";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { BudgetBalance } from "@/components/budget/BudgetBalance";
+import { BudgetCategories } from "@/components/budget/BudgetCategories";
+import { CategoryPanel } from "@/components/budget/CategoryPanel";
 
 export default function Budget() {
   const { i18n } = useTranslation();
@@ -23,7 +24,8 @@ export default function Budget() {
   return (
     <>
       <PageHeader text={date} buttons={<BudgetBalance />} />
-      <Box p={8}>Dashboard Overview Content</Box>
+      <CategoryPanel />
+      <BudgetCategories />
     </>
   );
 }
