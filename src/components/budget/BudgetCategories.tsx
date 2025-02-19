@@ -55,7 +55,7 @@ export const BudgetCategories = () => {
 
   useEffect(() => {
     if (!budgetId) return;
-    getCategoryGroup(budgetId)
+    getCategoryGroup({ id: budgetId })
       .unwrap()
       .then(setCategoryGroups)
       .catch(console.error);
