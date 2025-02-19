@@ -1,17 +1,46 @@
 import i18n from "@/app/i18n";
 import { z } from "zod";
-import { TransactionType } from "../constants/enums";
 
-const transactionSchema = z.object({
-  amount: z.number({ message: i18n.t("validation.Expected number") }),
-  type: z.nativeEnum(TransactionType),
-  description: z.string(),
+const baseTransactionSchema = z.object({
+  inflow: z
+    .number()
+    .optional()
+    .nullable()
+    .transform((data) => {
+      if (Number.isNaN(data)) {
+        return null;
+      }
+      return data;
+    }),
+  outflow: z
+    .number()
+    .optional()
+    .nullable()
+    .transform((data) => {
+      if (Number.isNaN(data)) {
+        return null;
+      }
+      return data;
+    }),
+  description: z.string().optional().nullable(),
   date: z.string(),
+  category: z
+    .string()
+    .uuid(i18n.t("validation.Invalid uuid"))
+    .optional()
+    .nullable()
+    .transform((data) => {
+      if (!data) {
+        return null;
+      }
+      return data;
+    }),
   accountId: z.string().uuid(i18n.t("validation.Invalid uuid")),
 });
 
-export const CreateTransactionSchema = transactionSchema;
-export const UpdateTransactionSchema = transactionSchema
+export const CreateTransactionSchema = baseTransactionSchema;
+
+export const UpdateTransactionSchema = baseTransactionSchema
   .partial()
   .omit({ accountId: true });
 
@@ -19,7 +48,6 @@ export const GetTransactionsSchema = z.object({
   startDate: z.string().optional(),
   endDate: z.string().optional(),
   category: z.string().uuid(i18n.t("validation.Invalid uuid")).optional(),
-  type: z.nativeEnum(TransactionType).optional(),
 });
 
 export type CreateTransactionDto = z.infer<typeof CreateTransactionSchema>;
