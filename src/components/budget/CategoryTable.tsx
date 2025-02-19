@@ -15,6 +15,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useCategoryManagement } from "@/lib/hooks/useCategoryManagment";
 import { SortableItem } from "../dnd/SortableItem";
 import { CategoryChangePopover } from "../popovers/category/CategoryChangePopover";
+import { MoveAvailablePopover } from "../popovers/category/MoveAvailablePopover";
 
 type CategoryTableProps = {
   group: CategoryGroup;
@@ -97,7 +98,10 @@ export const CategoryTable = ({
         {formatCurrency(category.activity)}
       </Td>
       <Td width="20%" textAlign="center">
-        {formatCurrency(category.available)}
+        <MoveAvailablePopover
+          category={category}
+          formatCurrency={formatCurrency}
+        />
       </Td>
     </SortableItem>
   );
