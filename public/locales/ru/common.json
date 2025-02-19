@@ -234,6 +234,10 @@
   "All": "Все",
   "income": "доход",
   "expense": "расход",
+  "Inflow": "Доход",
+  "Outflow": "Расход",
+  "Category": "Категория",
+  "Not selected": "Не выбрано",
   "validation": {
     "Expected number": "Ожидалось число",
     "Cash, card or savings": "Наличные, кредитная карточка или сбережения",

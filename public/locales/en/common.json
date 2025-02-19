@@ -234,6 +234,10 @@
   "All": "All",
   "income": "income",
   "expense": "expense",
+  "Inflow": "Inflow",
+  "Outflow": "Outflow",
+  "Category": "Category",
+  "Not selected": "Not selected",
   "validation": {
     "Expected number": "Excepted number",
     "Cash, card or savings": "Cash, card or savings",
