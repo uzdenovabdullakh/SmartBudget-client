@@ -1,5 +1,6 @@
 import { Account } from "@/lib/types/account.types";
 import { BudgetData } from "@/lib/types/budget.types";
+import { formatCurrency } from "@/lib/utils/helpers";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import {
   Text,
@@ -54,7 +55,7 @@ export const SidebarAccounts = ({ budget, accounts }: SidebarAccountsProps) => {
               cursor="pointer"
             >
               <Text>{account.name}</Text>
-              <Text>{account.amount}</Text>
+              <Text>{formatCurrency(account.amount)}</Text>
             </HStack>
           ))}
         </VStack>

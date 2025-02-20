@@ -26,6 +26,7 @@ import { useState } from "react";
 import dynamic from "next/dynamic";
 import { DateRange } from "@/lib/types/types";
 import { useBudgetContext } from "@/lib/context/BudgetContext";
+import { formatCurrency } from "@/lib/utils/helpers";
 
 const TransactionsTable = dynamic(
   () =>
@@ -134,7 +135,7 @@ export default function SingleAccount() {
         ) : (
           <HStack alignItems="baseline" justifyContent="space-between">
             <Text fontSize="lg" fontWeight="bold" mb={4}>
-              {t("Balance")}: {account?.amount}
+              {t("Balance")}: {formatCurrency(account?.amount)}
             </Text>
           </HStack>
         )}

@@ -5,6 +5,7 @@ import {
   endOfYear,
   subMonths,
 } from "date-fns";
+import i18n from "@/app/i18n";
 import { DateRange, PredefinedRange } from "../types/types";
 
 export const getDateRange = (range: PredefinedRange): DateRange => {
@@ -31,14 +32,6 @@ export const getDateRange = (range: PredefinedRange): DateRange => {
   return selectedRange();
 };
 
-export const formatCurrency = (
-  value: number,
-  currency: string,
-  placement: "before" | "after",
-) => {
-  return placement === "before" ? `${currency}${value}` : `${value}${currency}`;
-};
-
 export const transactionsTableReduce = (state: any, action: any) => {
   switch (action.type) {
     case "SET_PAGE":
@@ -56,4 +49,19 @@ export const transactionsTableReduce = (state: any, action: any) => {
     default:
       return state;
   }
+};
+
+export const formatCurrency = (
+  value: number = 0,
+  currency: string = "$",
+  placement: "before" | "after" = "before",
+) => {
+  const formattedAmount = new Intl.NumberFormat(i18n.language, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value);
+
+  return placement === "before"
+    ? `${currency}${formattedAmount}`
+    : `${formattedAmount}${currency}`;
 };

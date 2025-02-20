@@ -1,5 +1,6 @@
 import { useBudgetContext } from "@/lib/context/BudgetContext";
 import { Account } from "@/lib/types/account.types";
+import { formatCurrency } from "@/lib/utils/helpers";
 import { Table, Thead, Tbody, Tr, Th, Td } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
@@ -39,7 +40,7 @@ export const AccountsTable = ({ accounts }: AccountTableProps) => {
             <Td>{account.name}</Td>
             <Td>{new Date(account.createdAt).toLocaleDateString()}</Td>
             <Td>{account.type}</Td>
-            <Td>{account.amount}</Td>
+            <Td>{formatCurrency(account.amount)}</Td>
           </Tr>
         ))}
       </Tbody>
