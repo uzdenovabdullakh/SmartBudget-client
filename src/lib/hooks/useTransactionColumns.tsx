@@ -23,6 +23,7 @@ import { showToast } from "@/lib/utils/toast";
 import DatePickerUI from "../../components/ui/DatePickerUI";
 import { useGetCategoryGroupQuery } from "../services/category-group.api";
 import { useBudgetContext } from "../context/BudgetContext";
+import { formatCurrency } from "../utils/helpers";
 
 const columnHelper = createColumnHelper<Transaction>();
 
@@ -196,7 +197,12 @@ export const useTransactionColumns = ({
               <optgroup key={group.id} label={`${group.name}:`}>
                 {group.categories.map((cat) => (
                   <option key={cat.id} value={cat.id}>
-                    {cat.name}&nbsp;&nbsp;&nbsp;{cat.available}
+                    {cat.name}&nbsp;&nbsp;&nbsp;
+                    {formatCurrency(
+                      cat.available,
+                      budget?.settings?.currency || "$",
+                      budget?.settings?.currencyPlacement || "before",
+                    )}
                   </option>
                 ))}
               </optgroup>
@@ -216,7 +222,12 @@ export const useTransactionColumns = ({
             type="number"
           />
         ) : (
-          info.getValue()
+          info.getValue() &&
+          formatCurrency(
+            info.getValue() as number,
+            budget?.settings?.currency || "$",
+            budget?.settings?.currencyPlacement || "before",
+          )
         ),
     }),
     columnHelper.accessor("outflow", {
@@ -229,7 +240,12 @@ export const useTransactionColumns = ({
             type="number"
           />
         ) : (
-          info.getValue()
+          info.getValue() &&
+          formatCurrency(
+            info.getValue() as number,
+            budget?.settings?.currency || "$",
+            budget?.settings?.currencyPlacement || "before",
+          )
         ),
     }),
   ];
