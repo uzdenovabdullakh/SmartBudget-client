@@ -1,16 +1,7 @@
 import React, { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Controller, useForm, useWatch } from "react-hook-form";
-import {
-  Button,
-  Checkbox,
-  HStack,
-  Input,
-  Select,
-  Td,
-  Tfoot,
-  Tr,
-} from "@chakra-ui/react";
+import { Button, HStack, Input, Select, Td, Tfoot, Tr } from "@chakra-ui/react";
 import { createColumnHelper } from "@tanstack/react-table";
 import { Transaction } from "@/lib/types/transaction.types";
 import {
@@ -30,18 +21,12 @@ const columnHelper = createColumnHelper<Transaction>();
 type TransactioColumnsProps = {
   editingId: string | null;
   setEditingId: React.Dispatch<React.SetStateAction<string | null>>;
-  selectedRows: string[];
-  isAllSelected: boolean;
-  setSelectedRows: React.Dispatch<React.SetStateAction<string[]>>;
   transactions: Transaction[];
 };
 
 export const useTransactionColumns = ({
   editingId,
   setEditingId,
-  selectedRows,
-  isAllSelected,
-  setSelectedRows,
   transactions,
 }: TransactioColumnsProps) => {
   const { t } = useTranslation();
@@ -63,7 +48,6 @@ export const useTransactionColumns = ({
 
   const handleSave = useCallback(
     async (dto: UpdateTransactionDto) => {
-      console.log(dto);
       try {
         const { message } = await updateTransaction({
           id: editingId!,
@@ -111,31 +95,6 @@ export const useTransactionColumns = ({
   }, [editingId, transactions, reset]);
 
   const columns = [
-    columnHelper.display({
-      id: "select",
-      header: () => (
-        <Checkbox
-          isChecked={isAllSelected}
-          onChange={(e) => {
-            setSelectedRows(
-              e.target.checked ? transactions.map((tx) => tx.id) : [],
-            );
-          }}
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          isChecked={selectedRows.includes(row.original.id)}
-          onChange={(e) => {
-            setSelectedRows(
-              e.target.checked
-                ? [...selectedRows, row.original.id]
-                : selectedRows.filter((id) => id !== row.original.id),
-            );
-          }}
-        />
-      ),
-    }),
     columnHelper.accessor("date", {
       header: t("Date"),
       cell: (info) =>
@@ -254,7 +213,7 @@ export const useTransactionColumns = ({
     editingId ? (
       <Tfoot>
         <Tr>
-          <Td colSpan={columns.length}>
+          <Td colSpan={6}>
             <HStack justify="flex-end" p={2}>
               <Button
                 colorScheme="blue"

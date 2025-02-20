@@ -9,6 +9,7 @@ import {
   Button,
   Box,
   Stack,
+  Checkbox,
 } from "@chakra-ui/react";
 import {
   useDeleteTransactionsMutation,
@@ -21,6 +22,7 @@ import { showToast } from "@/lib/utils/toast";
 import {
   flexRender,
   getCoreRowModel,
+  Row,
   useReactTable,
 } from "@tanstack/react-table";
 import { Pagination } from "../ui/Pagination";
@@ -60,8 +62,8 @@ export const TransactionsTable: React.FC<TransactionsTableProps> = ({
   });
   const [deleteTransactions] = useDeleteTransactionsMutation();
 
-  const handleEdit = useCallback((transaction: Transaction) => {
-    setEditingId(transaction.id);
+  const handleRowClick = useCallback((row: Row<Transaction>) => {
+    setEditingId(row.original.id);
   }, []);
 
   const handleDelete = useCallback(async () => {
@@ -88,9 +90,6 @@ export const TransactionsTable: React.FC<TransactionsTableProps> = ({
   const { columns, footer } = useTransactionColumns({
     editingId,
     setEditingId,
-    selectedRows,
-    setSelectedRows,
-    isAllSelected,
     transactions,
   });
 
@@ -115,10 +114,20 @@ export const TransactionsTable: React.FC<TransactionsTableProps> = ({
           {t("Delete Selected")} ({selectedRows.length})
         </Button>
       )}
-      <Table variant="simple">
+      <Table variant="simple" mt={4}>
         <Thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <Tr key={headerGroup.id}>
+              <Th>
+                <Checkbox
+                  isChecked={isAllSelected}
+                  onChange={(e) => {
+                    setSelectedRows(
+                      e.target.checked ? transactions.map((tx) => tx.id) : [],
+                    );
+                  }}
+                />
+              </Th>
               {headerGroup.headers.map((header) => (
                 <Th key={header.id}>
                   {flexRender(
@@ -132,9 +141,25 @@ export const TransactionsTable: React.FC<TransactionsTableProps> = ({
         </Thead>
         <Tbody>
           {table.getRowModel().rows.map((row) => (
-            <Tr key={row.id} onClick={() => handleEdit(row.original)}>
+            <Tr key={row.id}>
+              <Td>
+                <Checkbox
+                  isChecked={selectedRows.includes(row.original.id)}
+                  onChange={(e) => {
+                    setSelectedRows(
+                      e.target.checked
+                        ? [...selectedRows, row.original.id]
+                        : selectedRows.filter((id) => id !== row.original.id),
+                    );
+                  }}
+                />
+              </Td>
               {row.getVisibleCells().map((cell) => (
-                <Td key={cell.id} height="75px">
+                <Td
+                  key={cell.id}
+                  height="75px"
+                  onClick={() => handleRowClick(row)}
+                >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </Td>
               ))}
