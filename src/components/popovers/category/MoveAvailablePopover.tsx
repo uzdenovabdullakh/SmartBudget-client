@@ -17,7 +17,7 @@ import {
 import { useMoveAvailableMutation } from "@/lib/services/category.api";
 import { Category, CategoryGroup } from "@/lib/types/category.types";
 import { useLazyGetCategoryGroupQuery } from "@/lib/services/category-group.api";
-import { useParams } from "next/navigation";
+import { useBudgetContext } from "@/lib/context/BudgetContext";
 import { BasePopover } from "..";
 
 export const MoveAvailablePopover = ({
@@ -28,8 +28,7 @@ export const MoveAvailablePopover = ({
   formatCurrency: (value: number) => string;
 }) => {
   const { t } = useTranslation();
-  const params = useParams();
-  const budgetId = Array.isArray(params?.id) ? params?.id[0] : params?.id;
+  const { budget } = useBudgetContext();
 
   const [categoryGroups, setCategoryGroups] = useState<CategoryGroup[]>([]);
 
@@ -57,12 +56,12 @@ export const MoveAvailablePopover = ({
   );
 
   useEffect(() => {
-    if (!budgetId) return;
-    getCategoryGroup({ id: budgetId, defaultCategory: true })
+    if (!budget?.id) return;
+    getCategoryGroup({ id: budget.id, defaultCategory: true })
       .unwrap()
       .then(setCategoryGroups)
       .catch(console.error);
-  }, [budgetId, getCategoryGroup]);
+  }, [budget?.id, getCategoryGroup]);
 
   return (
     <BasePopover

@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { CategoryGroup } from "@/lib/types/category.types";
-import { BaseBudget } from "@/lib/types/budget.types";
+import { BudgetData } from "@/lib/types/budget.types";
 import { useCategoryManagement } from "@/lib/hooks/useCategoryManagment";
 import { SortableItem } from "../dnd/SortableItem";
 import { CategoryChangePopover } from "../popovers/category/CategoryChangePopover";
@@ -18,7 +18,7 @@ import { CategoryTable } from "./CategoryTable";
 
 type CategoryGroupItemProps = {
   group: CategoryGroup;
-  budgetInfo?: BaseBudget;
+  budgetInfo: BudgetData;
   handleCategoryGroupsChange: React.Dispatch<
     React.SetStateAction<CategoryGroup[]>
   >;

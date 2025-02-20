@@ -13,11 +13,12 @@ import { CiLogout } from "react-icons/ci";
 import { FiSettings, FiUser } from "react-icons/fi";
 import { BsFillPlusCircleFill } from "react-icons/bs";
 import { RiFileList2Line } from "react-icons/ri";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { AddBudgetModal } from "@/components/modals/add-budget/AddBudget";
 import { ChangeBudgetSettingsModal } from "@/components/modals/budget-settings/BudgetSettings";
 import { UserDetails } from "@/lib/types/user.types";
 import { useLogoutHandler } from "@/lib/hooks/useLogoutHandler";
+import { useBudgetContext } from "@/lib/context/BudgetContext";
 import { useTranslation } from "react-i18next";
 import { BasePopover } from "..";
 
@@ -67,9 +68,7 @@ const PopoverContentBody = ({
   onViewBudgets,
 }: PopoverContentBodyProps) => {
   const { t } = useTranslation();
-
-  const params = useParams();
-  const budgetId = Array.isArray(params?.id) ? params?.id[0] : params?.id;
+  const { budget } = useBudgetContext();
 
   return (
     <VStack spacing={4} align="stretch">
@@ -92,7 +91,7 @@ const PopoverContentBody = ({
 
       <Divider />
 
-      {budgetId && (
+      {budget?.id && (
         <>
           <Box>
             <Text fontSize="sm" fontWeight="bold" color="gray.500" mb={2}>

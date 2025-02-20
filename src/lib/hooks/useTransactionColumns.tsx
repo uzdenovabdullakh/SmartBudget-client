@@ -20,9 +20,9 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useUpdateTransactionMutation } from "@/lib/services/transaction.api";
 import { showToast } from "@/lib/utils/toast";
-import { useParams } from "next/navigation";
 import DatePickerUI from "../../components/ui/DatePickerUI";
 import { useGetCategoryGroupQuery } from "../services/category-group.api";
+import { useBudgetContext } from "../context/BudgetContext";
 
 const columnHelper = createColumnHelper<Transaction>();
 
@@ -44,8 +44,7 @@ export const useTransactionColumns = ({
   transactions,
 }: TransactioColumnsProps) => {
   const { t } = useTranslation();
-  const params = useParams();
-  const budgetId = Array.isArray(params?.id) ? params?.id[0] : params?.id;
+  const { budget } = useBudgetContext();
 
   const { handleSubmit, register, control, setValue, reset } =
     useForm<UpdateTransactionDto>({
@@ -56,8 +55,8 @@ export const useTransactionColumns = ({
   const outflowValue = useWatch({ control, name: "outflow" });
 
   const { data: categoryGroups } = useGetCategoryGroupQuery(
-    { id: budgetId!, defaultCategory: true },
-    { skip: !budgetId },
+    { id: budget?.id!, defaultCategory: true },
+    { skip: !budget?.id },
   );
   const [updateTransaction] = useUpdateTransactionMutation();
 

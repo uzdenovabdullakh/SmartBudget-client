@@ -5,11 +5,11 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { Pagination } from "@/components/ui/Pagination";
 import { SearchInput } from "@/components/ui/SearchInput";
 import { SkeletonUI } from "@/components/ui/SkeletonUI";
+import { useBudgetContext } from "@/lib/context/BudgetContext";
 import { useDebounce } from "@/lib/hooks/useDebounce";
 import { useGetAccountsQuery } from "@/lib/services/account.api";
 import { Account } from "@/lib/types/account.types";
 import { Box, Stack, Text } from "@chakra-ui/react";
-import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -18,8 +18,7 @@ const DEBOUNCE_DELAY = 500;
 
 export default function Accounts() {
   const { t } = useTranslation();
-  const params = useParams();
-  const budgetId = Array.isArray(params?.id) ? params.id[0] : params?.id;
+  const { budget } = useBudgetContext();
 
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -31,13 +30,13 @@ export default function Accounts() {
 
   const { data, isLoading } = useGetAccountsQuery(
     {
-      id: budgetId!,
+      id: budget?.id!,
       order: "DESC",
       page: currentPage,
       pageSize: PAGE_SIZE,
       search: debouncedSearchQuery,
     },
-    { skip: !budgetId },
+    { skip: !budget?.id },
   );
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {

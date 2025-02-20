@@ -1,24 +1,19 @@
 import { useGetDefaultCategoryQuery } from "@/lib/services/category.api";
 import { Box, HStack, VStack, Text } from "@chakra-ui/react";
 import { FaWallet } from "react-icons/fa";
-import { useParams } from "next/navigation";
-import { useGetBudgetInfoQuery } from "@/lib/services/budget.api";
 import { formatCurrency } from "@/lib/utils/helpers";
+import { useBudgetContext } from "@/lib/context/BudgetContext";
 import { SkeletonUI } from "../ui/SkeletonUI";
 
 export const BudgetBalance = () => {
-  const params = useParams();
-  const budgetId = Array.isArray(params?.id) ? params?.id[0] : params?.id;
+  const { budget } = useBudgetContext();
 
   const { data: budgetBalance, isLoading } = useGetDefaultCategoryQuery(
-    budgetId!,
+    budget?.id!,
     {
-      skip: !budgetId,
+      skip: !budget?.id,
     },
   );
-  const { data: budgetInfo } = useGetBudgetInfoQuery(budgetId!, {
-    skip: !budgetId,
-  });
 
   return (
     <Box
@@ -41,8 +36,8 @@ export const BudgetBalance = () => {
             <Text fontSize="lg" fontWeight="bold" color="green.800">
               {formatCurrency(
                 budgetBalance?.available || 0,
-                budgetInfo?.settings.currency || "$",
-                budgetInfo?.settings.currencyPlacement || "before",
+                budget?.settings.currency || "$",
+                budget?.settings.currencyPlacement || "before",
               )}
             </Text>
             <Text fontSize="sm" color="green.600">

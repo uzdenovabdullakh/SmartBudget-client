@@ -1,6 +1,7 @@
+import { useBudgetContext } from "@/lib/context/BudgetContext";
 import { Account } from "@/lib/types/account.types";
 import { Table, Thead, Tbody, Tr, Th, Td } from "@chakra-ui/react";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 
 type AccountTableProps = {
@@ -10,12 +11,11 @@ type AccountTableProps = {
 export const AccountsTable = ({ accounts }: AccountTableProps) => {
   const { t } = useTranslation();
   const router = useRouter();
-  const params = useParams();
-  const budgetId = Array.isArray(params?.id) ? params.id[0] : params?.id;
+  const { budget } = useBudgetContext();
 
   const handleAccountClick = (accountId: string) => {
-    if (budgetId) {
-      router.push(`/dashboard/${budgetId}/account/${accountId}`);
+    if (budget?.id) {
+      router.push(`/dashboard/${budget.id}/account/${accountId}`);
     }
   };
 

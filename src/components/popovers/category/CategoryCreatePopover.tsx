@@ -13,7 +13,7 @@ import {
   CreateCategorySchema,
 } from "@/lib/validation/category.schema";
 import { AddIcon } from "@chakra-ui/icons";
-import { useParams } from "next/navigation";
+import { useBudgetContext } from "@/lib/context/BudgetContext";
 import { BasePopover } from "..";
 
 type CategoryCreatePopoverProps<T> = {
@@ -32,8 +32,7 @@ export const CategoryCreatePopover = ({
   onClosePopover,
 }: CategoryCreatePopoverProps<CreateCategoryGroupDto | CreateCategoryDto>) => {
   const { t } = useTranslation();
-  const params = useParams();
-  const budgetId = Array.isArray(params?.id) ? params?.id[0] : params?.id;
+  const { budget } = useBudgetContext();
 
   const { isOpen, onToggle, onClose } = useDisclosure();
 
@@ -45,7 +44,7 @@ export const CategoryCreatePopover = ({
     CreateCategoryGroupDto | CreateCategoryDto
   >({
     resolver: zodResolver(schema),
-    defaultValues: isCategoryGroup ? { budgetId } : { groupId },
+    defaultValues: isCategoryGroup ? { budgetId: budget?.id } : { groupId },
   });
 
   const handleApply = useCallback(
