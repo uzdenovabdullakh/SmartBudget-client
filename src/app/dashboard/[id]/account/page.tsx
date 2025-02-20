@@ -8,6 +8,7 @@ import { SkeletonUI } from "@/components/ui/SkeletonUI";
 import { useDebounce } from "@/lib/hooks/useDebounce";
 import { useGetAccountsQuery } from "@/lib/services/account.api";
 import { Account } from "@/lib/types/account.types";
+import { formatCurrency } from "@/lib/utils/helpers";
 import { Box, Stack, Text } from "@chakra-ui/react";
 import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -23,7 +24,7 @@ export default function Accounts() {
 
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [totalBalance, setTotalBalance] = useState("");
+  const [totalBalance, setTotalBalance] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
 
@@ -65,7 +66,7 @@ export default function Accounts() {
           <SkeletonUI height={4} />
         ) : (
           <Text fontSize="lg" fontWeight="bold" mb={4}>
-            {t("Total Balance")}: {totalBalance || 0}
+            {t("Total Balance")}: {formatCurrency(totalBalance)}
           </Text>
         )}
 
