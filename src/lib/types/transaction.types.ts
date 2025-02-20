@@ -1,11 +1,12 @@
-import { TransactionType } from "../constants/enums";
+import { Category } from "./category.types";
 
 export type Transaction = {
-  amount: string;
-  type: TransactionType;
-  date: Date;
-  description: string;
+  date: string;
+  description: string | null;
   id: string;
+  category: Pick<Category, "id" | "name"> | null;
+  outflow: number | null;
+  inflow: number | null;
 };
 
 export type ListTransactions = {
