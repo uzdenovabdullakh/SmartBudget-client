@@ -6,6 +6,7 @@ import { DateRange } from "@/lib/types/types";
 import { DateRangePopover } from "../popovers/date-range/DateRangePopover";
 import { SearchInput } from "../ui/SearchInput";
 import { ImportFile } from "../modals/import-file/ImportFile";
+import { AddTransactionModal } from "../modals/add-transaction/AddTransactionModal";
 
 type AccountPanelProps = {
   accountId: string;
@@ -39,6 +40,11 @@ export const AccountPanel = ({
         >
           {t("Add Transaction")}
         </Button>
+        <AddTransactionModal
+          accountId={accountId}
+          isOpen={addTransactionModal.isOpen}
+          onClose={addTransactionModal.onClose}
+        />
         <Button
           leftIcon={<AiOutlineFile />}
           colorScheme="gray"
