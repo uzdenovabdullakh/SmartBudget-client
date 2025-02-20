@@ -39,6 +39,8 @@ type TransactionsTableProps = {
   endDate?: Date | null;
 };
 
+type OrderByType = "inflow" | "outflow" | "category_name" | "date";
+
 export const TransactionsTable: React.FC<TransactionsTableProps> = ({
   accountId,
   searchQuery,
@@ -51,6 +53,8 @@ export const TransactionsTable: React.FC<TransactionsTableProps> = ({
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [orderBy, setOrderBy] = useState<OrderByType | null>(null);
+  const [order, setOrder] = useState<"ASC" | "DESC">("DESC");
 
   const { data, isLoading } = useGetTransactionsQuery({
     id: accountId,
@@ -59,6 +63,8 @@ export const TransactionsTable: React.FC<TransactionsTableProps> = ({
     search: debouncedSearchQuery,
     startDate: startDate?.toISOString(),
     endDate: endDate?.toISOString(),
+    orderBy: orderBy ?? undefined,
+    order: order ?? undefined,
   });
   const [deleteTransactions] = useDeleteTransactionsMutation();
 
@@ -75,6 +81,18 @@ export const TransactionsTable: React.FC<TransactionsTableProps> = ({
       console.log(error);
     }
   }, [deleteTransactions, selectedRows]);
+
+  const handleSort = useCallback(
+    (column: OrderByType) => {
+      if (orderBy === column) {
+        setOrder((prev) => (prev === "ASC" ? "DESC" : "ASC"));
+      } else {
+        setOrderBy(column);
+        setOrder("ASC");
+      }
+    },
+    [orderBy],
+  );
 
   const transactions = useMemo(
     () => data?.transactions || [],
@@ -129,11 +147,23 @@ export const TransactionsTable: React.FC<TransactionsTableProps> = ({
                 />
               </Th>
               {headerGroup.headers.map((header) => (
-                <Th key={header.id}>
+                <Th
+                  key={header.id}
+                  onClick={() => {
+                    if (
+                      ["inflow", "outflow", "category_name", "date"].includes(
+                        header.id,
+                      )
+                    ) {
+                      handleSort(header.id as OrderByType);
+                    }
+                  }}
+                >
                   {flexRender(
                     header.column.columnDef.header,
                     header.getContext(),
                   )}
+                  {orderBy === header.id && (order === "ASC" ? " ↑" : " ↓")}
                 </Th>
               ))}
             </Tr>

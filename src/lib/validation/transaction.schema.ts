@@ -47,7 +47,7 @@ export const UpdateTransactionSchema = baseTransactionSchema
 export const GetTransactionsSchema = z.object({
   startDate: z.string().optional(),
   endDate: z.string().optional(),
-  category: z.string().uuid(i18n.t("validation.Invalid uuid")).optional(),
+  orderBy: z.enum(["inflow", "outflow", "category_name", "date"]).optional(),
 });
 
 export type CreateTransactionDto = z.infer<typeof CreateTransactionSchema>;
