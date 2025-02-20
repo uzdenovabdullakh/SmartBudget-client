@@ -135,7 +135,12 @@ export default function SingleAccount() {
         ) : (
           <HStack alignItems="baseline" justifyContent="space-between">
             <Text fontSize="lg" fontWeight="bold" mb={4}>
-              {t("Balance")}: {formatCurrency(account?.amount)}
+              {t("Balance")}:{" "}
+              {formatCurrency(
+                account?.amount,
+                budget?.settings.currency,
+                budget?.settings.currencyPlacement,
+              )}
             </Text>
           </HStack>
         )}

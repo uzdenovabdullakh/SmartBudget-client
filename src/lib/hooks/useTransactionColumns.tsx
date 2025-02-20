@@ -159,8 +159,8 @@ export const useTransactionColumns = ({
                     {cat.name}&nbsp;&nbsp;&nbsp;
                     {formatCurrency(
                       cat.available,
-                      budget?.settings?.currency || "$",
-                      budget?.settings?.currencyPlacement || "before",
+                      budget?.settings.currency,
+                      budget?.settings.currencyPlacement,
                     )}
                   </option>
                 ))}
@@ -184,8 +184,8 @@ export const useTransactionColumns = ({
           info.getValue() &&
           formatCurrency(
             info.getValue() as number,
-            budget?.settings?.currency || "$",
-            budget?.settings?.currencyPlacement || "before",
+            budget?.settings.currency,
+            budget?.settings.currencyPlacement,
           )
         ),
     }),
@@ -202,8 +202,8 @@ export const useTransactionColumns = ({
           info.getValue() &&
           formatCurrency(
             info.getValue() as number,
-            budget?.settings?.currency || "$",
-            budget?.settings?.currencyPlacement || "before",
+            budget?.settings.currency,
+            budget?.settings.currencyPlacement,
           )
         ),
     }),

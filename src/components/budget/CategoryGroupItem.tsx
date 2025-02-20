@@ -85,22 +85,22 @@ export const CategoryGroupItem = ({
           <Box width="20%" textAlign="center">
             {formatCurrency(
               totalAssigned,
-              budgetInfo?.settings?.currency || "$",
-              budgetInfo?.settings?.currencyPlacement || "before",
+              budgetInfo?.settings.currency,
+              budgetInfo?.settings.currencyPlacement,
             )}
           </Box>
           <Box width="20%" textAlign="center">
             {formatCurrency(
               totalActivity,
-              budgetInfo?.settings?.currency || "$",
-              budgetInfo?.settings?.currencyPlacement || "before",
+              budgetInfo?.settings.currency,
+              budgetInfo?.settings.currencyPlacement,
             )}
           </Box>
           <Box width="20%" textAlign="center">
             {formatCurrency(
               totalAvailable,
-              budgetInfo?.settings?.currency || "$",
-              budgetInfo?.settings?.currencyPlacement || "before",
+              budgetInfo?.settings.currency,
+              budgetInfo?.settings.currencyPlacement,
             )}
           </Box>
         </AccordionButton>
@@ -110,8 +110,8 @@ export const CategoryGroupItem = ({
             formatCurrency={(value) =>
               formatCurrency(
                 value,
-                budgetInfo?.settings?.currency || "$",
-                budgetInfo?.settings?.currencyPlacement || "before",
+                budgetInfo?.settings.currency,
+                budgetInfo?.settings.currencyPlacement,
               )
             }
             handleCategoryGroupsChange={handleCategoryGroupsChange}
