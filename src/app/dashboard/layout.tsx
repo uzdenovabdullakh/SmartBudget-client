@@ -7,6 +7,7 @@ import { Flex } from "@chakra-ui/react";
 import { Sidebar } from "@/components/sidebar/Sidebar";
 import dynamic from "next/dynamic";
 import { BudgetProvider } from "@/lib/context/BudgetContext";
+import { AddTransactionIconButton } from "@/components/ui/AddTransactionIconButton";
 
 const Brief = dynamic(
   () => import("@/components/brief/Brief").then((mod) => mod.Brief),
@@ -43,6 +44,7 @@ export default function DashboardLayout({
         <Sidebar user={user} />
         <Flex flex="1" direction="column" overflowY="auto" overflowX="hidden">
           {children}
+          <AddTransactionIconButton />
         </Flex>
       </Flex>
     </BudgetProvider>
