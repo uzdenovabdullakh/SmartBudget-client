@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, VStack } from "@chakra-ui/react";
+import { Button, Spinner, VStack, Text, Box } from "@chakra-ui/react";
 import {
   CreateTransactionDto,
   CreateTransactionSchema,
@@ -14,11 +14,15 @@ import { useCreateTransactionMutation } from "@/lib/services/transaction.api";
 import { DefaultModalProps } from "@/lib/types/types";
 import { CategorySelect } from "@/components/category/CategorySelect";
 import { ArrowBack } from "@/components/ui/ArrowBack";
+import { IDetectedBarcode, Scanner } from "@yudiel/react-qr-scanner";
+import { useGetCheckByQrMutation } from "@/lib/services/check.api";
 import { DefaultModal } from "..";
 
 type AddTransactionModalProps = {
   accountId: string;
 } & DefaultModalProps;
+
+type StepType = "choice" | "manual" | "scan" | "afterScan";
 
 export const AddTransactionModal = ({
   isOpen,
@@ -27,8 +31,15 @@ export const AddTransactionModal = ({
 }: AddTransactionModalProps) => {
   const { t } = useTranslation();
 
-  const [step, setStep] = useState<"choice" | "manual" | "scan">("choice");
+  const boxRef = useRef<HTMLDivElement>(null);
+
+  const [step, setStep] = useState<StepType>("choice");
+  const [checkData, setCheckData] = useState<any>(null);
+  const [scanError, setScanError] = useState<string | null>(null);
+
   const [createTransaction, { isLoading }] = useCreateTransactionMutation();
+  const [getCheckByQr, { isLoading: isFetchingReceipt }] =
+    useGetCheckByQrMutation();
 
   const {
     register,
@@ -45,17 +56,36 @@ export const AddTransactionModal = ({
   const inflowValue = useWatch({ control, name: "inflow" });
   const outflowValue = useWatch({ control, name: "outflow" });
 
-  const onSubmit = async (data: CreateTransactionDto) => {
+  const onSubmit = async (dto: CreateTransactionDto) => {
     try {
-      const { message } = await createTransaction(data).unwrap();
-
+      const { message } = await createTransaction(dto).unwrap();
       showToast({ title: message, status: "success" });
 
       reset();
       onClose();
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
+  };
+
+  const handleScan = async (data: IDetectedBarcode[]) => {
+    if (data.length) {
+      const qrraw = data[0].rawValue;
+      setStep("afterScan");
+
+      try {
+        const result = await getCheckByQr(qrraw).unwrap();
+        setCheckData(result);
+      } catch (error: any) {
+        setScanError(error.message);
+        console.log(error);
+      }
+    }
+  };
+
+  const handleError = (error: any) => {
+    setScanError(error.message);
+    console.log(error);
   };
 
   const goBack = () => setStep("choice");
@@ -123,10 +153,27 @@ export const AddTransactionModal = ({
       </VStack>
     ),
     scan: (
-      <VStack spacing={5}>
-        <Button colorScheme="blue" width="full">
-          {t("Scan QR Code")}
-        </Button>
+      <VStack spacing={5} minH="470px">
+        <Scanner
+          onScan={(result) => handleScan(result)}
+          onError={(error) => handleError(error)}
+        />
+      </VStack>
+    ),
+    afterScan: (
+      <VStack spacing={4}>
+        {isFetchingReceipt && <Spinner />}
+        {scanError && <Text color="red.500">{scanError}</Text>}
+        {checkData && (
+          <Box
+            ref={boxRef}
+            width="full"
+            p={4}
+            borderWidth="1px"
+            borderRadius="md"
+            dangerouslySetInnerHTML={{ __html: checkData.data.html }}
+          />
+        )}
       </VStack>
     ),
   };
@@ -140,6 +187,7 @@ export const AddTransactionModal = ({
         onClick={goBack}
       />
     ),
+    afterScan: t("Scan result"),
   };
 
   useEffect(() => {
@@ -150,6 +198,18 @@ export const AddTransactionModal = ({
     if (outflowValue) setValue("inflow", null);
   }, [outflowValue, setValue]);
 
+  useEffect(() => {
+    if (step === "afterScan" && checkData && boxRef.current) {
+      const images = boxRef.current.querySelectorAll("img");
+      images.forEach((img) => {
+        const src = img.getAttribute("src");
+        if (src && !src.startsWith("http")) {
+          img.setAttribute("src", `${process.env.OFD_API_URL}${src}`);
+        }
+      });
+    }
+  }, [step, checkData]);
+
   return (
     <DefaultModal
       isOpen={isOpen}
@@ -157,7 +217,7 @@ export const AddTransactionModal = ({
       title={titles[step]}
       body={screens[step]}
       footer={
-        step === "manual" && (
+        (step === "manual" || step === "afterScan") && (
           <Button
             onClick={handleSubmit(onSubmit)}
             colorScheme="blue"
