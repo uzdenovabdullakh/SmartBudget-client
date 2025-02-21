@@ -255,6 +255,7 @@
   "Enter description": "Enter description",
   "Choose way": "Choose way",
   "Just scan barcode or QR code on receipt": "Just scan barcode or QR code on receipt",
+  "Scan result": "Scan result",
   "validation": {
     "Expected number": "Excepted number",
     "Cash, card or savings": "Cash, card or savings",

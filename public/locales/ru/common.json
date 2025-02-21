@@ -255,6 +255,7 @@
   "Enter description": "Введите описание",
   "Choose way": "Выберите способ",
   "Just scan barcode or QR code on receipt": "Просто отсканируйте QR-код на чеке",
+  "Scan result": "Результаты сканирования",
   "validation": {
     "Expected number": "Ожидалось число",
     "Cash, card or savings": "Наличные, кредитная карточка или сбережения",
