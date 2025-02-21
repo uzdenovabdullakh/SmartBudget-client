@@ -22,6 +22,10 @@ const nextConfig: NextConfig = {
     removeConsole: process.env.NODE_ENV === "production",
     emotion: true,
   },
+  env: {
+    OFD_TOKEN: process.env.OFD_TOKEN,
+    OFD_API_URL: process.env.OFD_API_URL,
+  },
 };
 
 export default nextConfig;
