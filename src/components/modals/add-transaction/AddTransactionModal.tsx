@@ -86,17 +86,6 @@ export const AddTransactionModal = ({
         spacing={5}
         align="stretch"
       >
-        <FormDatePicker
-          control={control}
-          error={errors.date?.message}
-          label={t("Date")}
-          placeholder={t("Select date")}
-        />
-        <CategorySelect
-          label={t("Category")}
-          {...register("category")}
-          error={errors.category?.message}
-        />
         <FormInputUI
           type="number"
           placeholder={t("Enter inflow amount")}
@@ -110,6 +99,19 @@ export const AddTransactionModal = ({
           {...register("outflow", { valueAsNumber: true })}
           error={errors.outflow?.message}
           label={t("Outflow")}
+        />
+        <FormDatePicker
+          control={control}
+          error={errors.date?.message}
+          label={t("Date")}
+          placeholder={t("Select date")}
+        />
+        <CategorySelect
+          label={t("Category")}
+          {...register("category")}
+          placeholder={t("Select Category")}
+          defaultValue={undefined}
+          error={errors.category?.message}
         />
         <FormInputUI
           type="text"

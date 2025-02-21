@@ -6,27 +6,16 @@ const baseTransactionSchema = z.object({
     .number()
     .optional()
     .nullable()
-    .transform((data) => {
-      if (Number.isNaN(data)) {
-        return null;
-      }
-      return data;
-    }),
+    .transform((data) => (Number.isNaN(data) ? null : data)),
   outflow: z
     .number()
     .optional()
     .nullable()
-    .transform((data) => {
-      if (Number.isNaN(data)) {
-        return null;
-      }
-      return data;
-    }),
+    .transform((data) => (Number.isNaN(data) ? null : data)),
   description: z.string().optional().nullable(),
   date: z.string(),
   category: z
     .string()
-    .uuid(i18n.t("validation.Invalid uuid"))
     .optional()
     .nullable()
     .transform((data) => {
