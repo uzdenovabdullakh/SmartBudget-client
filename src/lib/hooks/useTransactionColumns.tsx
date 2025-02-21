@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Controller, useForm, useWatch } from "react-hook-form";
-import { Button, HStack, Input, Select, Td, Tfoot, Tr } from "@chakra-ui/react";
+import { Button, HStack, Input, Td, Tfoot, Tr } from "@chakra-ui/react";
 import { createColumnHelper } from "@tanstack/react-table";
 import { Transaction } from "@/lib/types/transaction.types";
 import {
@@ -11,8 +11,8 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useUpdateTransactionMutation } from "@/lib/services/transaction.api";
 import { showToast } from "@/lib/utils/toast";
+import { CategorySelect } from "@/components/category/CategorySelect";
 import DatePickerUI from "../../components/ui/DatePickerUI";
-import { useGetCategoryGroupQuery } from "../services/category-group.api";
 import { useBudgetContext } from "../context/BudgetContext";
 import { formatCurrency } from "../utils/helpers";
 
@@ -40,10 +40,6 @@ export const useTransactionColumns = ({
   const inflowValue = useWatch({ control, name: "inflow" });
   const outflowValue = useWatch({ control, name: "outflow" });
 
-  const { data: categoryGroups } = useGetCategoryGroupQuery(
-    { id: budget?.id!, defaultCategory: true },
-    { skip: !budget?.id },
-  );
   const [updateTransaction] = useUpdateTransactionMutation();
 
   const handleSave = useCallback(
@@ -130,43 +126,12 @@ export const useTransactionColumns = ({
       header: t("Category"),
       cell: (info) =>
         editingId === info.row.original.id ? (
-          <Select
+          <CategorySelect
             {...register("category", {
               setValueAs: handleSetCategory,
             })}
             defaultValue=""
-            variant="filled"
-            size="md"
-            sx={{
-              "& > optgroup": {
-                backgroundColor: "#f9f9f9",
-                color: "#333",
-                padding: "8px",
-                fontWeight: "bold",
-              },
-              "& > option": {
-                paddingLeft: "24px",
-                fontSize: "14px",
-                display: "flex",
-                justifyContent: "space-between",
-              },
-            }}
-          >
-            {categoryGroups?.map((group) => (
-              <optgroup key={group.id} label={`${group.name}:`}>
-                {group.categories.map((cat) => (
-                  <option key={cat.id} value={cat.id}>
-                    {cat.name}&nbsp;&nbsp;&nbsp;
-                    {formatCurrency(
-                      cat.available,
-                      budget?.settings.currency,
-                      budget?.settings.currencyPlacement,
-                    )}
-                  </option>
-                ))}
-              </optgroup>
-            ))}
-          </Select>
+          />
         ) : (
           info.row.original.category?.name
         ),
