@@ -9,7 +9,7 @@ import {
 
 const navigationButtons = [
   { label: "Budget", path: "", icon: <IoWalletOutline /> },
-  { label: "Reflect", path: "reflect", icon: <IoAnalyticsOutline /> },
+  { label: "Reflect", path: "analytic", icon: <IoAnalyticsOutline /> },
   { label: "All Accounts", path: "account", icon: <IoListOutline /> },
 ];
 
