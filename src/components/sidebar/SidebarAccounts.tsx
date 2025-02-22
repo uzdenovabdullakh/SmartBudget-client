@@ -55,7 +55,13 @@ export const SidebarAccounts = ({ budget, accounts }: SidebarAccountsProps) => {
               cursor="pointer"
             >
               <Text>{account.name}</Text>
-              <Text>{formatCurrency(account.amount)}</Text>
+              <Text>
+                {formatCurrency(
+                  account.amount,
+                  budget?.settings.currency,
+                  budget?.settings.currencyPlacement,
+                )}
+              </Text>
             </HStack>
           ))}
         </VStack>

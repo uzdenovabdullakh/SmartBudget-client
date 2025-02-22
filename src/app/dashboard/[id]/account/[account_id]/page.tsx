@@ -25,6 +25,7 @@ import { AccountPanel } from "@/components/account/AccountPanel";
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import { DateRange } from "@/lib/types/types";
+import { useBudgetContext } from "@/lib/context/BudgetContext";
 import { formatCurrency } from "@/lib/utils/helpers";
 
 const TransactionsTable = dynamic(
@@ -50,7 +51,8 @@ export default function SingleAccount() {
   const accountId = Array.isArray(params?.account_id)
     ? params?.account_id[0]
     : params?.account_id;
-  const budgetId = Array.isArray(params?.id) ? params.id[0] : params?.id;
+
+  const { budget } = useBudgetContext();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [dateRange, setDateRange] = useState<DateRange | null>(null);
@@ -73,7 +75,7 @@ export default function SingleAccount() {
           title: message,
           status: "info",
         });
-        router.push(`/dashboard/${budgetId}/account`);
+        router.push(`/dashboard/${budget?.id}/account`);
       } catch (error) {
         console.log(error);
       }
@@ -133,7 +135,12 @@ export default function SingleAccount() {
         ) : (
           <HStack alignItems="baseline" justifyContent="space-between">
             <Text fontSize="lg" fontWeight="bold" mb={4}>
-              {t("Balance")}: {formatCurrency(account?.amount)}
+              {t("Balance")}:{" "}
+              {formatCurrency(
+                account?.amount,
+                budget?.settings.currency,
+                budget?.settings.currencyPlacement,
+              )}
             </Text>
           </HStack>
         )}

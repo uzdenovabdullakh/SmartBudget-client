@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { axiosBaseQuery } from "../axiosBaseQuery";
-import { BaseBudget, ExtendedBudget } from "../types/budget.types";
+import { BaseBudget } from "../types/budget.types";
 import { CreateBudgetDto, UpdateBudgetDto } from "../validation/budget.schema";
 import { ResponseWithoutData } from "../types/types";
 
@@ -13,7 +13,7 @@ export const budgetsApi = createApi({
       query: () => ({ url: "/", method: "GET" }),
       providesTags: ["Budgets"],
     }),
-    getBudgetInfo: builder.query<ExtendedBudget, string>({
+    getBudgetInfo: builder.query<BaseBudget, string>({
       query: (id: string) => ({ url: `/${id}`, method: "GET" }),
       providesTags: ["Budget"],
     }),
@@ -49,6 +49,7 @@ export const budgetsApi = createApi({
 export const {
   useLazyGetBudgetsQuery,
   useLazyGetBudgetInfoQuery,
+  useGetBudgetInfoQuery,
   useGetBudgetsQuery,
   useCreateBudgetMutation,
   useUpdateBudgetMutation,
