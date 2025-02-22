@@ -1,6 +1,6 @@
 "use client";
 
-import { NotFound } from "@/components/ui/Animations";
+import { NotFoundPageAnimation } from "@/components/ui/Animations";
 import { Button, Text, Flex } from "@chakra-ui/react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
@@ -16,7 +16,7 @@ export default function NotFoundPage() {
       justify="center"
       flexDir="column"
     >
-      <NotFound />
+      <NotFoundPageAnimation />
       <Text variant="error-description">
         {t(
           "The page was not found. It may have been deleted or never been. It existed.",

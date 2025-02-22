@@ -44,7 +44,7 @@ export const WomanWithGraphics = () => (
     height={700}
   />
 );
-export const NotFound = () => (
+export const NotFoundPageAnimation = () => (
   <LottieAnimation animationData="/animations/404.json" />
 );
 export const ErrorAnimation = () => (
@@ -62,4 +62,7 @@ export const Bus = () => (
 );
 export const Home = () => (
   <LottieAnimation animationData="/animations/home.json" />
+);
+export const NotFoundDataAnimation = () => (
+  <LottieAnimation animationData="/animations/not-found-data.json" />
 );
