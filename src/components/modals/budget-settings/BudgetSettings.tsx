@@ -1,11 +1,8 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DefaultModalProps } from "@/lib/types/types";
-import {
-  useLazyGetBudgetInfoQuery,
-  useUpdateBudgetMutation,
-} from "@/lib/services/budget.api";
+import { useUpdateBudgetMutation } from "@/lib/services/budget.api";
 import { Button, VStack } from "@chakra-ui/react";
 import {
   UpdateBudgetDto,
@@ -14,9 +11,8 @@ import {
 import { showToast } from "@/lib/utils/toast";
 import { BudgetCurrency, CurrencyPlacement } from "@/lib/constants/enums";
 import FormSelectUI from "@/components/ui/FormSelectUI";
-import { useParams } from "next/navigation";
-import { ExtendedBudget } from "@/lib/types/budget.types";
 import { useTranslation } from "react-i18next";
+import { useBudgetContext } from "@/lib/context/BudgetContext";
 import { DefaultModal } from "..";
 
 const reverseCurrencyMap = {
@@ -31,13 +27,9 @@ export const ChangeBudgetSettingsModal = ({
 }: DefaultModalProps) => {
   const { t } = useTranslation();
 
-  const params = useParams();
-  const budgetId = Array.isArray(params?.id) ? params?.id[0] : params?.id;
+  const { budget } = useBudgetContext();
 
-  const [getBudgetInfo] = useLazyGetBudgetInfoQuery();
   const [updateBudget, { isLoading }] = useUpdateBudgetMutation();
-
-  const [budgetInfo, setBudgetInfo] = useState<ExtendedBudget | null>(null);
 
   const {
     register,
@@ -49,19 +41,19 @@ export const ChangeBudgetSettingsModal = ({
     defaultValues: {
       settings: {
         currency:
-          budgetInfo?.settings.currency &&
-          reverseCurrencyMap[budgetInfo?.settings.currency],
-        currencyPlacement: budgetInfo?.settings.currencyPlacement,
+          budget?.settings.currency &&
+          reverseCurrencyMap[budget?.settings.currency],
+        currencyPlacement: budget?.settings.currencyPlacement,
       },
     },
   });
 
   const onSubmit = async (data: UpdateBudgetDto) => {
-    if (!budgetId) return;
+    if (!budget?.id) return;
 
     try {
       const { message } = await updateBudget({
-        id: budgetId,
+        id: budget.id,
         ...data,
       }).unwrap();
 
@@ -73,30 +65,6 @@ export const ChangeBudgetSettingsModal = ({
       console.log(error);
     }
   };
-
-  const fetchBudgetInfo = useCallback(async () => {
-    if (!budgetId) return;
-
-    try {
-      const result = await getBudgetInfo(budgetId).unwrap();
-      setBudgetInfo(result);
-
-      reset({
-        settings: {
-          currency: result.settings.currency
-            ? reverseCurrencyMap[result.settings.currency]
-            : undefined,
-          currencyPlacement: result.settings.currencyPlacement,
-        },
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }, [budgetId, getBudgetInfo, reset]);
-
-  useEffect(() => {
-    fetchBudgetInfo();
-  }, [fetchBudgetInfo]);
 
   return (
     <DefaultModal

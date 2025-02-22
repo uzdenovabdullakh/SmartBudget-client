@@ -1,12 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
-import {
-  Input,
-  HStack,
-  useDisclosure,
-  Button,
-  VStack,
-  Select,
-} from "@chakra-ui/react";
+import { useCallback } from "react";
+import { HStack, useDisclosure, Button, VStack } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,9 +8,9 @@ import {
   MoveAvaliableSchema,
 } from "@/lib/validation/category.schema";
 import { useMoveAvailableMutation } from "@/lib/services/category.api";
-import { Category, CategoryGroup } from "@/lib/types/category.types";
-import { useLazyGetCategoryGroupQuery } from "@/lib/services/category-group.api";
-import { useParams } from "next/navigation";
+import { Category } from "@/lib/types/category.types";
+import { CategorySelect } from "@/components/category/CategorySelect";
+import FormInputUI from "@/components/ui/FormInputUI";
 import { BasePopover } from "..";
 
 export const MoveAvailablePopover = ({
@@ -28,14 +21,9 @@ export const MoveAvailablePopover = ({
   formatCurrency: (value: number) => string;
 }) => {
   const { t } = useTranslation();
-  const params = useParams();
-  const budgetId = Array.isArray(params?.id) ? params?.id[0] : params?.id;
-
-  const [categoryGroups, setCategoryGroups] = useState<CategoryGroup[]>([]);
 
   const { isOpen, onToggle, onClose } = useDisclosure();
 
-  const [getCategoryGroup] = useLazyGetCategoryGroupQuery();
   const [moveAvailable] = useMoveAvailableMutation();
 
   const { register, handleSubmit, reset } = useForm<MoveAvaliableDto>({
@@ -56,14 +44,6 @@ export const MoveAvailablePopover = ({
     [moveAvailable, onClose, reset],
   );
 
-  useEffect(() => {
-    if (!budgetId) return;
-    getCategoryGroup({ id: budgetId, defaultCategory: true })
-      .unwrap()
-      .then(setCategoryGroups)
-      .catch(console.error);
-  }, [budgetId, getCategoryGroup]);
-
   return (
     <BasePopover
       isOpen={isOpen}
@@ -73,42 +53,14 @@ export const MoveAvailablePopover = ({
         <span onClick={onToggle}>{formatCurrency(category.available)}</span>
       }
       bodyContent={
-        <VStack as="form" onSubmit={handleSubmit(handleApply)}>
-          <Input
+        <VStack as="form" onSubmit={handleSubmit(handleApply)} spacing={4}>
+          <FormInputUI
             {...register("amount", { valueAsNumber: true })}
             placeholder={t("Amount")}
             type="number"
+            label={t("Move")}
           />
-          <Select
-            {...register("to")}
-            placeholder={t("To")}
-            variant="filled"
-            size="md"
-            sx={{
-              "& > optgroup": {
-                backgroundColor: "#f9f9f9",
-                color: "#333",
-                padding: "8px",
-                fontWeight: "bold",
-              },
-              "& > option": {
-                paddingLeft: "24px",
-                fontSize: "14px",
-                display: "flex",
-                justifyContent: "space-between",
-              },
-            }}
-          >
-            {categoryGroups.map((group) => (
-              <optgroup key={group.id} label={`${group.name}:`}>
-                {group.categories.map((cat) => (
-                  <option key={cat.id} value={cat.id}>
-                    {cat.name}&nbsp;&nbsp;&nbsp;{formatCurrency(cat.available)}
-                  </option>
-                ))}
-              </optgroup>
-            ))}
-          </Select>
+          <CategorySelect {...register("to")} label={t("In")} />
         </VStack>
       }
       footerContent={

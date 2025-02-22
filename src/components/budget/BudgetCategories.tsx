@@ -1,10 +1,8 @@
 import { useLazyGetCategoryGroupQuery } from "@/lib/services/category-group.api";
 import { Box, Table, Thead, Tr, Th, Accordion, Stack } from "@chakra-ui/react";
-import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CategoryGroup } from "@/lib/types/category.types";
-import { useGetBudgetInfoQuery } from "@/lib/services/budget.api";
 import {
   DndContext,
   closestCenter,
@@ -19,13 +17,13 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { useDragEnd } from "@/lib/hooks/useDragEnd";
+import { useBudgetContext } from "@/lib/context/BudgetContext";
 import { SkeletonUI } from "../ui/SkeletonUI";
 import { CategoryGroupItem } from "./CategoryGroupItem";
 
 export const BudgetCategories = () => {
   const { t } = useTranslation();
-  const params = useParams();
-  const budgetId = Array.isArray(params?.id) ? params?.id[0] : params?.id;
+  const { budget } = useBudgetContext();
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -37,9 +35,6 @@ export const BudgetCategories = () => {
   );
 
   const [getCategoryGroup, { isLoading }] = useLazyGetCategoryGroupQuery();
-  const { data: budgetInfo } = useGetBudgetInfoQuery(budgetId!, {
-    skip: !budgetId,
-  });
 
   const [categoryGroups, setCategoryGroups] = useState<CategoryGroup[]>([]);
 
@@ -54,12 +49,12 @@ export const BudgetCategories = () => {
   };
 
   useEffect(() => {
-    if (!budgetId) return;
-    getCategoryGroup({ id: budgetId })
+    if (!budget?.id) return;
+    getCategoryGroup({ id: budget.id })
       .unwrap()
       .then(setCategoryGroups)
       .catch(console.error);
-  }, [budgetId, getCategoryGroup]);
+  }, [budget?.id, getCategoryGroup]);
 
   if (isLoading)
     return (
@@ -104,7 +99,7 @@ export const BudgetCategories = () => {
               <CategoryGroupItem
                 key={group.id}
                 group={group}
-                budgetInfo={budgetInfo}
+                budgetInfo={budget}
                 handleCategoryGroupsChange={setCategoryGroups}
               />
             ))}

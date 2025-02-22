@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Box, Flex, Text, Button, IconButton } from "@chakra-ui/react";
-import { ArrowBackIcon, InfoIcon } from "@chakra-ui/icons";
+import { Box, Flex, Text, Button } from "@chakra-ui/react";
+import { InfoIcon } from "@chakra-ui/icons";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCreateAccountMutation } from "@/lib/services/account.api";
@@ -12,6 +12,7 @@ import {
 import { AccountType } from "@/lib/constants/enums";
 import { DefaultModalProps } from "@/lib/types/types";
 import FormSelectUI from "@/components/ui/FormSelectUI";
+import { ArrowBack } from "@/components/ui/ArrowBack";
 import { useTranslation } from "react-i18next";
 import { DefaultModal } from "..";
 import FormInputUI from "../../ui/FormInputUI";
@@ -191,15 +192,7 @@ export const AddAccountModal = ({
       onClose={onClose}
       title={
         currentStep === "unlinked" ? (
-          <Flex align="center" gap={2}>
-            <IconButton
-              aria-label="Go back"
-              icon={<ArrowBackIcon />}
-              variant="ghost"
-              onClick={goBack}
-            />
-            <Text>{t("Add Unlinked Account")}</Text>
-          </Flex>
+          <ArrowBack text={t("Add Unlinked Account")} onClick={goBack} />
         ) : (
           t("Add Account")
         )

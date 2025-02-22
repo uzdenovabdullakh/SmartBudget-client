@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { CategoryGroup } from "@/lib/types/category.types";
-import { ExtendedBudget } from "@/lib/types/budget.types";
+import { BudgetData } from "@/lib/types/budget.types";
 import { useCategoryManagement } from "@/lib/hooks/useCategoryManagment";
 import { SortableItem } from "../dnd/SortableItem";
 import { CategoryChangePopover } from "../popovers/category/CategoryChangePopover";
@@ -18,7 +18,7 @@ import { CategoryTable } from "./CategoryTable";
 
 type CategoryGroupItemProps = {
   group: CategoryGroup;
-  budgetInfo?: ExtendedBudget;
+  budgetInfo: BudgetData;
   handleCategoryGroupsChange: React.Dispatch<
     React.SetStateAction<CategoryGroup[]>
   >;
@@ -85,22 +85,22 @@ export const CategoryGroupItem = ({
           <Box width="20%" textAlign="center">
             {formatCurrency(
               totalAssigned,
-              budgetInfo?.settings?.currency || "$",
-              budgetInfo?.settings?.currencyPlacement || "before",
+              budgetInfo?.settings.currency,
+              budgetInfo?.settings.currencyPlacement,
             )}
           </Box>
           <Box width="20%" textAlign="center">
             {formatCurrency(
               totalActivity,
-              budgetInfo?.settings?.currency || "$",
-              budgetInfo?.settings?.currencyPlacement || "before",
+              budgetInfo?.settings.currency,
+              budgetInfo?.settings.currencyPlacement,
             )}
           </Box>
           <Box width="20%" textAlign="center">
             {formatCurrency(
               totalAvailable,
-              budgetInfo?.settings?.currency || "$",
-              budgetInfo?.settings?.currencyPlacement || "before",
+              budgetInfo?.settings.currency,
+              budgetInfo?.settings.currencyPlacement,
             )}
           </Box>
         </AccordionButton>
@@ -110,8 +110,8 @@ export const CategoryGroupItem = ({
             formatCurrency={(value) =>
               formatCurrency(
                 value,
-                budgetInfo?.settings?.currency || "$",
-                budgetInfo?.settings?.currencyPlacement || "before",
+                budgetInfo?.settings.currency,
+                budgetInfo?.settings.currencyPlacement,
               )
             }
             handleCategoryGroupsChange={handleCategoryGroupsChange}

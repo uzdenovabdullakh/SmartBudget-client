@@ -10,10 +10,7 @@ export type BaseBudget = {
   id: string;
   name: string;
   createdAt: Date;
-};
-
-export type ExtendedBudget = BaseBudget & {
   settings: BudgetSettings;
 };
 
-export type BudgetData = BaseBudget | ExtendedBudget | null;
+export type BudgetData = BaseBudget | null;

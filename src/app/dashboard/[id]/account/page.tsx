@@ -5,11 +5,12 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { Pagination } from "@/components/ui/Pagination";
 import { SearchInput } from "@/components/ui/SearchInput";
 import { SkeletonUI } from "@/components/ui/SkeletonUI";
+import { useBudgetContext } from "@/lib/context/BudgetContext";
 import { useDebounce } from "@/lib/hooks/useDebounce";
 import { useGetAccountsQuery } from "@/lib/services/account.api";
 import { Account } from "@/lib/types/account.types";
+import { formatCurrency } from "@/lib/utils/helpers";
 import { Box, Stack, Text } from "@chakra-ui/react";
-import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -18,12 +19,11 @@ const DEBOUNCE_DELAY = 500;
 
 export default function Accounts() {
   const { t } = useTranslation();
-  const params = useParams();
-  const budgetId = Array.isArray(params?.id) ? params.id[0] : params?.id;
+  const { budget } = useBudgetContext();
 
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [totalBalance, setTotalBalance] = useState("");
+  const [totalBalance, setTotalBalance] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
 
@@ -31,13 +31,13 @@ export default function Accounts() {
 
   const { data, isLoading } = useGetAccountsQuery(
     {
-      id: budgetId!,
+      id: budget?.id!,
       order: "DESC",
       page: currentPage,
       pageSize: PAGE_SIZE,
       search: debouncedSearchQuery,
     },
-    { skip: !budgetId },
+    { skip: !budget?.id },
   );
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,7 +65,12 @@ export default function Accounts() {
           <SkeletonUI height={4} />
         ) : (
           <Text fontSize="lg" fontWeight="bold" mb={4}>
-            {t("Total Balance")}: {totalBalance || 0}
+            {t("Total Balance")}:{" "}
+            {formatCurrency(
+              totalBalance,
+              budget?.settings.currency,
+              budget?.settings.currencyPlacement,
+            )}
           </Text>
         )}
 

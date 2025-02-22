@@ -65,6 +65,7 @@ export const categoryGroupApi = createApi({
 
 export const {
   useLazyGetCategoryGroupQuery,
+  useGetCategoryGroupQuery,
   useCreateCategoryGroupMutation,
   useRemoveCategoryGroupMutation,
   useUpdateCategoryGroupMutation,

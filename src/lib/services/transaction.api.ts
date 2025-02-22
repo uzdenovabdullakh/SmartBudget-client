@@ -22,8 +22,8 @@ export const transactionsApi = createApi({
           id,
           startDate,
           endDate,
-          type,
-          category,
+          orderBy,
+          order,
           page,
           pageSize,
           search,
@@ -35,8 +35,8 @@ export const transactionsApi = createApi({
         if (search) params.append("search", search);
         if (startDate) params.append("startDate", startDate);
         if (endDate) params.append("endDate", endDate);
-        if (category) params.append("category", category);
-        if (type) params.append("type", type);
+        if (orderBy) params.append("orderBy", orderBy);
+        if (order) params.append("order", order);
 
         return {
           url: `/${id}?${params.toString()}`,
