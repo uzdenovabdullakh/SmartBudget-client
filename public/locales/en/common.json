@@ -257,6 +257,7 @@
   "Just scan barcode or QR code on receipt": "Just scan barcode or QR code on receipt",
   "Scan result": "Scan result",
   "Upload File Instead": "Upload File Instead",
+  "If the statement format is pdf, you can use the Sber or VTB statements conversion service to XLSX/CSV": "If the statement format is pdf, you can use the Sber or VTB statements conversion service to XLSX/CSV",
   "validation": {
     "Expected number": "Excepted number",
     "Cash, card or savings": "Cash, card or savings",

@@ -257,6 +257,7 @@
   "Just scan barcode or QR code on receipt": "Просто отсканируйте QR-код на чеке",
   "Scan result": "Результаты сканирования",
   "Upload File Instead": "Загрузить файл вместо сканирования",
+  "If the statement format is pdf, you can use the Sber or VTB statements conversion service to XLSX/CSV": "Если формат выписки в PDF можете воспользоваться сервисом по конвертации выписок Сбера или ВТБ в XLSX/CSV",
   "validation": {
     "Expected number": "Ожидалось число",
     "Cash, card or savings": "Наличные, кредитная карточка или сбережения",
