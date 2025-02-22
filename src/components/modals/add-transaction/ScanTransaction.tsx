@@ -1,17 +1,27 @@
-import { VStack, Box, Spinner, Text } from "@chakra-ui/react";
+import { VStack, Box, Spinner, Text, Input, Button } from "@chakra-ui/react";
 import { Scanner, IDetectedBarcode } from "@yudiel/react-qr-scanner";
 import { useEffect, useRef, useState } from "react";
-import { useGetCheckByQrMutation } from "@/lib/services/check.api";
+import {
+  useGetCheckByQrMutation,
+  useUploadCheckByFileMutation,
+} from "@/lib/services/check.api";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   onScanComplete: (data: any) => void;
 };
 
 export const ScanTransaction = ({ onScanComplete }: Props) => {
+  const { t } = useTranslation();
+
   const boxRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const [scanError, setScanError] = useState<string | null>(null);
   const [checkData, setCheckData] = useState<any>(null);
   const [getCheckByQr, { isLoading }] = useGetCheckByQrMutation();
+  const [uploadCheckByFile, { isLoading: isUploading }] =
+    useUploadCheckByFileMutation();
 
   const handleParseCheck = (data: any) => {
     const transactionData = {
@@ -29,6 +39,21 @@ export const ScanTransaction = ({ onScanComplete }: Props) => {
         const result = await getCheckByQr(qrraw).unwrap();
         setCheckData(result);
 
+        handleParseCheck(result.data.json);
+      } catch (error: any) {
+        setScanError(error.message);
+      }
+    }
+  };
+
+  const handleFileUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      try {
+        const result = await uploadCheckByFile(file).unwrap();
+        setCheckData(result);
         handleParseCheck(result.data.json);
       } catch (error: any) {
         setScanError(error.message);
@@ -62,10 +87,32 @@ export const ScanTransaction = ({ onScanComplete }: Props) => {
           dangerouslySetInnerHTML={{ __html: checkData.data.html }}
         />
       ) : (
-        <Scanner
-          onScan={handleScan}
-          onError={(error: any) => setScanError(error.message)}
-        />
+        <VStack justifyContent="space-between" spacing={5}>
+          <Scanner
+            onScan={handleScan}
+            onError={(error: any) => setScanError(error.message)}
+            styles={{
+              container: {
+                width: "85%",
+                height: "85%",
+              },
+            }}
+          />
+          <Box>
+            <Input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileUpload}
+              display="none"
+            />
+            <Button
+              onClick={() => fileInputRef.current?.click()}
+              isLoading={isUploading}
+            >
+              {t("Upload File Instead")}
+            </Button>
+          </Box>
+        </VStack>
       )}
     </VStack>
   );
