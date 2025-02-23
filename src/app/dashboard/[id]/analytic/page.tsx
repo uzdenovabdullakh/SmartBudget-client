@@ -36,6 +36,10 @@ export default function Analytic() {
   const [selectedYear, setSelectedYear] = useState(getCurrentYear());
   const [selectedMonth, setSelectedMonth] = useState(getCurrentMonth());
   const [selectedWeek, setSelectedWeek] = useState(getCurrentWeek());
+  const [customDate, setCustomDate] = useState<{
+    start: Date | null;
+    end: Date | null;
+  }>({ start: null, end: null });
 
   const [expensesData, setExpensesData] = useState<AnalyticResponseDto | null>(
     null,
@@ -57,12 +61,22 @@ export default function Analytic() {
   useEffect(() => {
     if (budget?.id) {
       const loadData = async () => {
-        const { startDate, endDate } = getStartAndEndDate({
-          period,
-          selectedYear,
-          selectedMonth,
-          selectedWeek,
-        });
+        let startDate;
+        let endDate;
+
+        if (period === "custom") {
+          startDate = customDate?.start;
+          endDate = customDate?.end;
+        } else {
+          const dates = getStartAndEndDate({
+            period,
+            selectedYear,
+            selectedMonth,
+            selectedWeek,
+          });
+          startDate = dates.startDate;
+          endDate = dates.endDate;
+        }
 
         const [expensesResponse, incomesResponse] = await Promise.all([
           fetchExpenses({
@@ -91,6 +105,8 @@ export default function Analytic() {
     selectedWeek,
     fetchExpenses,
     fetchIncomes,
+    customDate?.start,
+    customDate?.end,
   ]);
 
   if (expensesDataLoading || incomesDataLoading) {
@@ -104,13 +120,16 @@ export default function Analytic() {
   return (
     <Box maxW="2xl" mx="auto" p={{ base: 4, md: 6 }}>
       <Tabs
-        index={["week", "month", "year"].indexOf(period)}
-        onChange={(index) => setPeriod(["week", "month", "year"][index])}
+        index={["week", "month", "year", "custom"].indexOf(period)}
+        onChange={(index) =>
+          setPeriod(["week", "month", "year", "custom"][index])
+        }
       >
         <TabList>
           <Tab>{t("Week")}</Tab>
           <Tab>{t("Month")}</Tab>
           <Tab>{t("Year")}</Tab>
+          <Tab>{t("Custom")}</Tab>
         </TabList>
       </Tabs>
 
@@ -122,6 +141,8 @@ export default function Analytic() {
         setSelectedMonth={setSelectedMonth}
         selectedWeek={selectedWeek}
         setSelectedWeek={setSelectedWeek}
+        setCustomDate={setCustomDate}
+        customDate={customDate}
       />
 
       <HStack spacing={6} mt={6}>

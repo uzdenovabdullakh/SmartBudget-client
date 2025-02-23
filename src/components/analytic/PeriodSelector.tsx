@@ -5,6 +5,8 @@ import {
 } from "@/lib/utils/helpers";
 import { HStack, Button, Text } from "@chakra-ui/react";
 import { Dispatch, SetStateAction } from "react";
+import { useTranslation } from "react-i18next";
+import DatePickerUI from "../ui/DatePickerUI";
 
 interface PeriodSelectorProps {
   period: string;
@@ -19,6 +21,16 @@ interface PeriodSelectorProps {
       end: Date;
     }>
   >;
+  setCustomDate: Dispatch<
+    SetStateAction<{
+      start: Date | null;
+      end: Date | null;
+    }>
+  >;
+  customDate: {
+    start: Date | null;
+    end: Date | null;
+  };
 }
 
 export const PeriodSelector = ({
@@ -29,7 +41,11 @@ export const PeriodSelector = ({
   setSelectedMonth,
   selectedWeek,
   setSelectedWeek,
+  setCustomDate,
+  customDate,
 }: PeriodSelectorProps) => {
+  const { t } = useTranslation();
+
   const now = new Date();
   const currentYear = getCurrentYear();
   const currentMonth = getCurrentMonth();
@@ -75,6 +91,10 @@ export const PeriodSelector = ({
     if (nextWeekStart <= now) {
       setSelectedWeek(getWeekRange(nextWeekStart));
     }
+  };
+
+  const handleDateChange = (field: "start" | "end", value: Date | null) => {
+    setCustomDate((prev) => ({ ...prev, [field]: value }));
   };
 
   // Если текущий месяц — январь и год равен текущему, дизайблим кнопку
@@ -131,6 +151,37 @@ export const PeriodSelector = ({
           <Button onClick={handleNextWeek} isDisabled={selectedWeek.end >= now}>
             {">"}
           </Button>
+        </HStack>
+      )}
+
+      {period === "custom" && (
+        <HStack mt={4} spacing={4}>
+          <HStack spacing={4} align="center">
+            <Text>{t("From")}</Text>
+            <DatePickerUI
+              selected={customDate.start}
+              onChange={(date) => {
+                if (customDate.end && date && date > customDate.end) return;
+                handleDateChange("start", date);
+              }}
+              maxDate={customDate.end ? customDate.end : undefined}
+              isClearable
+              placeholderText={t("Select start date")}
+            />
+          </HStack>
+          <HStack spacing={4} align="center">
+            <Text>{t("To")}</Text>
+            <DatePickerUI
+              selected={customDate.end}
+              onChange={(date) => {
+                if (customDate.start && date && date < customDate.start) return;
+                handleDateChange("end", date);
+              }}
+              minDate={customDate.start ? customDate.start : undefined}
+              isClearable
+              placeholderText={t("Select end date")}
+            />
+          </HStack>
         </HStack>
       )}
     </>
