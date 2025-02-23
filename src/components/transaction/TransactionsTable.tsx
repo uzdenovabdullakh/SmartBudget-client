@@ -10,6 +10,8 @@ import {
   Box,
   Stack,
   Checkbox,
+  HStack,
+  Tooltip,
 } from "@chakra-ui/react";
 import {
   useDeleteTransactionsMutation,
@@ -25,9 +27,10 @@ import {
   Row,
   useReactTable,
 } from "@tanstack/react-table";
+import { useCategorizeTransactionsMutation } from "@/lib/services/ai.api";
+import { useTransactionColumns } from "@/lib/hooks/useTransactionColumns";
 import { Pagination } from "../ui/Pagination";
 import { SkeletonUI } from "../ui/SkeletonUI";
-import { useTransactionColumns } from "../../lib/hooks/useTransactionColumns";
 
 const PAGE_SIZE = 10;
 const DEBOUNCE_DELAY = 500;
@@ -67,6 +70,7 @@ export const TransactionsTable: React.FC<TransactionsTableProps> = ({
     order: order ?? undefined,
   });
   const [deleteTransactions] = useDeleteTransactionsMutation();
+  const [categorizeTransactions] = useCategorizeTransactionsMutation();
 
   const handleRowClick = useCallback((row: Row<Transaction>) => {
     setEditingId(row.original.id);
@@ -81,6 +85,16 @@ export const TransactionsTable: React.FC<TransactionsTableProps> = ({
       console.log(error);
     }
   }, [deleteTransactions, selectedRows]);
+
+  const handleCategorize = useCallback(async () => {
+    try {
+      const { message } = await categorizeTransactions(selectedRows).unwrap();
+      setSelectedRows([]);
+      showToast({ title: message, status: "info" });
+    } catch (error) {
+      console.log(error);
+    }
+  }, [categorizeTransactions, selectedRows]);
 
   const handleSort = useCallback(
     (column: OrderByType) => {
@@ -128,9 +142,23 @@ export const TransactionsTable: React.FC<TransactionsTableProps> = ({
   return (
     <Box>
       {selectedRows.length > 0 && (
-        <Button colorScheme="red" onClick={handleDelete}>
-          {t("Delete Selected")} ({selectedRows.length})
-        </Button>
+        <HStack>
+          <Button colorScheme="red" onClick={handleDelete}>
+            {t("Delete Selected")} ({selectedRows.length})
+          </Button>
+          <Tooltip
+            label={t("Categorize selected transactions using AI")}
+            aria-label="Categorize tooltip"
+          >
+            <Button
+              colorScheme="yellow"
+              color="neutrals.midnight"
+              onClick={handleCategorize}
+            >
+              {t("Categorize Selected")} ({selectedRows.length})
+            </Button>
+          </Tooltip>
+        </HStack>
       )}
       <Table variant="simple" mt={4}>
         <Thead>
