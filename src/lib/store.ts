@@ -9,6 +9,7 @@ import { transactionsApi } from "./services/transaction.api";
 import { categoryApi } from "./services/category.api";
 import { categoryGroupApi } from "./services/category-group.api";
 import { checkApi } from "./services/check.api";
+import { analyticApi } from "./services/analytic.api";
 
 export const store = configureStore({
   reducer: {
@@ -21,6 +22,7 @@ export const store = configureStore({
     [categoryApi.reducerPath]: categoryApi.reducer,
     [categoryGroupApi.reducerPath]: categoryGroupApi.reducer,
     [checkApi.reducerPath]: checkApi.reducer,
+    [analyticApi.reducerPath]: analyticApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -33,6 +35,7 @@ export const store = configureStore({
       categoryApi.middleware,
       categoryGroupApi.middleware,
       checkApi.middleware,
+      analyticApi.middleware,
     ),
 });
 

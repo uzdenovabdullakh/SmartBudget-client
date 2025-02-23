@@ -1,6 +1,16 @@
 import React from "react";
 import { DefaultModalProps } from "@/lib/types/types";
-import { Box, Button, FormControl, Input, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  FormControl,
+  Input,
+  Link,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
+import { InfoIcon } from "@chakra-ui/icons";
 import { useTranslation } from "react-i18next";
 import { showToast } from "@/lib/utils/toast";
 import { useForm, SubmitHandler, useWatch } from "react-hook-form";
@@ -53,7 +63,7 @@ export const ImportFile = ({ isOpen, onClose, accountId }: ImportFileProps) => {
       isOpen={isOpen}
       onClose={onClose}
       title={t("Upload Bank Statement")}
-      size="md"
+      size="lg"
       body={
         <FormControl>
           <Text mb={4}>
@@ -87,13 +97,40 @@ export const ImportFile = ({ isOpen, onClose, accountId }: ImportFileProps) => {
         </FormControl>
       }
       footer={
-        <Button
-          colorScheme="blue"
-          onClick={handleSubmit(onSubmit)}
-          isLoading={isLoading}
-        >
-          {t("Upload")}
-        </Button>
+        <VStack spacing={5}>
+          <Button
+            colorScheme="blue"
+            onClick={handleSubmit(onSubmit)}
+            isLoading={isLoading}
+          >
+            {t("Upload")}
+          </Button>
+          <Flex
+            align="center"
+            alignItems="baseline"
+            gap={2}
+            fontSize="sm"
+            color="gray.500"
+          >
+            <InfoIcon color="blue.400" />
+            <VStack alignItems="flex-start">
+              <Text>
+                {t(
+                  "If the statement format is pdf, you can use the Sber or VTB statements conversion service to XLSX/CSV",
+                )}
+                :
+              </Text>
+              <Link
+                href="https://it-prosto.obit.ru/tools/sberbank_statement/"
+                target="_blank"
+              >
+                <Text as="span" variant="link-text">
+                  https://it-prosto.obit.ru/tools/sberbank_statement/
+                </Text>
+              </Link>
+            </VStack>
+          </Flex>
+        </VStack>
       }
     />
   );
