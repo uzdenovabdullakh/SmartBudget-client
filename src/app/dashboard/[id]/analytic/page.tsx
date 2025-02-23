@@ -113,10 +113,6 @@ export default function Analytic() {
     return <WomanWithGraphics />;
   }
 
-  if (!expensesData || !incomesData) {
-    return <NotFoundDataAnimation />;
-  }
-
   return (
     <Box maxW="2xl" mx="auto" p={{ base: 4, md: 6 }}>
       <Tabs
@@ -146,20 +142,36 @@ export default function Analytic() {
       />
 
       <HStack spacing={6} mt={6}>
-        <PieChart data={expensesData} title="Expense" colors={expensesColors} />
-        <PieChart data={incomesData} title="Income" colors={incomesColors} />
+        {!expensesData?.amounts.length ? (
+          <NotFoundDataAnimation loop={false} />
+        ) : (
+          <PieChart
+            data={expensesData}
+            title="Expense"
+            colors={expensesColors}
+          />
+        )}
+        {!incomesData?.amounts.length ? (
+          <NotFoundDataAnimation loop={false} />
+        ) : (
+          <PieChart data={incomesData} title="Income" colors={incomesColors} />
+        )}
       </HStack>
 
-      <Box mt={6}>
-        <Text fontSize="xl" fontWeight="bold" mb={4}>
-          {t("Expenses Details")}
-        </Text>
-        <ExpensesTable
-          data={expensesData}
-          colors={expensesColors}
-          budgetSettings={budget?.settings}
-        />
-      </Box>
+      {!expensesData?.amounts.length ? (
+        <Box />
+      ) : (
+        <Box mt={6}>
+          <Text fontSize="xl" fontWeight="bold" mb={4}>
+            {t("Expenses Details")}
+          </Text>
+          <ExpensesTable
+            data={expensesData}
+            colors={expensesColors}
+            budgetSettings={budget?.settings}
+          />
+        </Box>
+      )}
     </Box>
   );
 }
