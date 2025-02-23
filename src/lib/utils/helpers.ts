@@ -51,6 +51,7 @@ export const transactionsTableReduce = (state: any, action: any) => {
   }
 };
 
+// NOTE - try use i18next to currency and number formatting https://www.i18next.com/translation-function/formatting
 export const formatCurrency = (
   value: number = 0,
   currency: string = "$",
