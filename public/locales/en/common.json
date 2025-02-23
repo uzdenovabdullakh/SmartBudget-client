@@ -269,6 +269,11 @@
   "operationsWithCount_many": "{{count}} operations",
   "operationsWithCount_other": "{{count}} operations",
   "Expenses Details": "Expenses Details",
+  "Categorize Selected": "Categorize Selected",
+  "Auto-Categorize": "🚀Auto-Categorize",
+  "auto_categorize_description": "If you don't want to manually categorize transactions without categories, you can automatically categorize ALL transactions in this account using AI.",
+  "auto_categorize_description_part_2": "The description will be used for categorization. If the transaction description is empty, the category will be \"Inflow: Ready for assign\".",
+  "Categorize selected transactions using AI": "Categorize selected transactions using AI. The description will be used for categorization. If the transaction description is empty, the category will be \"Inflow: Ready for assign\"",
   "validation": {
     "Expected number": "Excepted number",
     "Cash, card or savings": "Cash, card or savings",
