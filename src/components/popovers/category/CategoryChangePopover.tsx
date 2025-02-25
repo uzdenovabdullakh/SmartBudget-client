@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { Input, HStack, Box, useDisclosure } from "@chakra-ui/react";
+import { Input, HStack, Box, useDisclosure, Text } from "@chakra-ui/react";
 import { Category, CategoryGroup } from "@/lib/types/category.types";
 import { useTranslation } from "react-i18next";
 import { DivButton } from "@/components/ui/DivButton";
@@ -64,8 +64,8 @@ export const CategoryChangePopover = ({
       isOpen={isOpen}
       onClose={onClose}
       triggerButton={
-        <Box onClick={onToggle} cursor="pointer" role="button">
-          {entity.name}
+        <Box cursor="pointer" role="button" _hover={{ textDecor: "underline" }}>
+          <Text onClick={onToggle}>{entity.name}</Text>
         </Box>
       }
       bodyContent={
