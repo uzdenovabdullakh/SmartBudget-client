@@ -1,4 +1,4 @@
-import { Box, HStack, Button, useDisclosure } from "@chakra-ui/react";
+import { HStack, Button, useDisclosure } from "@chakra-ui/react";
 import { t } from "i18next";
 import { AiOutlineFile } from "react-icons/ai";
 import { IoAddCircleOutline } from "react-icons/io5";
@@ -7,6 +7,7 @@ import { DateRangePopover } from "../popovers/date-range/DateRangePopover";
 import { SearchInput } from "../ui/SearchInput";
 import { ImportFile } from "../modals/import-file/ImportFile";
 import { AddTransactionModal } from "../modals/add-transaction/AddTransactionModal";
+import { AutoCategorizePopover } from "../popovers/auto-categorize/AutoCategorizePopover";
 
 type AccountPanelProps = {
   accountId: string;
@@ -25,11 +26,11 @@ export const AccountPanel = ({
   const addTransactionModal = useDisclosure();
 
   return (
-    <Box
+    <HStack
       mb={4}
-      display="flex"
       justifyContent="space-between"
       alignItems="center"
+      spacing={4}
     >
       <HStack spacing={4}>
         <Button
@@ -58,6 +59,7 @@ export const AccountPanel = ({
           isOpen={importFileModal.isOpen}
           onClose={importFileModal.onClose}
         />
+        <AutoCategorizePopover accountId={accountId} />
       </HStack>
 
       <HStack spacing={4}>
@@ -68,6 +70,6 @@ export const AccountPanel = ({
           onSearchChange={onSearchChange}
         />
       </HStack>
-    </Box>
+    </HStack>
   );
 };
