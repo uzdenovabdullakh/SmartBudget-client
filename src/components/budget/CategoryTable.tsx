@@ -1,5 +1,5 @@
 import { Category, CategoryGroup } from "@/lib/types/category.types";
-import { Table, Tbody, Td, Box, Input } from "@chakra-ui/react";
+import { Table, Tbody, Td, Box, Input, Text } from "@chakra-ui/react";
 import {
   SortableContext,
   verticalListSortingStrategy,
@@ -102,14 +102,13 @@ export const CategoryTable = ({
             )}
           />
         ) : (
-          <Box
+          <Text
             onClick={() => handleEditStart(category)}
             cursor="pointer"
-            width="80px"
             textAlign="center"
           >
             {formatCurrency(category.assigned)}
-          </Box>
+          </Text>
         )}
       </Td>
       <Td width="20%" textAlign="center">
