@@ -9,7 +9,7 @@ import {
 } from "@/lib/validation/category.schema";
 import { useMoveAvailableMutation } from "@/lib/services/category.api";
 import { Category } from "@/lib/types/category.types";
-import { CategorySelect } from "@/components/category/CategorySelect";
+import { CategorySelect } from "@/components/forms/CategorySelect";
 import FormInputUI from "@/components/ui/FormInputUI";
 import { BasePopover } from "..";
 

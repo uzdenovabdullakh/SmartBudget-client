@@ -3,7 +3,7 @@ import { useFormContext, useWatch } from "react-hook-form";
 import { CreateTransactionDto } from "@/lib/validation/transaction.schema";
 import FormInputUI from "@/components/ui/FormInputUI";
 import FormDatePicker from "@/components/ui/FormDatePicker";
-import { CategorySelect } from "@/components/category/CategorySelect";
+import { CategorySelect } from "@/components/forms/CategorySelect";
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 

@@ -11,7 +11,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useUpdateTransactionMutation } from "@/lib/services/transaction.api";
 import { showToast } from "@/lib/utils/toast";
-import { CategorySelect } from "@/components/category/CategorySelect";
+import { CategorySelect } from "@/components/forms/CategorySelect";
 import DatePickerUI from "../../components/ui/DatePickerUI";
 import { useBudgetContext } from "../context/BudgetContext";
 import { formatCurrency } from "../utils/helpers";
