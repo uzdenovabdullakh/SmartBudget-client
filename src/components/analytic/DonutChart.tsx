@@ -53,7 +53,7 @@ export const DonutChart = ({
 
   return (
     <Flex justifyContent="center" alignItems="center" mb={4}>
-      <Box pos="relative" w="60%">
+      <Box pos="relative" w="40%">
         <Doughnut data={data} options={options} />
         <Box
           pos="absolute"

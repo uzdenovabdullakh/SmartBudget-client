@@ -293,6 +293,7 @@
   "yearly":  "год",
   "You reached": "Вы достигли {{progress}}%, дальнейшие траты превысят ограничение!",
   "Exceeded by": "Превышено на {{amount}}",
+  "Spended now": "Потрачено сейчас",
   "validation": {
     "Expected number": "Ожидалось число",
     "Cash, card or savings": "Наличные, кредитная карточка или сбережения",
