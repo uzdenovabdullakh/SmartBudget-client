@@ -66,11 +66,7 @@ export default function Accounts() {
         ) : (
           <Text fontSize="lg" fontWeight="bold" mb={4}>
             {t("Total Balance")}:{" "}
-            {formatCurrency(
-              totalBalance,
-              budget?.settings.currency,
-              budget?.settings.currencyPlacement,
-            )}
+            {formatCurrency(totalBalance, budget?.settings)}
           </Text>
         )}
 

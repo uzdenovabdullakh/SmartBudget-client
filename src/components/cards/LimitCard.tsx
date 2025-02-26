@@ -120,22 +120,14 @@ export const LimitCard = ({ category, budgetSettings }: LimitCardProps) => {
           </Heading>
           <Text mt={4} mb={4}>
             {t("Limit Amount")}:{" "}
-            {formatCurrency(
-              categoryLimit.limitAmount,
-              budgetSettings?.currency,
-              budgetSettings?.currencyPlacement,
-            )}
+            {formatCurrency(categoryLimit.limitAmount, budgetSettings)}
           </Text>
           <Text mb={4}>
             {t("Period")}: {t(categoryLimit.limitResetPeriod)}
           </Text>
           <Text mb={4}>
             {t("Spended now")}:{" "}
-            {formatCurrency(
-              categoryLimit.spentAmount,
-              budgetSettings?.currency,
-              budgetSettings?.currencyPlacement,
-            )}
+            {formatCurrency(categoryLimit.spentAmount, budgetSettings)}
           </Text>
           <DonutChart
             progress={progress}
@@ -148,11 +140,7 @@ export const LimitCard = ({ category, budgetSettings }: LimitCardProps) => {
               {exceededAmount > 0 && (
                 <Text textDecor="underline" textDecorationColor="red.600">
                   {t("Exceeded by", {
-                    amount: formatCurrency(
-                      exceededAmount,
-                      budgetSettings?.currency,
-                      budgetSettings?.currencyPlacement,
-                    ),
+                    amount: formatCurrency(exceededAmount, budgetSettings),
                   })}
                 </Text>
               )}

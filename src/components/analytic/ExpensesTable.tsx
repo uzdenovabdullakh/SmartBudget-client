@@ -45,13 +45,7 @@ export const ExpensesTable = ({
                 <Text>{category}</Text>
               </HStack>
             </Td>
-            <Td>
-              {formatCurrency(
-                data.amounts[index],
-                budgetSettings?.currency,
-                budgetSettings?.currencyPlacement,
-              )}
-            </Td>
+            <Td>{formatCurrency(data.amounts[index], budgetSettings)}</Td>
             <Td>
               {t("operationsWithCount", {
                 count: data.operationsCount[index],

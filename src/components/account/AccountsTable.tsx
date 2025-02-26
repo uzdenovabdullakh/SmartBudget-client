@@ -40,13 +40,7 @@ export const AccountsTable = ({ accounts }: AccountTableProps) => {
             <Td>{account.name}</Td>
             <Td>{new Date(account.createdAt).toLocaleDateString()}</Td>
             <Td>{account.type}</Td>
-            <Td>
-              {formatCurrency(
-                account.amount,
-                budget?.settings.currency,
-                budget?.settings.currencyPlacement,
-              )}
-            </Td>
+            <Td>{formatCurrency(account.amount, budget?.settings)}</Td>
           </Tr>
         ))}
       </Tbody>
