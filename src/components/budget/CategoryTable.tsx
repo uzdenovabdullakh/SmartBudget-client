@@ -17,6 +17,7 @@ import { useBudgetInspector } from "@/lib/context/BudgetInspectorContext";
 import { SortableItem } from "../dnd/SortableItem";
 import { CategoryChangePopover } from "../popovers/category/CategoryChangePopover";
 import { MoveAvailablePopover } from "../popovers/category/MoveAvailablePopover";
+import { ProgressBar } from "../ui/ProgressBar";
 
 type CategoryTableProps = {
   group: CategoryGroup;
@@ -74,6 +75,12 @@ export const CategoryTable = ({
           onUpdate={handleUpdateCategoryName}
           onDelete={handleDeleteCategory}
         />
+        <Box mt={2}>
+          <ProgressBar
+            spentAmount={category?.categorySpending?.spentAmount}
+            limitAmount={category?.categorySpending?.limitAmount}
+          />
+        </Box>
       </Td>
       <Td width="20%" textAlign="center">
         {editingCategory === category.id ? (
