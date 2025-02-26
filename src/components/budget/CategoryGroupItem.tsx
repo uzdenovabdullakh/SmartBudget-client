@@ -83,36 +83,20 @@ export const CategoryGroupItem = ({
             </HStack>
           </Box>
           <Box width="20%" textAlign="center">
-            {formatCurrency(
-              totalAssigned,
-              budgetInfo?.settings.currency,
-              budgetInfo?.settings.currencyPlacement,
-            )}
+            {formatCurrency(totalAssigned, budgetInfo?.settings)}
           </Box>
           <Box width="20%" textAlign="center">
-            {formatCurrency(
-              totalActivity,
-              budgetInfo?.settings.currency,
-              budgetInfo?.settings.currencyPlacement,
-            )}
+            {formatCurrency(totalActivity, budgetInfo?.settings)}
           </Box>
           <Box width="20%" textAlign="center">
-            {formatCurrency(
-              totalAvailable,
-              budgetInfo?.settings.currency,
-              budgetInfo?.settings.currencyPlacement,
-            )}
+            {formatCurrency(totalAvailable, budgetInfo?.settings)}
           </Box>
         </AccordionButton>
         <AccordionPanel>
           <CategoryTable
             group={group}
             formatCurrency={(value) =>
-              formatCurrency(
-                value,
-                budgetInfo?.settings.currency,
-                budgetInfo?.settings.currencyPlacement,
-              )
+              formatCurrency(value, budgetInfo?.settings)
             }
             handleCategoryGroupsChange={handleCategoryGroupsChange}
           />

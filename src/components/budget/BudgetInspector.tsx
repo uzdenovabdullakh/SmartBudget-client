@@ -63,41 +63,26 @@ export const BudgetInspector = ({
   if (!selectedCategory) {
     return (
       <BalanceCard
-        activity={formatCurrency(
-          totalActivity,
-          budgetSettings?.currency,
-          budgetSettings?.currencyPlacement,
-        )}
-        available={formatCurrency(
-          totalAvailable,
-          budgetSettings?.currency,
-          budgetSettings?.currencyPlacement,
-        )}
-        assigned={formatCurrency(
-          totalAssigned,
-          budgetSettings?.currency,
-          budgetSettings?.currencyPlacement,
-        )}
+        activity={formatCurrency(totalActivity, budgetSettings)}
+        available={formatCurrency(totalAvailable, budgetSettings)}
+        assigned={formatCurrency(totalAssigned, budgetSettings)}
       />
     );
   }
 
   const categoryAvailable = formatCurrency(
     selectedCategory?.available,
-    budgetSettings?.currency,
-    budgetSettings?.currencyPlacement,
+    budgetSettings,
   );
 
   const categoryAssigned = formatCurrency(
     selectedCategory?.assigned,
-    budgetSettings?.currency,
-    budgetSettings?.currencyPlacement,
+    budgetSettings,
   );
 
   const categoryActivity = formatCurrency(
     selectedCategory?.activity,
-    budgetSettings?.currency,
-    budgetSettings?.currencyPlacement,
+    budgetSettings,
   );
 
   return (

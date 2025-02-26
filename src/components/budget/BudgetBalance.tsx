@@ -34,11 +34,7 @@ export const BudgetBalance = () => {
         ) : (
           <VStack spacing={1} align="flex-start">
             <Text fontSize="lg" fontWeight="bold" color="green.800">
-              {formatCurrency(
-                budgetBalance?.available,
-                budget?.settings.currency,
-                budget?.settings.currencyPlacement,
-              )}
+              {formatCurrency(budgetBalance?.available, budget?.settings)}
             </Text>
             <Text fontSize="sm" color="green.600">
               {budgetBalance?.name}

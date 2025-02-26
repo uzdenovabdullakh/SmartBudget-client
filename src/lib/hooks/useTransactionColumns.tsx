@@ -11,7 +11,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useUpdateTransactionMutation } from "@/lib/services/transaction.api";
 import { showToast } from "@/lib/utils/toast";
-import { CategorySelect } from "@/components/category/CategorySelect";
+import { CategorySelect } from "@/components/forms/CategorySelect";
 import DatePickerUI from "../../components/ui/DatePickerUI";
 import { useBudgetContext } from "../context/BudgetContext";
 import { formatCurrency } from "../utils/helpers";
@@ -147,11 +147,7 @@ export const useTransactionColumns = ({
           />
         ) : (
           info.getValue() &&
-          formatCurrency(
-            info.getValue() as number,
-            budget?.settings.currency,
-            budget?.settings.currencyPlacement,
-          )
+          formatCurrency(info.getValue() as number, budget?.settings)
         ),
     }),
     columnHelper.accessor("outflow", {
@@ -165,11 +161,7 @@ export const useTransactionColumns = ({
           />
         ) : (
           info.getValue() &&
-          formatCurrency(
-            info.getValue() as number,
-            budget?.settings.currency,
-            budget?.settings.currencyPlacement,
-          )
+          formatCurrency(info.getValue() as number, budget?.settings)
         ),
     }),
   ];

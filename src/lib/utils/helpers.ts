@@ -7,6 +7,7 @@ import {
 } from "date-fns";
 import i18n from "@/app/i18n";
 import { DateRange, PredefinedRange } from "../types/types";
+import { BudgetSettings } from "../types/budget.types";
 
 export const getDateRange = (range: PredefinedRange): DateRange => {
   const now = new Date();
@@ -54,15 +55,16 @@ export const transactionsTableReduce = (state: any, action: any) => {
 // NOTE - try use i18next to currency and number formatting https://www.i18next.com/translation-function/formatting
 export const formatCurrency = (
   value: number = 0,
-  currency: string = "$",
-  placement: "before" | "after" = "before",
+  settings?: BudgetSettings,
 ) => {
+  const { currency = "$", currencyPlacement = "before" } = settings || {};
+
   const formattedAmount = new Intl.NumberFormat(i18n.language, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(value);
 
-  return placement === "before"
+  return currencyPlacement === "before"
     ? `${currency}${formattedAmount}`
     : `${formattedAmount}${currency}`;
 };

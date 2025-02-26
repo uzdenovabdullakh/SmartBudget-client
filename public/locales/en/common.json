@@ -291,6 +291,9 @@
   "daily": "daily",
   "monthly": "monthly",
   "yearly":  "yearly",
+  "You reached": "You have achieved {{progress}}%, further expenses will exceed the fire limit!",
+  "Exceeded by": "Exceeded by {{amount}}",
+  "Spended now": "Spended now",
   "validation": {
     "Expected number": "Excepted number",
     "Cash, card or savings": "Cash, card or savings",

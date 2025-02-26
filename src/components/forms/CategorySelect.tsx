@@ -59,11 +59,7 @@ export const CategorySelect: React.FC<CategorySelectProps> = ({
             {group.categories.map((cat) => (
               <option key={cat.id} value={cat.id}>
                 {cat.name}&nbsp;&nbsp;&nbsp;
-                {formatCurrency(
-                  cat.available,
-                  budget?.settings.currency,
-                  budget?.settings.currencyPlacement,
-                )}
+                {formatCurrency(cat.available, budget?.settings)}
               </option>
             ))}
           </optgroup>
