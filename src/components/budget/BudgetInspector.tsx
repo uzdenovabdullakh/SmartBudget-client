@@ -110,7 +110,7 @@ export const BudgetInspector = ({
         assigned={categoryAssigned}
         activity={categoryActivity}
       />
-      <LimitCard category={selectedCategory} />
+      <LimitCard category={selectedCategory} budgetSettings={budgetSettings} />
     </Box>
   );
 };
