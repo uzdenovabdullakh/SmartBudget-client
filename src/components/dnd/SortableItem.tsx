@@ -12,6 +12,7 @@ export const SortableItem = ({
   id,
   children,
   nodeType,
+  ...rest
 }: SortableItemProps & BoxProps) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
@@ -28,6 +29,7 @@ export const SortableItem = ({
         style={style}
         {...attributes}
         {...listeners}
+        {...rest}
         height="65px"
       >
         {children}

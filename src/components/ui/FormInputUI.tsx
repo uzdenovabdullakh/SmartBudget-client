@@ -16,7 +16,7 @@ import { IconType } from "react-icons";
 
 type Props = {
   type: "text" | "password" | "email" | "number";
-  placeholder: string;
+  placeholder?: string;
   icon?: IconType;
   error?: string;
   label?: string;

@@ -13,6 +13,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { useCategoryManagement } from "@/lib/hooks/useCategoryManagment";
+import { useBudgetInspector } from "@/lib/context/BudgetInspectorContext";
 import { SortableItem } from "../dnd/SortableItem";
 import { CategoryChangePopover } from "../popovers/category/CategoryChangePopover";
 import { MoveAvailablePopover } from "../popovers/category/MoveAvailablePopover";
@@ -31,6 +32,7 @@ export const CategoryTable = ({
   handleCategoryGroupsChange,
 }: CategoryTableProps) => {
   const { t } = useTranslation();
+  const { setSelectedCategory } = useBudgetInspector();
 
   const { handleSubmit, control, setValue } = useForm<AssigningChangeDto>({
     resolver: zodResolver(AssigningChangeSchema),
@@ -55,8 +57,17 @@ export const CategoryTable = ({
     setValue("assigned", category.assigned);
   };
 
+  const handleOpenBudgetInspector = (category: Category) => {
+    setSelectedCategory(category);
+  };
+
   const renderCategoryRow = (category: Category) => (
-    <SortableItem key={category.id} id={category.id} nodeType="table">
+    <SortableItem
+      key={category.id}
+      id={category.id}
+      nodeType="table"
+      onClick={() => handleOpenBudgetInspector(category)}
+    >
       <Td width="40%">
         <CategoryChangePopover
           entity={category}

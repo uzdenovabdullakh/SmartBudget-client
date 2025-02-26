@@ -19,3 +19,10 @@ export enum TransactionType {
   INCOME = "income",
   EXPENSE = "expense",
 }
+
+export enum Period {
+  DAILY = "daily",
+  WEEKLY = "weekly",
+  MONTHLY = "monthly",
+  YEARLY = "yearly",
+}
