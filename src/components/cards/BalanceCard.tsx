@@ -33,7 +33,7 @@ export const BalanceCard = ({
 
   return (
     <Card borderRadius="md" bg="white">
-      <Accordion allowToggle>
+      <Accordion allowToggle defaultIndex={0}>
         <AccordionItem border="none">
           <AccordionButton p={4}>
             <Flex flex="1" alignItems="center" justifyContent="space-between">
