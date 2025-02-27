@@ -41,6 +41,20 @@ export const theme = extendTheme({
         fontFamily: "'Figtree', sans-serif",
         fontWeight: "semibold",
       },
+      "::-webkit-scrollbar": {
+        width: "6px",
+      },
+      "::-webkit-scrollbar-track": {
+        background: "gray.100",
+        borderRadius: "4px",
+      },
+      "::-webkit-scrollbar-thumb": {
+        background: "gray.400",
+        borderRadius: "4px",
+      },
+      "::-webkit-scrollbar-thumb:hover": {
+        background: "gray.500",
+      },
     },
   },
   components: {
