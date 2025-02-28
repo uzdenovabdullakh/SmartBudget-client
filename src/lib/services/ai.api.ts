@@ -1,7 +1,14 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { axiosBaseQuery } from "../axiosBaseQuery";
-import { ResponseWithoutData } from "../types/types";
-import { AutoCategorizeDto } from "../validation/ai.schema";
+import { PaginationParams, ResponseWithoutData } from "../types/types";
+import {
+  AutoCategorizeDto,
+  ProvideFinancialAdviceDto,
+} from "../validation/ai.schema";
+import {
+  ConversationHistory,
+  ProvideFinancialAdviceAnswer,
+} from "../types/ai.types";
 
 export const AIApi = createApi({
   reducerPath: "ai",
@@ -24,10 +31,37 @@ export const AIApi = createApi({
         data,
       }),
     }),
+    provideFinancialAdvice: builder.mutation<
+      ProvideFinancialAdviceAnswer,
+      ProvideFinancialAdviceDto
+    >({
+      query: (data: ProvideFinancialAdviceDto) => ({
+        url: "/provide-advice",
+        method: "POST",
+        data,
+      }),
+    }),
+    getConversationHistory: builder.query<
+      ConversationHistory[],
+      { id: string } & PaginationParams
+    >({
+      query: ({ id, page, pageSize }) => {
+        const params = new URLSearchParams();
+        if (page) params.append("page", page.toString());
+        if (pageSize) params.append("pageSize", pageSize.toString());
+
+        return {
+          url: `/get-conversation/${id}?${params.toString()}`,
+          method: "GET",
+        };
+      },
+    }),
   }),
 });
 
 export const {
   useCategorizeTransactionsMutation,
   useAutoCategorizeTransactionsMutation,
+  useProvideFinancialAdviceMutation,
+  useLazyGetConversationHistoryQuery,
 } = AIApi;

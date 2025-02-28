@@ -274,6 +274,13 @@
   "auto_categorize_description": "If you don't want to manually categorize transactions without categories, you can automatically categorize ALL transactions in this account using AI.",
   "auto_categorize_description_part_2": "The description will be used for categorization. If the transaction description is empty, the category will be \"Inflow: Ready for assign\".",
   "Categorize selected transactions using AI": "Categorize selected transactions using AI. The description will be used for categorization. If the transaction description is empty, the category will be \"Inflow: Ready for assign\"",
+  "Ask AI": "Ask AI",
+  "Forecast my monthly expenses based on spending history": "Forecast my monthly expenses based on spending history",
+  "Provide recommendations to optimize my budget": "Provide recommendations to optimize my budget",
+  "Give me advice to reduce unnecessary expenses": "Give me advice to reduce unnecessary expenses",
+  "Help me allocate my income more effectively": "Help me allocate my income more effectively",
+  "Thinking...": "Thinking...",
+  "Quick Questions": "Quick Questions",
   "validation": {
     "Expected number": "Excepted number",
     "Cash, card or savings": "Cash, card or savings",
