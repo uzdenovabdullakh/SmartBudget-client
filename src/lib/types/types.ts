@@ -30,3 +30,9 @@ export type PredefinedRange =
 export type ResponseWithoutData = {
   message: string;
 };
+
+export type Message = {
+  id: string;
+  text: string;
+  isUser: boolean;
+};
