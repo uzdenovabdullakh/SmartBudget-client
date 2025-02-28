@@ -10,12 +10,16 @@ import { Message } from "@/lib/types/types";
 import { NotFoundDataAnimation } from "@/components/ui/Animations";
 import { MessageList } from "./MessageList";
 
+const PAGE_SIZE = 10;
+
 export const ChatBody = () => {
   const { budget } = useBudgetContext();
   const { t } = useTranslation();
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [isThinking, setIsThinking] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
   const [provideFinancialAdvice] = useProvideFinancialAdviceMutation();
   const [getConversationHistory, { isLoading }] =
@@ -61,6 +65,32 @@ export const ChatBody = () => {
     t("Help me allocate my income more effectively"),
   ];
 
+  const fetchConversationHistory = useCallback(
+    async (page: number) => {
+      if (budget?.id) {
+        const conversationHistory = await getConversationHistory({
+          id: budget.id,
+          page,
+          pageSize: PAGE_SIZE,
+        }).unwrap();
+
+        const loadedMessages = conversationHistory.map((msg) => ({
+          id: msg.id,
+          text: msg.content,
+          isUser: msg.role === "user",
+        }));
+
+        setMessages((prev) => [...loadedMessages, ...prev]);
+        setHasMore(conversationHistory.length === PAGE_SIZE);
+      }
+    },
+    [budget?.id, getConversationHistory],
+  );
+
+  useEffect(() => {
+    fetchConversationHistory(currentPage);
+  }, [fetchConversationHistory, currentPage]);
+
   let chatContent;
   if (isLoading) {
     chatContent = (
@@ -78,27 +108,15 @@ export const ChatBody = () => {
       <NotFoundDataAnimation width={250} height={250} loop={false} />
     );
   } else {
-    chatContent = <MessageList messages={messages} isThinking={isThinking} />;
+    chatContent = (
+      <MessageList
+        messages={messages}
+        isThinking={isThinking}
+        onLoadMore={() => setCurrentPage((prev) => prev + 1)}
+        hasMore={hasMore}
+      />
+    );
   }
-
-  useEffect(() => {
-    const fetchConversationHistory = async () => {
-      if (budget?.id) {
-        const conversationHistory = await getConversationHistory({
-          id: budget.id,
-        }).unwrap();
-
-        const loadedMessages = conversationHistory.map((msg) => ({
-          id: msg.id,
-          text: msg.content,
-          isUser: msg.role === "user",
-        }));
-        setMessages(loadedMessages);
-      }
-    };
-
-    fetchConversationHistory();
-  }, [budget?.id, getConversationHistory]);
 
   return (
     <VStack align="stretch" spacing={4} height="100%">
