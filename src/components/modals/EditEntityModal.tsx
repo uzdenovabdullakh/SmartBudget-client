@@ -71,7 +71,9 @@ export const EditEntityModal = <T extends FieldValues>({
               type={type}
               placeholder={t(placeholder)}
               error={errors[name]?.message as string}
-              {...register(name)}
+              {...register(name, {
+                ...(type === "number" && { valueAsNumber: true }),
+              })}
             />
           ))}
         </VStack>
