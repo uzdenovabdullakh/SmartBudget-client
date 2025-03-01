@@ -38,7 +38,7 @@ export const AddTransactionIconButton = () => {
         />
       </Tooltip>
 
-      {data?.accounts[0].id && (
+      {data?.accounts[0]?.id && (
         <AddTransactionModal
           accountId={data?.accounts[0].id}
           isOpen={isOpen}
