@@ -18,18 +18,18 @@ import { useTranslation } from "react-i18next";
 type BalanceCardProps = {
   available: string;
   assigned: string;
-  activity: string;
+  spent: string;
 };
 
 export const BalanceCard = ({
   available,
   assigned,
-  activity,
+  spent,
 }: BalanceCardProps) => {
   const { t, i18n } = useTranslation();
 
   const locale = i18n.language === "ru" ? ru : enUS;
-  const formattedDate = format(new Date(), "MMM", { locale }).replace(".", "");
+  const formattedDate = format(new Date(), "MMM", { locale });
 
   return (
     <Card borderRadius="md" bg="white">
@@ -53,8 +53,8 @@ export const BalanceCard = ({
                 <Text>{assigned}</Text>
               </Flex>
               <Flex justifyContent="space-between">
-                <Text>{t("Activity")}</Text>
-                <Text>{activity}</Text>
+                <Text>{t("Spent")}</Text>
+                <Text>{spent}</Text>
               </Flex>
             </Box>
           </AccordionPanel>

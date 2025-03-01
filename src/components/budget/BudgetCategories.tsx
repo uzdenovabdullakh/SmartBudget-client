@@ -100,7 +100,7 @@ export const BudgetCategories = () => {
                         {t("Assigned")}
                       </Th>
                       <Th width="20%" textAlign="center">
-                        {t("Activity")}
+                        {t("Spent")}
                       </Th>
                       <Th width="20%" textAlign="center">
                         {t("Available")}

@@ -112,7 +112,7 @@ export const CategoryTable = ({
         )}
       </Td>
       <Td width="20%" textAlign="center">
-        {formatCurrency(category.activity)}
+        {formatCurrency(category.spent)}
       </Td>
       <Td width="20%" textAlign="center">
         <MoveAvailablePopover
