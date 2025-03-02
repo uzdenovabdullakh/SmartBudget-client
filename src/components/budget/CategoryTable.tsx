@@ -115,10 +115,7 @@ export const CategoryTable = ({
         {formatCurrency(category.spent)}
       </Td>
       <Td width="20%" textAlign="center">
-        <MoveAvailablePopover
-          category={category}
-          formatCurrency={formatCurrency}
-        />
+        <MoveAvailablePopover category={category} />
       </Td>
     </SortableItem>
   );

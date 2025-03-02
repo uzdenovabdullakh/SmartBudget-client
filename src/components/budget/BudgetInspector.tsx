@@ -64,16 +64,11 @@ export const BudgetInspector = ({
     return (
       <BalanceCard
         spent={formatCurrency(totalSpent, budgetSettings)}
-        available={formatCurrency(totalAvailable, budgetSettings)}
+        available={totalAvailable}
         assigned={formatCurrency(totalAssigned, budgetSettings)}
       />
     );
   }
-
-  const categoryAvailable = formatCurrency(
-    selectedCategory?.available,
-    budgetSettings,
-  );
 
   const categoryAssigned = formatCurrency(
     selectedCategory?.assigned,
@@ -88,7 +83,7 @@ export const BudgetInspector = ({
         {selectedCategory.name}
       </Heading>
       <BalanceCard
-        available={categoryAvailable}
+        available={selectedCategory?.available}
         assigned={categoryAssigned}
         spent={categorySpent}
       />

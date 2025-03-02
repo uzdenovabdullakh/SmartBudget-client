@@ -14,9 +14,10 @@ import {
 import { format } from "date-fns";
 import { ru, enUS } from "date-fns/locale";
 import { useTranslation } from "react-i18next";
+import { ColoredCurrency } from "../ui/ColoredCurrency";
 
 type BalanceCardProps = {
-  available: string;
+  available: number;
   assigned: string;
   spent: string;
 };
@@ -40,7 +41,7 @@ export const BalanceCard = ({
               <Heading size="xs" fontWeight="semibold">
                 {t("Available in")} {formattedDate} <AccordionIcon />
               </Heading>
-              <span color="granite.granite600">{available}</span>
+              <ColoredCurrency currency={available} nodeType="span" />
             </Flex>
           </AccordionButton>
           <Divider borderColor="gray.300" />

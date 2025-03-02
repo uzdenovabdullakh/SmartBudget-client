@@ -11,15 +11,10 @@ import { useMoveAvailableMutation } from "@/lib/services/category.api";
 import { Category } from "@/lib/types/category.types";
 import { CategorySelect } from "@/components/forms/CategorySelect";
 import FormInputUI from "@/components/ui/FormInputUI";
+import { ColoredCurrency } from "@/components/ui/ColoredCurrency";
 import { BasePopover } from "..";
 
-export const MoveAvailablePopover = ({
-  category,
-  formatCurrency,
-}: {
-  category: Category;
-  formatCurrency: (value: number) => string;
-}) => {
+export const MoveAvailablePopover = ({ category }: { category: Category }) => {
   const { t } = useTranslation();
 
   const { isOpen, onToggle, onClose } = useDisclosure();
@@ -49,8 +44,15 @@ export const MoveAvailablePopover = ({
       isOpen={isOpen}
       onClose={onClose}
       triggerButton={
-        // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-        <span onClick={onToggle}>{formatCurrency(category.available)}</span>
+        <ColoredCurrency
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggle();
+          }}
+          _hover={{ opacity: 0.8 }}
+          currency={category.available}
+          nodeType="button"
+        />
       }
       bodyContent={
         <VStack as="form" onSubmit={handleSubmit(handleApply)} spacing={4}>
@@ -66,7 +68,10 @@ export const MoveAvailablePopover = ({
       footerContent={
         <HStack spacing={4} justifyContent="flex-end">
           <Button
-            onClick={onClose}
+            onClick={(e) => {
+              e.stopPropagation();
+              onClose();
+            }}
             bgColor="gray.200"
             _hover={{ bg: "gray.300" }}
             color="black"
@@ -74,7 +79,10 @@ export const MoveAvailablePopover = ({
             {t("Cancel")}
           </Button>
           <Button
-            onClick={handleSubmit(handleApply)}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleSubmit(handleApply);
+            }}
             bgColor="blue.500"
             color="white"
             _hover={{ bg: "blue.600" }}
