@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { HStack, useDisclosure, Button, VStack } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
@@ -12,14 +12,30 @@ import { Category } from "@/lib/types/category.types";
 import { CategorySelect } from "@/components/forms/CategorySelect";
 import FormInputUI from "@/components/ui/FormInputUI";
 import { ColoredCurrency } from "@/components/ui/ColoredCurrency";
+import { useBudgetContext } from "@/lib/context/BudgetContext";
+import { useGetCategoryGroupQuery } from "@/lib/services/category-group.api";
 import { BasePopover } from "..";
 
 export const MoveAvailablePopover = ({ category }: { category: Category }) => {
   const { t } = useTranslation();
-
+  const { budget } = useBudgetContext();
   const { isOpen, onToggle, onClose } = useDisclosure();
-
   const [moveAvailable] = useMoveAvailableMutation();
+
+  const { data: categoryGroups } = useGetCategoryGroupQuery(
+    {
+      id: budget?.id!,
+      defaultCategory: true,
+    },
+    {
+      skip: !budget?.id,
+    },
+  );
+
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(
+    null,
+  );
+  const isNegative = category.available < 0;
 
   const { register, handleSubmit, reset } = useForm<MoveAvaliableDto>({
     resolver: zodResolver(MoveAvaliableSchema),
@@ -31,12 +47,40 @@ export const MoveAvailablePopover = ({ category }: { category: Category }) => {
 
   const handleApply = useCallback(
     async (data: MoveAvaliableDto) => {
-      await moveAvailable(data);
+      if (isNegative && selectedCategoryId) {
+        const selectedCategory = categoryGroups
+          ?.flatMap((group) => group.categories)
+          .find((cat) => cat.id === selectedCategoryId);
+
+        if (selectedCategory) {
+          const finalData = {
+            from: selectedCategoryId,
+            to: category.id,
+            amount: Math.min(
+              Math.abs(category.available),
+              selectedCategory.available,
+            ),
+          };
+          await moveAvailable(finalData);
+        }
+      } else if (!isNegative) {
+        await moveAvailable(data);
+      }
 
       onClose();
       reset();
+      setSelectedCategoryId(null);
     },
-    [moveAvailable, onClose, reset],
+    [
+      isNegative,
+      selectedCategoryId,
+      onClose,
+      reset,
+      categoryGroups,
+      category.id,
+      category.available,
+      moveAvailable,
+    ],
   );
 
   return (
@@ -56,13 +100,22 @@ export const MoveAvailablePopover = ({ category }: { category: Category }) => {
       }
       bodyContent={
         <VStack as="form" onSubmit={handleSubmit(handleApply)} spacing={4}>
-          <FormInputUI
-            {...register("amount", { valueAsNumber: true })}
-            placeholder={t("Amount")}
-            type="number"
-            label={t("Move")}
+          {!isNegative && (
+            <FormInputUI
+              {...register("amount", { valueAsNumber: true })}
+              placeholder={t("Amount")}
+              type="number"
+              label={t("Move")}
+            />
+          )}
+          <CategorySelect
+            onlyPositiveAvailable={isNegative}
+            {...register("to", {
+              onChange: (e) => setSelectedCategoryId(e.target.value),
+            })}
+            placeholder={t("Select category")}
+            label={isNegative ? t("Cover expenses from category") : t("In")}
           />
-          <CategorySelect {...register("to")} label={t("In")} />
         </VStack>
       }
       footerContent={
@@ -81,7 +134,7 @@ export const MoveAvailablePopover = ({ category }: { category: Category }) => {
           <Button
             onClick={(e) => {
               e.stopPropagation();
-              handleSubmit(handleApply);
+              handleSubmit(handleApply)();
             }}
             bgColor="blue.500"
             color="white"
