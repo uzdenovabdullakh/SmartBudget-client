@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   Box,
   FormErrorMessage,
@@ -11,11 +11,13 @@ import { useGetCategoryGroupQuery } from "@/lib/services/category-group.api";
 import { useBudgetContext } from "@/lib/context/BudgetContext";
 
 type CategorySelectProps = {
+  onlyPositiveAvailable?: boolean;
   label?: string;
   error?: string;
 } & SelectProps;
 
 export const CategorySelect: React.FC<CategorySelectProps> = ({
+  onlyPositiveAvailable = false,
   label,
   error,
   ...props
@@ -30,6 +32,19 @@ export const CategorySelect: React.FC<CategorySelectProps> = ({
     {
       skip: !budget?.id,
     },
+  );
+
+  const filteredCategoryGroups = useMemo(
+    () =>
+      categoryGroups
+        ?.map((group) => ({
+          ...group,
+          categories: onlyPositiveAvailable
+            ? group.categories.filter((cat) => cat.available > 0)
+            : group.categories,
+        }))
+        .filter((group) => group.categories.length > 0),
+    [categoryGroups, onlyPositiveAvailable],
   );
 
   return (
@@ -54,7 +69,7 @@ export const CategorySelect: React.FC<CategorySelectProps> = ({
           },
         }}
       >
-        {categoryGroups?.map((group) => (
+        {filteredCategoryGroups?.map((group) => (
           <optgroup key={group.id} label={`${group.name}:`}>
             {group.categories.map((cat) => (
               <option key={cat.id} value={cat.id}>
