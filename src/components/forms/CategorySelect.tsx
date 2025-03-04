@@ -69,6 +69,7 @@ export const CategorySelect: React.FC<CategorySelectProps> = ({
           },
         }}
       >
+        {/* TODO - стилизовать option чтобы было расстояние между названием категории и available, плюс окрашивать available */}
         {filteredCategoryGroups?.map((group) => (
           <optgroup key={group.id} label={`${group.name}:`}>
             {group.categories.map((cat) => (
