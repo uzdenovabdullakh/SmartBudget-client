@@ -20,7 +20,7 @@ export type UpdateCategoryGroupDto = z.infer<typeof UpdateCategoryGroupSchema>;
 export type GetCategoryGroup = {
   id: string;
   defaultCategory?: boolean;
-  filter: CategoryFilter | null;
+  filter?: CategoryFilter | null;
 };
 export type ReorderCategoryGroupsDto = {
   groups: {
