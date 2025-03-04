@@ -59,10 +59,19 @@ export const formatCurrency = (
 ) => {
   const { currency = "$", currencyPlacement = "before" } = settings || {};
 
+  const isNegative = value < 0;
+  const absoluteValue = Math.abs(value);
+
   const formattedAmount = new Intl.NumberFormat(i18n.language, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  }).format(value);
+  }).format(absoluteValue);
+
+  if (isNegative) {
+    return currencyPlacement === "before"
+      ? `-${currency}${formattedAmount}`
+      : `-${formattedAmount}${currency}`;
+  }
 
   return currencyPlacement === "before"
     ? `${currency}${formattedAmount}`
@@ -124,4 +133,23 @@ export const getStartAndEndDate = ({
   }
 
   return { startDate, endDate };
+};
+
+export const getCurrencyColorStyles = (cur: number) => {
+  if (cur === 0) {
+    return {
+      bgColor: "#edf1f5",
+      color: "#6e7a88",
+    };
+  }
+  if (cur > 0) {
+    return {
+      bgColor: "#c1ee9f",
+      color: "#1d300d",
+    };
+  }
+  return {
+    bgColor: "#faada5",
+    color: "#3c0d09",
+  };
 };

@@ -41,8 +41,8 @@ export const CategoryGroupItem = ({
     (sum, category) => sum + (category.assigned || 0),
     0,
   );
-  const totalActivity = group.categories.reduce(
-    (sum, category) => sum + (category.activity || 0),
+  const totalSpent = group.categories.reduce(
+    (sum, category) => sum + (category.spent || 0),
     0,
   );
   const totalAvailable = group.categories.reduce(
@@ -86,7 +86,7 @@ export const CategoryGroupItem = ({
             {formatCurrency(totalAssigned, budgetInfo?.settings)}
           </Box>
           <Box width="20%" textAlign="center">
-            {formatCurrency(totalActivity, budgetInfo?.settings)}
+            {formatCurrency(totalSpent, budgetInfo?.settings)}
           </Box>
           <Box width="20%" textAlign="center">
             {formatCurrency(totalAvailable, budgetInfo?.settings)}

@@ -14,22 +14,23 @@ import {
 import { format } from "date-fns";
 import { ru, enUS } from "date-fns/locale";
 import { useTranslation } from "react-i18next";
+import { ColoredCurrency } from "../ui/ColoredCurrency";
 
 type BalanceCardProps = {
-  available: string;
+  available: number;
   assigned: string;
-  activity: string;
+  spent: string;
 };
 
 export const BalanceCard = ({
   available,
   assigned,
-  activity,
+  spent,
 }: BalanceCardProps) => {
   const { t, i18n } = useTranslation();
 
   const locale = i18n.language === "ru" ? ru : enUS;
-  const formattedDate = format(new Date(), "MMM", { locale }).replace(".", "");
+  const formattedDate = format(new Date(), "MMM", { locale });
 
   return (
     <Card borderRadius="md" bg="white">
@@ -40,7 +41,7 @@ export const BalanceCard = ({
               <Heading size="xs" fontWeight="semibold">
                 {t("Available in")} {formattedDate} <AccordionIcon />
               </Heading>
-              <span color="granite.granite600">{available}</span>
+              <ColoredCurrency currency={available} nodeType="span" />
             </Flex>
           </AccordionButton>
           <Divider borderColor="gray.300" />
@@ -53,8 +54,8 @@ export const BalanceCard = ({
                 <Text>{assigned}</Text>
               </Flex>
               <Flex justifyContent="space-between">
-                <Text>{t("Activity")}</Text>
-                <Text>{activity}</Text>
+                <Text>{t("Spent")}</Text>
+                <Text>{spent}</Text>
               </Flex>
             </Box>
           </AccordionPanel>

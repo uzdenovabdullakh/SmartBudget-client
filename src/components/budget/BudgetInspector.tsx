@@ -46,13 +46,13 @@ export const BudgetInspector = ({
     [categoryGroups],
   );
 
-  const totalActivity = useMemo(
+  const totalSpent = useMemo(
     () =>
       categoryGroups.reduce((sum, group) => {
         return (
           sum +
           group.categories.reduce(
-            (groupSum, category) => groupSum + category.activity,
+            (groupSum, category) => groupSum + category.spent,
             0,
           )
         );
@@ -63,27 +63,19 @@ export const BudgetInspector = ({
   if (!selectedCategory) {
     return (
       <BalanceCard
-        activity={formatCurrency(totalActivity, budgetSettings)}
-        available={formatCurrency(totalAvailable, budgetSettings)}
+        spent={formatCurrency(totalSpent, budgetSettings)}
+        available={totalAvailable}
         assigned={formatCurrency(totalAssigned, budgetSettings)}
       />
     );
   }
-
-  const categoryAvailable = formatCurrency(
-    selectedCategory?.available,
-    budgetSettings,
-  );
 
   const categoryAssigned = formatCurrency(
     selectedCategory?.assigned,
     budgetSettings,
   );
 
-  const categoryActivity = formatCurrency(
-    selectedCategory?.activity,
-    budgetSettings,
-  );
+  const categorySpent = formatCurrency(selectedCategory?.spent, budgetSettings);
 
   return (
     <Box>
@@ -91,9 +83,9 @@ export const BudgetInspector = ({
         {selectedCategory.name}
       </Heading>
       <BalanceCard
-        available={categoryAvailable}
+        available={selectedCategory?.available}
         assigned={categoryAssigned}
-        activity={categoryActivity}
+        spent={categorySpent}
       />
       <LimitCard category={selectedCategory} budgetSettings={budgetSettings} />
     </Box>

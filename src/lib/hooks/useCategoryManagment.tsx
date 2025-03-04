@@ -84,7 +84,7 @@ export const useCategoryManagement = (
               ? {
                   ...c,
                   assigned: data.assigned,
-                  available: c.available + (data.assigned - c.assigned),
+                  available: c.available - (data.assigned - c.assigned),
                 }
               : c,
           ),
