@@ -2,6 +2,7 @@ import { Box, Button, HStack } from "@chakra-ui/react";
 import { useCategoryManagement } from "@/lib/hooks/useCategoryManagment";
 import { CategoryFilter } from "@/lib/constants/enums";
 import { useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { CategoryCreatePopover } from "../popovers/category/CategoryCreatePopover";
 
 type CategoryPanelProps = {
@@ -9,6 +10,7 @@ type CategoryPanelProps = {
 };
 
 export const CategoryPanel = ({ onFilterChange }: CategoryPanelProps) => {
+  const { t } = useTranslation();
   const { handleCreateCategoryGroup } = useCategoryManagement();
   const [activeFilter, setActiveFilter] = useState<CategoryFilter | null>(null);
 
@@ -50,11 +52,11 @@ export const CategoryPanel = ({ onFilterChange }: CategoryPanelProps) => {
   };
 
   const filters = [
-    { label: "All", value: null },
-    { label: "Spent", value: CategoryFilter.SPENT },
-    { label: "Available", value: CategoryFilter.AVAILABLE },
-    { label: "Limit Reached", value: CategoryFilter.LIMIT_REACHED },
-    { label: "Assigned", value: CategoryFilter.ASSIGNED },
+    { label: t("All"), value: null },
+    { label: t("Spent"), value: CategoryFilter.SPENT },
+    { label: t("Available"), value: CategoryFilter.AVAILABLE },
+    { label: t("Limit Reached"), value: CategoryFilter.LIMIT_REACHED },
+    { label: t("Assigned"), value: CategoryFilter.ASSIGNED },
   ];
 
   return (
