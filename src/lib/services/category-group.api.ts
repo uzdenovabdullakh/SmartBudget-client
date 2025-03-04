@@ -15,11 +15,14 @@ export const categoryGroupApi = createApi({
   endpoints: (builder) => ({
     getCategoryGroup: builder.query<CategoryGroup[], GetCategoryGroup>({
       query: (query) => {
-        const { id, defaultCategory } = query;
+        const { id, defaultCategory, filter } = query;
 
         const params = new URLSearchParams();
         if (defaultCategory)
           params.append("default", defaultCategory.toString());
+        if (filter) {
+          params.append("filter", filter.toString());
+        }
 
         return {
           url: `/${id}/?${params.toString()}`,

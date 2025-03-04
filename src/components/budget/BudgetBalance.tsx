@@ -1,8 +1,9 @@
 import { useGetDefaultCategoryQuery } from "@/lib/services/category.api";
 import { Box, HStack, VStack, Text } from "@chakra-ui/react";
 import { FaWallet } from "react-icons/fa";
-import { formatCurrency } from "@/lib/utils/helpers";
+import { formatCurrency, getCurrencyColorStyles } from "@/lib/utils/helpers";
 import { useBudgetContext } from "@/lib/context/BudgetContext";
+import { useMemo } from "react";
 import { SkeletonUI } from "../ui/SkeletonUI";
 
 export const BudgetBalance = () => {
@@ -15,15 +16,24 @@ export const BudgetBalance = () => {
     },
   );
 
+  const availableBalance = useMemo(
+    () => budgetBalance?.available ?? 0,
+    [budgetBalance?.available],
+  );
+  const cardStyles = useMemo(
+    () => getCurrencyColorStyles(availableBalance),
+    [availableBalance],
+  );
+
   return (
     <Box
-      bg={isLoading ? "gray.100" : "green.100"}
+      bg={isLoading ? "gray.100" : cardStyles.bgColor}
       p={2}
       borderRadius="lg"
       boxShadow="sm"
     >
       <HStack spacing={3} align="center">
-        <Box color="green.600">
+        <Box color={isLoading ? "gray.100" : cardStyles.color}>
           <FaWallet size="24px" />
         </Box>
         {isLoading ? (
@@ -33,14 +43,10 @@ export const BudgetBalance = () => {
           </VStack>
         ) : (
           <VStack spacing={1} align="flex-start">
-            <Text fontSize="lg" fontWeight="bold" color="green.800">
-              {formatCurrency(
-                budgetBalance?.available,
-                budget?.settings.currency,
-                budget?.settings.currencyPlacement,
-              )}
+            <Text fontSize="lg" fontWeight="bold" color={cardStyles.color}>
+              {formatCurrency(budgetBalance?.available, budget?.settings)}
             </Text>
-            <Text fontSize="sm" color="green.600">
+            <Text fontSize="sm" color={cardStyles.color}>
               {budgetBalance?.name}
             </Text>
           </VStack>

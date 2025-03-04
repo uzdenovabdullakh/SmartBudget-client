@@ -5,6 +5,7 @@ import {
 } from "@/lib/validation/budget.schema";
 import { BaseBudget } from "@/lib/types/budget.types";
 import { DefaultModalProps } from "@/lib/types/types";
+import { useTranslation } from "react-i18next";
 import { EditEntityModal } from "../EditEntityModal";
 
 type EditBudgetModalProps = {
@@ -16,6 +17,8 @@ export const EditBudgetModal = ({
   onClose,
   budget,
 }: EditBudgetModalProps) => {
+  const { t } = useTranslation();
+
   const [updateBudget] = useUpdateBudgetMutation();
 
   return (
@@ -28,7 +31,9 @@ export const EditBudgetModal = ({
       updateMutation={(data) =>
         updateBudget({ id: budget.id, ...data }).unwrap()
       }
-      fields={[{ name: "name", placeholder: "Enter new name", type: "text" }]}
+      fields={[
+        { name: "name", placeholder: t("Enter new name"), type: "text" },
+      ]}
     />
   );
 };

@@ -1,6 +1,21 @@
 import { useLazyGetCategoryGroupQuery } from "@/lib/services/category-group.api";
-import { Box, Table, Thead, Tr, Th, Accordion, Stack } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import {
+  Box,
+  Table,
+  Thead,
+  Tr,
+  Th,
+  Accordion,
+  Stack,
+  Flex,
+} from "@chakra-ui/react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  useTransition,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { CategoryGroup } from "@/lib/types/category.types";
 import {
@@ -18,10 +33,18 @@ import {
 } from "@dnd-kit/sortable";
 import { useDragEnd } from "@/lib/hooks/useDragEnd";
 import { useBudgetContext } from "@/lib/context/BudgetContext";
+import { BudgetInspectorProvider } from "@/lib/context/BudgetInspectorContext";
+import { CategoryFilter } from "@/lib/constants/enums";
+import { functionDebounce } from "@/lib/hooks/useDebounce";
 import { SkeletonUI } from "../ui/SkeletonUI";
 import { CategoryGroupItem } from "./CategoryGroupItem";
+import { BudgetInspector } from "./BudgetInspector";
 
-export const BudgetCategories = () => {
+export const BudgetCategories = ({
+  filter,
+}: {
+  filter: CategoryFilter | null;
+}) => {
   const { t } = useTranslation();
   const { budget } = useBudgetContext();
 
@@ -35,8 +58,8 @@ export const BudgetCategories = () => {
   );
 
   const [getCategoryGroup, { isLoading }] = useLazyGetCategoryGroupQuery();
-
   const [categoryGroups, setCategoryGroups] = useState<CategoryGroup[]>([]);
+  const [isPending, startTransition] = useTransition();
 
   const { handleDragEnd } = useDragEnd(categoryGroups, setCategoryGroups);
 
@@ -48,15 +71,34 @@ export const BudgetCategories = () => {
     }
   };
 
-  useEffect(() => {
+  const fetchCategoryGroups = useCallback(async () => {
     if (!budget?.id) return;
-    getCategoryGroup({ id: budget.id })
-      .unwrap()
-      .then(setCategoryGroups)
-      .catch(console.error);
-  }, [budget?.id, getCategoryGroup]);
+    const data = await getCategoryGroup({ id: budget.id, filter }).unwrap();
+    startTransition(() => {
+      setCategoryGroups(data);
+    });
+  }, [budget?.id, filter, getCategoryGroup]);
 
-  if (isLoading)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const debouncedFetch = useCallback(
+    functionDebounce(() => fetchCategoryGroups(), 300),
+    [fetchCategoryGroups],
+  );
+
+  useEffect(() => {
+    debouncedFetch();
+  }, [debouncedFetch]);
+
+  const categoryGroupIds = useMemo(
+    () => categoryGroups.map((g) => g.id),
+    [categoryGroups],
+  );
+  const accordionIndexes = useMemo(
+    () => categoryGroups.map((_, i) => i),
+    [categoryGroups],
+  );
+
+  if (isLoading || isPending)
     return (
       <Stack p={4}>
         <SkeletonUI length={10} height={10} />;
@@ -64,48 +106,63 @@ export const BudgetCategories = () => {
     );
 
   return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragEnd={handleDragEnd}
-      onDragStart={handleDragStart}
-    >
-      <Box p={4}>
-        <SortableContext
-          items={categoryGroups.map((group) => group.id)}
-          strategy={verticalListSortingStrategy}
+    <BudgetInspectorProvider>
+      <Flex width="100%" h="calc(100% - 12rem)">
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+          onDragStart={handleDragStart}
         >
-          <Accordion
-            allowMultiple
-            defaultIndex={categoryGroups.map((_, i) => i)}
-          >
-            <Table variant="simple" width="100%">
-              <Thead>
-                <Tr>
-                  <Th width="40%">{t("Category")}</Th>
-                  <Th width="20%" textAlign="center">
-                    {t("Assigned")}
-                  </Th>
-                  <Th width="20%" textAlign="center">
-                    {t("Activity")}
-                  </Th>
-                  <Th width="20%" textAlign="center">
-                    {t("Available")}
-                  </Th>
-                </Tr>
-              </Thead>
-            </Table>
-            {categoryGroups.map((group) => (
-              <CategoryGroupItem
-                key={group.id}
-                group={group}
-                budgetInfo={budget}
-                handleCategoryGroupsChange={setCategoryGroups}
-              />
-            ))}
-          </Accordion>
-        </SortableContext>
-      </Box>
-    </DndContext>
+          <Box as="section" p={4} flex={1} overflow="auto" scrollPaddingTop={5}>
+            <SortableContext
+              items={categoryGroupIds}
+              strategy={verticalListSortingStrategy}
+            >
+              <Accordion allowMultiple defaultIndex={accordionIndexes}>
+                <Table variant="simple" width="100%">
+                  <Thead>
+                    <Tr>
+                      <Th width="40%">{t("Category")}</Th>
+                      <Th width="20%" textAlign="center">
+                        {t("Assigned")}
+                      </Th>
+                      <Th width="20%" textAlign="center">
+                        {t("Spent")}
+                      </Th>
+                      <Th width="20%" textAlign="center">
+                        {t("Available")}
+                      </Th>
+                    </Tr>
+                  </Thead>
+                </Table>
+                {categoryGroups.map((group) => (
+                  <CategoryGroupItem
+                    key={group.id}
+                    group={group}
+                    budgetInfo={budget}
+                    handleCategoryGroupsChange={setCategoryGroups}
+                  />
+                ))}
+              </Accordion>
+            </SortableContext>
+          </Box>
+        </DndContext>
+        <Box
+          as="aside"
+          bgColor="#edf1f5"
+          borderLeft="1px solid #d2d8de"
+          minW="300px"
+          width="33%"
+        >
+          <Box overflow="auto" p={4} pb={12} height="100%">
+            <BudgetInspector
+              categoryGroups={categoryGroups}
+              budgetSettings={budget?.settings}
+            />
+          </Box>
+        </Box>
+      </Flex>
+    </BudgetInspectorProvider>
   );
 };

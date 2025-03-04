@@ -1,6 +1,7 @@
 import { useUpdateUserMutation } from "@/lib/services/user.api";
 import { DefaultModalProps } from "@/lib/types/types";
 import { UpdateUserDto, UpdateUserSchema } from "@/lib/validation/user.schema";
+import { useTranslation } from "react-i18next";
 import { EditEntityModal } from "../EditEntityModal";
 
 type EditUserModalProps = {
@@ -12,6 +13,7 @@ export const EditLoginModal = ({
   onClose,
   login,
 }: EditUserModalProps) => {
+  const { t } = useTranslation();
   const [updateUser] = useUpdateUserMutation();
 
   return (
@@ -22,7 +24,9 @@ export const EditLoginModal = ({
       defaultValues={{ login }}
       validationSchema={UpdateUserSchema}
       updateMutation={(data) => updateUser(data).unwrap()}
-      fields={[{ name: "login", placeholder: "Enter new login", type: "text" }]}
+      fields={[
+        { name: "login", placeholder: t("Enter new login"), type: "text" },
+      ]}
     />
   );
 };

@@ -1,10 +1,10 @@
 import { Category, CategoryGroup } from "@/lib/types/category.types";
-import { Table, Tbody, Td, Box, Input } from "@chakra-ui/react";
+import { Table, Tbody, Td, Box, Input, Text } from "@chakra-ui/react";
 import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { useCallback, useState } from "react";
+import { useCallback, useState, MouseEvent } from "react";
 import { useTranslation } from "react-i18next";
 import {
   AssigningChangeDto,
@@ -13,9 +13,11 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { useCategoryManagement } from "@/lib/hooks/useCategoryManagment";
+import { useBudgetInspector } from "@/lib/context/BudgetInspectorContext";
 import { SortableItem } from "../dnd/SortableItem";
 import { CategoryChangePopover } from "../popovers/category/CategoryChangePopover";
 import { MoveAvailablePopover } from "../popovers/category/MoveAvailablePopover";
+import { ProgressBar } from "../ui/ProgressBar";
 
 type CategoryTableProps = {
   group: CategoryGroup;
@@ -31,6 +33,7 @@ export const CategoryTable = ({
   handleCategoryGroupsChange,
 }: CategoryTableProps) => {
   const { t } = useTranslation();
+  const { setSelectedCategory } = useBudgetInspector();
 
   const { handleSubmit, control, setValue } = useForm<AssigningChangeDto>({
     resolver: zodResolver(AssigningChangeSchema),
@@ -42,27 +45,51 @@ export const CategoryTable = ({
   const [editingCategory, setEditingCategory] = useState<string | null>(null);
 
   const onSubmit = useCallback(
-    (categoryId: string) => async (data: AssigningChangeDto) => {
+    (category: Category) => async (data: AssigningChangeDto) => {
       setEditingCategory(null);
 
-      await handleAssignChange(categoryId, data);
+      if (data.assigned !== category.assigned) {
+        await handleAssignChange(category.id, data);
+      }
     },
     [handleAssignChange],
   );
 
-  const handleEditStart = (category: Category) => {
-    setEditingCategory(category.id);
-    setValue("assigned", category.assigned);
-  };
+  const handleEditStart = useCallback(
+    (e: MouseEvent<HTMLParagraphElement>, category: Category) => {
+      e.stopPropagation();
+      setEditingCategory(category.id);
+      setValue("assigned", category.assigned);
+    },
+    [setValue],
+  );
+
+  const handleOpenBudgetInspector = useCallback(
+    (category: Category) => {
+      setSelectedCategory(category);
+    },
+    [setSelectedCategory],
+  );
 
   const renderCategoryRow = (category: Category) => (
-    <SortableItem key={category.id} id={category.id} nodeType="table">
+    <SortableItem
+      key={category.id}
+      id={category.id}
+      nodeType="table"
+      onClick={() => handleOpenBudgetInspector(category)}
+    >
       <Td width="40%">
         <CategoryChangePopover
           entity={category}
           onUpdate={handleUpdateCategoryName}
           onDelete={handleDeleteCategory}
         />
+        <Box mt={2}>
+          <ProgressBar
+            spentAmount={category?.categorySpending?.spentAmount}
+            limitAmount={category?.categorySpending?.limitAmount}
+          />
+        </Box>
       </Td>
       <Td width="20%" textAlign="center">
         {editingCategory === category.id ? (
@@ -79,29 +106,25 @@ export const CategoryTable = ({
                 textAlign="center"
                 value={field.value ?? ""}
                 onChange={(e) => field.onChange(Number(e.target.value))}
-                onBlur={handleSubmit(onSubmit(category.id))}
+                onBlur={handleSubmit(onSubmit(category))}
               />
             )}
           />
         ) : (
-          <Box
-            onClick={() => handleEditStart(category)}
+          <Text
+            onClick={(e) => handleEditStart(e, category)}
             cursor="pointer"
-            width="80px"
             textAlign="center"
           >
             {formatCurrency(category.assigned)}
-          </Box>
+          </Text>
         )}
       </Td>
       <Td width="20%" textAlign="center">
-        {formatCurrency(category.activity)}
+        {formatCurrency(category.spent)}
       </Td>
       <Td width="20%" textAlign="center">
-        <MoveAvailablePopover
-          category={category}
-          formatCurrency={formatCurrency}
-        />
+        <MoveAvailablePopover category={category} />
       </Td>
     </SortableItem>
   );

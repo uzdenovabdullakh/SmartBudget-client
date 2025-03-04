@@ -1,5 +1,6 @@
 import i18n from "@/app/i18n";
 import { z } from "zod";
+import { CategoryFilter } from "../constants/enums";
 
 export const CreateCategoryGroupSchema = z
   .object({
@@ -19,6 +20,7 @@ export type UpdateCategoryGroupDto = z.infer<typeof UpdateCategoryGroupSchema>;
 export type GetCategoryGroup = {
   id: string;
   defaultCategory?: boolean;
+  filter?: CategoryFilter | null;
 };
 export type ReorderCategoryGroupsDto = {
   groups: {

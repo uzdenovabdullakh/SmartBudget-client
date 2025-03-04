@@ -5,7 +5,7 @@ import { AddBudgetModal } from "@/components/modals/add-budget/AddBudget";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SkeletonUI } from "@/components/ui/SkeletonUI";
 import { useGetBudgetsQuery } from "@/lib/services/budget.api";
-import { Box, Button, SimpleGrid, Text, useDisclosure } from "@chakra-ui/react";
+import { Box, Button, HStack, Text, useDisclosure } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { FiPlus } from "react-icons/fi";
 
@@ -19,7 +19,7 @@ export default function Dashboard() {
     <>
       <PageHeader text={t("budgets_header")} />
       <Box p={8}>
-        <SimpleGrid minChildWidth="3xs" columnGap={6} rowGap={4}>
+        <HStack columnGap={4} rowGap={6}>
           {isLoading ? (
             <SkeletonUI length={4} height="200px" width="250px" />
           ) : (
@@ -43,7 +43,7 @@ export default function Dashboard() {
             <FiPlus size={32} />
             <Text>{t("create_budget")}</Text>
           </Box>
-        </SimpleGrid>
+        </HStack>
         <AddBudgetModal isOpen={isOpen} onClose={onClose} />
       </Box>
     </>

@@ -7,7 +7,7 @@ import {
   HStack,
   AccordionPanel,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { CategoryGroup } from "@/lib/types/category.types";
 import { BudgetData } from "@/lib/types/budget.types";
 import { useCategoryManagement } from "@/lib/hooks/useCategoryManagment";
@@ -37,18 +37,17 @@ export const CategoryGroupItem = ({
   const { handleUpdateGroupName, handleDeleteGroup, handleCreateCategory } =
     useCategoryManagement();
 
-  const totalAssigned = group.categories.reduce(
-    (sum, category) => sum + (category.assigned || 0),
-    0,
-  );
-  const totalActivity = group.categories.reduce(
-    (sum, category) => sum + (category.activity || 0),
-    0,
-  );
-  const totalAvailable = group.categories.reduce(
-    (sum, category) => sum + (category.available || 0),
-    0,
-  );
+  const { totalAssigned, totalSpent, totalAvailable } = useMemo(() => {
+    return group.categories.reduce(
+      (acc, category) => {
+        acc.totalAssigned += category.assigned || 0;
+        acc.totalSpent += category.spent || 0;
+        acc.totalAvailable += category.available || 0;
+        return acc;
+      },
+      { totalAssigned: 0, totalSpent: 0, totalAvailable: 0 },
+    );
+  }, [group.categories]);
 
   return (
     <SortableItem key={group.id} id={group.id} nodeType="box">
@@ -83,36 +82,20 @@ export const CategoryGroupItem = ({
             </HStack>
           </Box>
           <Box width="20%" textAlign="center">
-            {formatCurrency(
-              totalAssigned,
-              budgetInfo?.settings.currency,
-              budgetInfo?.settings.currencyPlacement,
-            )}
+            {formatCurrency(totalAssigned, budgetInfo?.settings)}
           </Box>
           <Box width="20%" textAlign="center">
-            {formatCurrency(
-              totalActivity,
-              budgetInfo?.settings.currency,
-              budgetInfo?.settings.currencyPlacement,
-            )}
+            {formatCurrency(totalSpent, budgetInfo?.settings)}
           </Box>
           <Box width="20%" textAlign="center">
-            {formatCurrency(
-              totalAvailable,
-              budgetInfo?.settings.currency,
-              budgetInfo?.settings.currencyPlacement,
-            )}
+            {formatCurrency(totalAvailable, budgetInfo?.settings)}
           </Box>
         </AccordionButton>
         <AccordionPanel>
           <CategoryTable
             group={group}
             formatCurrency={(value) =>
-              formatCurrency(
-                value,
-                budgetInfo?.settings.currency,
-                budgetInfo?.settings.currencyPlacement,
-              )
+              formatCurrency(value, budgetInfo?.settings)
             }
             handleCategoryGroupsChange={handleCategoryGroupsChange}
           />

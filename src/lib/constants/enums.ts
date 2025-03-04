@@ -19,3 +19,17 @@ export enum TransactionType {
   INCOME = "income",
   EXPENSE = "expense",
 }
+
+export enum Period {
+  DAILY = "daily",
+  WEEKLY = "weekly",
+  MONTHLY = "monthly",
+  YEARLY = "yearly",
+}
+
+export enum CategoryFilter {
+  SPENT = "spent",
+  AVAILABLE = "available",
+  LIMIT_REACHED = "limit_reached",
+  ASSIGNED = "assigned",
+}

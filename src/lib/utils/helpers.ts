@@ -7,6 +7,7 @@ import {
 } from "date-fns";
 import i18n from "@/app/i18n";
 import { DateRange, PredefinedRange } from "../types/types";
+import { BudgetSettings } from "../types/budget.types";
 
 export const getDateRange = (range: PredefinedRange): DateRange => {
   const now = new Date();
@@ -54,15 +55,25 @@ export const transactionsTableReduce = (state: any, action: any) => {
 // NOTE - try use i18next to currency and number formatting https://www.i18next.com/translation-function/formatting
 export const formatCurrency = (
   value: number = 0,
-  currency: string = "$",
-  placement: "before" | "after" = "before",
+  settings?: BudgetSettings,
 ) => {
+  const { currency = "$", currencyPlacement = "before" } = settings || {};
+
+  const isNegative = value < 0;
+  const absoluteValue = Math.abs(value);
+
   const formattedAmount = new Intl.NumberFormat(i18n.language, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  }).format(value);
+  }).format(absoluteValue);
 
-  return placement === "before"
+  if (isNegative) {
+    return currencyPlacement === "before"
+      ? `-${currency}${formattedAmount}`
+      : `-${formattedAmount}${currency}`;
+  }
+
+  return currencyPlacement === "before"
     ? `${currency}${formattedAmount}`
     : `${formattedAmount}${currency}`;
 };
@@ -122,4 +133,23 @@ export const getStartAndEndDate = ({
   }
 
   return { startDate, endDate };
+};
+
+export const getCurrencyColorStyles = (cur: number) => {
+  if (cur === 0) {
+    return {
+      bgColor: "#edf1f5",
+      color: "#6e7a88",
+    };
+  }
+  if (cur > 0) {
+    return {
+      bgColor: "#c1ee9f",
+      color: "#1d300d",
+    };
+  }
+  return {
+    bgColor: "#faada5",
+    color: "#3c0d09",
+  };
 };
