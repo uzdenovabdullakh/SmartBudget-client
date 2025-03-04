@@ -26,3 +26,10 @@ export enum Period {
   MONTHLY = "monthly",
   YEARLY = "yearly",
 }
+
+export enum CategoryFilter {
+  SPENT = "spent",
+  AVAILABLE = "available",
+  LIMIT_REACHED = "limit_reached",
+  ASSIGNED = "assigned",
+}

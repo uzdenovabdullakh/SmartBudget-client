@@ -304,6 +304,7 @@
   "Quick Questions": "Быстрые вопросы",
   "Thinking...": "Думает...",
   "Update amount": "Обновить баланс",
+  "Limit Reached": "Превышен лимит",
   "validation": {
     "Expected number": "Ожидалось число",
     "Cash, card or savings": "Наличные, кредитная карточка или сбережения",

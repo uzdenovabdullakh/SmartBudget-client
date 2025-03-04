@@ -8,11 +8,13 @@ import { useEffect, useState } from "react";
 import { BudgetBalance } from "@/components/budget/BudgetBalance";
 import { BudgetCategories } from "@/components/budget/BudgetCategories";
 import { CategoryPanel } from "@/components/budget/CategoryPanel";
+import { CategoryFilter } from "@/lib/constants/enums";
 
 export default function Budget() {
   const { i18n } = useTranslation();
 
   const [date, setDate] = useState("");
+  const [activeFilter, setActiveFilter] = useState<CategoryFilter | null>(null);
 
   useEffect(() => {
     const locale = i18n.language === "ru" ? ru : enUS;
@@ -24,8 +26,8 @@ export default function Budget() {
   return (
     <>
       <PageHeader text={date} buttons={<BudgetBalance />} />
-      <CategoryPanel />
-      <BudgetCategories />
+      <CategoryPanel onFilterChange={setActiveFilter} />
+      <BudgetCategories filter={activeFilter} />
     </>
   );
 }
