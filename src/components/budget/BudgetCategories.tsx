@@ -9,7 +9,13 @@ import {
   Stack,
   Flex,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  useTransition,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { CategoryGroup } from "@/lib/types/category.types";
 import {
@@ -29,6 +35,7 @@ import { useDragEnd } from "@/lib/hooks/useDragEnd";
 import { useBudgetContext } from "@/lib/context/BudgetContext";
 import { BudgetInspectorProvider } from "@/lib/context/BudgetInspectorContext";
 import { CategoryFilter } from "@/lib/constants/enums";
+import { functionDebounce } from "@/lib/hooks/useDebounce";
 import { SkeletonUI } from "../ui/SkeletonUI";
 import { CategoryGroupItem } from "./CategoryGroupItem";
 import { BudgetInspector } from "./BudgetInspector";
@@ -51,8 +58,8 @@ export const BudgetCategories = ({
   );
 
   const [getCategoryGroup, { isLoading }] = useLazyGetCategoryGroupQuery();
-
   const [categoryGroups, setCategoryGroups] = useState<CategoryGroup[]>([]);
+  const [isPending, startTransition] = useTransition();
 
   const { handleDragEnd } = useDragEnd(categoryGroups, setCategoryGroups);
 
@@ -64,15 +71,34 @@ export const BudgetCategories = ({
     }
   };
 
-  useEffect(() => {
+  const fetchCategoryGroups = useCallback(async () => {
     if (!budget?.id) return;
-    getCategoryGroup({ id: budget.id, filter })
-      .unwrap()
-      .then(setCategoryGroups)
-      .catch(console.error);
+    const data = await getCategoryGroup({ id: budget.id, filter }).unwrap();
+    startTransition(() => {
+      setCategoryGroups(data);
+    });
   }, [budget?.id, filter, getCategoryGroup]);
 
-  if (isLoading)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const debouncedFetch = useCallback(
+    functionDebounce(() => fetchCategoryGroups(), 300),
+    [fetchCategoryGroups],
+  );
+
+  useEffect(() => {
+    debouncedFetch();
+  }, [debouncedFetch]);
+
+  const categoryGroupIds = useMemo(
+    () => categoryGroups.map((g) => g.id),
+    [categoryGroups],
+  );
+  const accordionIndexes = useMemo(
+    () => categoryGroups.map((_, i) => i),
+    [categoryGroups],
+  );
+
+  if (isLoading || isPending)
     return (
       <Stack p={4}>
         <SkeletonUI length={10} height={10} />;
@@ -90,13 +116,10 @@ export const BudgetCategories = ({
         >
           <Box as="section" p={4} flex={1} overflow="auto" scrollPaddingTop={5}>
             <SortableContext
-              items={categoryGroups.map((group) => group.id)}
+              items={categoryGroupIds}
               strategy={verticalListSortingStrategy}
             >
-              <Accordion
-                allowMultiple
-                defaultIndex={categoryGroups.map((_, i) => i)}
-              >
+              <Accordion allowMultiple defaultIndex={accordionIndexes}>
                 <Table variant="simple" width="100%">
                   <Thead>
                     <Tr>
