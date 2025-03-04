@@ -28,11 +28,16 @@ import {
 import { useDragEnd } from "@/lib/hooks/useDragEnd";
 import { useBudgetContext } from "@/lib/context/BudgetContext";
 import { BudgetInspectorProvider } from "@/lib/context/BudgetInspectorContext";
+import { CategoryFilter } from "@/lib/constants/enums";
 import { SkeletonUI } from "../ui/SkeletonUI";
 import { CategoryGroupItem } from "./CategoryGroupItem";
 import { BudgetInspector } from "./BudgetInspector";
 
-export const BudgetCategories = () => {
+export const BudgetCategories = ({
+  filter,
+}: {
+  filter: CategoryFilter | null;
+}) => {
   const { t } = useTranslation();
   const { budget } = useBudgetContext();
 
@@ -61,11 +66,11 @@ export const BudgetCategories = () => {
 
   useEffect(() => {
     if (!budget?.id) return;
-    getCategoryGroup({ id: budget.id })
+    getCategoryGroup({ id: budget.id, filter })
       .unwrap()
       .then(setCategoryGroups)
       .catch(console.error);
-  }, [budget?.id, getCategoryGroup]);
+  }, [budget?.id, filter, getCategoryGroup]);
 
   if (isLoading)
     return (
