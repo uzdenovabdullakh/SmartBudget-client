@@ -4,7 +4,7 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { useCallback, useState } from "react";
+import { useCallback, useState, MouseEvent } from "react";
 import { useTranslation } from "react-i18next";
 import {
   AssigningChangeDto,
@@ -45,22 +45,31 @@ export const CategoryTable = ({
   const [editingCategory, setEditingCategory] = useState<string | null>(null);
 
   const onSubmit = useCallback(
-    (categoryId: string) => async (data: AssigningChangeDto) => {
+    (category: Category) => async (data: AssigningChangeDto) => {
       setEditingCategory(null);
 
-      await handleAssignChange(categoryId, data);
+      if (data.assigned !== category.assigned) {
+        await handleAssignChange(category.id, data);
+      }
     },
     [handleAssignChange],
   );
 
-  const handleEditStart = (category: Category) => {
-    setEditingCategory(category.id);
-    setValue("assigned", category.assigned);
-  };
+  const handleEditStart = useCallback(
+    (e: MouseEvent<HTMLParagraphElement>, category: Category) => {
+      e.stopPropagation();
+      setEditingCategory(category.id);
+      setValue("assigned", category.assigned);
+    },
+    [setValue],
+  );
 
-  const handleOpenBudgetInspector = (category: Category) => {
-    setSelectedCategory(category);
-  };
+  const handleOpenBudgetInspector = useCallback(
+    (category: Category) => {
+      setSelectedCategory(category);
+    },
+    [setSelectedCategory],
+  );
 
   const renderCategoryRow = (category: Category) => (
     <SortableItem
@@ -97,13 +106,13 @@ export const CategoryTable = ({
                 textAlign="center"
                 value={field.value ?? ""}
                 onChange={(e) => field.onChange(Number(e.target.value))}
-                onBlur={handleSubmit(onSubmit(category.id))}
+                onBlur={handleSubmit(onSubmit(category))}
               />
             )}
           />
         ) : (
           <Text
-            onClick={() => handleEditStart(category)}
+            onClick={(e) => handleEditStart(e, category)}
             cursor="pointer"
             textAlign="center"
           >

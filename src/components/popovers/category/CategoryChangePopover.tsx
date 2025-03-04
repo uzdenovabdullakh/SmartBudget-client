@@ -65,7 +65,14 @@ export const CategoryChangePopover = ({
       onClose={onClose}
       triggerButton={
         <Box cursor="pointer" role="button" _hover={{ textDecor: "underline" }}>
-          <Text onClick={onToggle}>{entity.name}</Text>
+          <Text
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggle();
+            }}
+          >
+            {entity.name}
+          </Text>
         </Box>
       }
       bodyContent={
