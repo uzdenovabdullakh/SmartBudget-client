@@ -68,3 +68,6 @@ export const NotFoundDataAnimation = (
 ) => (
   <LottieAnimation {...props} animationData="/animations/not-found-data.json" />
 );
+export const GoalAnimation = (
+  props: Omit<LottieAnimationProps, "animationData">,
+) => <LottieAnimation {...props} animationData="/animations/goal.json" />;
