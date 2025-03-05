@@ -314,6 +314,7 @@
   "Select achieve date": "Select achieve date",
   "Add Goal": "Add Goal",
   "last_updated": "Last updated",
+  "out of": "Reached {{currentAmount}} out of {{targetAmount}}",
   "validation": {
     "Expected number": "Excepted number",
     "Cash, card or savings": "Cash, card or savings",

@@ -314,6 +314,7 @@
   "Select achieve date": "Выберите дату",
   "Add Goal": "Создать цель",
   "last_updated": "Последнее изменение",
+  "out of": "Достигнуто {{currentAmount}} из {{targetAmount}}",
   "validation": {
     "Expected number": "Ожидалось число",
     "Cash, card or savings": "Наличные, кредитная карточка или сбережения",

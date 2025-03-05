@@ -93,19 +93,11 @@ export const EditGoalModal = ({
               />
               <VStack spacing={4} align="start">
                 <Box>
-                  <Text fontSize="md" fontWeight="bold">
-                    {t("Target amount")}:{" "}
-                    <Text as="span" fontWeight="normal">
-                      {goal.targetAmount}
-                    </Text>
-                  </Text>
-                </Box>
-                <Box>
-                  <Text fontSize="md" fontWeight="bold">
-                    {t("Current amount")}:{" "}
-                    <Text as="span" fontWeight="normal">
-                      {goal.currentAmount}
-                    </Text>
+                  <Text as="span" fontWeight="normal">
+                    {t("out of", {
+                      currentAmount: goal.currentAmount,
+                      targetAmount: goal.targetAmount,
+                    })}
                   </Text>
                 </Box>
                 <Box>
