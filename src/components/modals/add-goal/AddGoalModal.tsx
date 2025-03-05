@@ -28,7 +28,7 @@ export const AddGoalModal = ({ isOpen, onClose }: DefaultModalProps) => {
   } = useForm<CreateGoalDto>({
     resolver: zodResolver(CreateGoalSchema),
     defaultValues: {
-      budgetId: budget?.id,
+      currentAmount: 0,
     },
   });
 
@@ -36,7 +36,7 @@ export const AddGoalModal = ({ isOpen, onClose }: DefaultModalProps) => {
     if (!budget?.id) return;
 
     try {
-      const { message } = await createGoal(data).unwrap();
+      const { message } = await createGoal({ id: budget.id, ...data }).unwrap();
       showToast({ title: message, status: "success" });
 
       reset();
@@ -77,7 +77,6 @@ export const AddGoalModal = ({ isOpen, onClose }: DefaultModalProps) => {
             type="number"
             placeholder={t("Current amount")}
             label={t("Current amount")}
-            defaultValue={0}
             error={errors.currentAmount?.message}
             {...register("currentAmount", { valueAsNumber: true })}
           />

@@ -7,9 +7,5 @@ export type Goal = {
   currentAmount: number;
   achieveDate: Date;
   period: Period;
-};
-
-export type GoalsResult = {
-  accounts: Goal[];
-  totalPages: number;
+  updatedAt: Date;
 };
