@@ -1,10 +1,11 @@
-import { Box, Button, HStack, Text, useDisclosure } from "@chakra-ui/react";
+import { Box, Button, HStack, useDisclosure } from "@chakra-ui/react";
 import { useCategoryManagement } from "@/lib/hooks/useCategoryManagment";
 import { CategoryFilter } from "@/lib/constants/enums";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CategoryCreatePopover } from "../popovers/category/CategoryCreatePopover";
 import { AddGoalModal } from "../modals/add-goal/AddGoalModal";
+import { SpanButton } from "../ui/SpanButton";
 
 const buttonStyles = {
   default: {
@@ -70,21 +71,7 @@ export const CategoryPanel = ({ onFilterChange }: CategoryPanelProps) => {
             isCategoryGroup
             onCreate={handleCreateCategoryGroup as any}
           />
-          <Box
-            as="span"
-            role="button"
-            cursor="pointer"
-            color="blue.500"
-            _hover={{ color: "blue.600" }}
-            ml={2}
-            onClick={onOpen}
-          >
-            <HStack spacing={1}>
-              <Text fontSize="sm" fontWeight="bold">
-                {t("Create goal")}
-              </Text>
-            </HStack>
-          </Box>
+          <SpanButton name={t("Create goal")} onClick={onOpen} />
           <AddGoalModal isOpen={isOpen} onClose={onClose} />
         </HStack>
         <HStack spacing={2}>
