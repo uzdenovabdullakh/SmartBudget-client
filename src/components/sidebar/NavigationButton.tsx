@@ -6,11 +6,13 @@ import {
   IoAnalyticsOutline,
   IoListOutline,
 } from "react-icons/io5";
+import { GoGoal } from "react-icons/go";
 
 const navigationButtons = [
   { label: "Budget", path: "", icon: <IoWalletOutline /> },
   { label: "Reflect", path: "analytic", icon: <IoAnalyticsOutline /> },
   { label: "All Accounts", path: "account", icon: <IoListOutline /> },
+  { label: "Goals", path: "goals", icon: <GoGoal /> },
 ];
 
 type NavigationButtonsProps = {
