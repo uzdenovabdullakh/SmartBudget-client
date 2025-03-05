@@ -8,14 +8,21 @@ type DonutChartProps = {
   progress: number;
   limitAmount: number;
   spentAmount: number;
+  reverseColor: boolean;
 };
 
 export const DonutChart = ({
   progress,
   limitAmount,
   spentAmount,
+  reverseColor,
 }: DonutChartProps) => {
   const getProgressColor = (pgr: number) => {
+    if (reverseColor) {
+      if (pgr < 50) return "red";
+      if (pgr < 80) return "orange";
+      return "green";
+    }
     if (pgr < 50) return "green";
     if (pgr < 80) return "orange";
     return "red";

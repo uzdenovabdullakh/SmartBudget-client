@@ -133,6 +133,7 @@ export const LimitCard = ({ category, budgetSettings }: LimitCardProps) => {
             progress={progress}
             limitAmount={categoryLimit.limitAmount}
             spentAmount={categoryLimit.spentAmount}
+            reverseColor={false}
           />
           {progress >= 100 && (
             <Box mb={4}>
