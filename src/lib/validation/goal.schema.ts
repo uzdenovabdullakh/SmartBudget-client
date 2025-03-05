@@ -1,6 +1,5 @@
 import i18n from "@/app/i18n";
 import { z } from "zod";
-import { Period } from "../constants/enums";
 
 const BaseCreateGoalSchema = z.object({
   name: z
@@ -10,7 +9,6 @@ const BaseCreateGoalSchema = z.object({
   targetAmount: z.number().positive().min(1),
   currentAmount: z.number().nonnegative().optional(),
   achieveDate: z.string(),
-  period: z.nativeEnum(Period),
 });
 
 export const CreateGoalSchema = BaseCreateGoalSchema;

@@ -9,8 +9,6 @@ import { useBudgetContext } from "@/lib/context/BudgetContext";
 import { useCreateGoalMutation } from "@/lib/services/goal.api";
 import { CreateGoalDto, CreateGoalSchema } from "@/lib/validation/goal.schema";
 import FormDatePicker from "@/components/ui/FormDatePicker";
-import FormSelectUI from "@/components/ui/FormSelectUI";
-import { Period } from "@/lib/constants/enums";
 import FormInputUI from "@/components/ui/FormInputUI";
 import { DefaultModal } from "..";
 
@@ -86,15 +84,6 @@ export const AddGoalModal = ({ isOpen, onClose }: DefaultModalProps) => {
             placeholder={t("Select achieve date")}
             error={errors.achieveDate?.message}
             name="achieveDate"
-          />
-          <FormSelectUI
-            label={t("Period")}
-            error={errors.period?.message}
-            options={Object.values(Period).map((period) => ({
-              value: period,
-              label: t(period),
-            }))}
-            {...register("period")}
           />
         </VStack>
       }
