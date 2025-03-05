@@ -45,6 +45,7 @@ export const TransactionForm = () => {
         label={t("Outflow")}
       />
       <FormDatePicker
+        name="date"
         control={control}
         error={errors.date?.message}
         label={t("Date")}
