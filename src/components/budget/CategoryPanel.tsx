@@ -1,9 +1,10 @@
-import { Box, Button, HStack } from "@chakra-ui/react";
+import { Box, Button, HStack, Text, useDisclosure } from "@chakra-ui/react";
 import { useCategoryManagement } from "@/lib/hooks/useCategoryManagment";
 import { CategoryFilter } from "@/lib/constants/enums";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CategoryCreatePopover } from "../popovers/category/CategoryCreatePopover";
+import { AddGoalModal } from "../modals/add-goal/AddGoalModal";
 
 const buttonStyles = {
   default: {
@@ -44,6 +45,8 @@ type CategoryPanelProps = {
 export const CategoryPanel = ({ onFilterChange }: CategoryPanelProps) => {
   const { t } = useTranslation();
   const { handleCreateCategoryGroup } = useCategoryManagement();
+  const { isOpen, onClose, onOpen } = useDisclosure();
+
   const [activeFilter, setActiveFilter] = useState<CategoryFilter | null>(null);
 
   const handleFilterClick = useCallback(
@@ -62,10 +65,28 @@ export const CategoryPanel = ({ onFilterChange }: CategoryPanelProps) => {
   return (
     <Box p={6} textAlign="left" borderBottom="1px solid #e2e8f0">
       <HStack spacing={4} align="center" justifyContent="space-between">
-        <CategoryCreatePopover
-          isCategoryGroup
-          onCreate={handleCreateCategoryGroup as any}
-        />
+        <HStack spacing={4}>
+          <CategoryCreatePopover
+            isCategoryGroup
+            onCreate={handleCreateCategoryGroup as any}
+          />
+          <Box
+            as="span"
+            role="button"
+            cursor="pointer"
+            color="blue.500"
+            _hover={{ color: "blue.600" }}
+            ml={2}
+            onClick={onOpen}
+          >
+            <HStack spacing={1}>
+              <Text fontSize="sm" fontWeight="bold">
+                {t("Create goal")}
+              </Text>
+            </HStack>
+          </Box>
+          <AddGoalModal isOpen={isOpen} onClose={onClose} />
+        </HStack>
         <HStack spacing={2}>
           {filters.map((filter) => (
             <Button
