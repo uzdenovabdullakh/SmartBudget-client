@@ -12,6 +12,7 @@ import { checkApi } from "./services/check.api";
 import { analyticApi } from "./services/analytic.api";
 import { AIApi } from "./services/ai.api";
 import { categoryLimitApi } from "./services/category-limit.api";
+import { goalApi } from "./services/goal.api";
 
 export const store = configureStore({
   reducer: {
@@ -27,6 +28,7 @@ export const store = configureStore({
     [analyticApi.reducerPath]: analyticApi.reducer,
     [AIApi.reducerPath]: AIApi.reducer,
     [categoryLimitApi.reducerPath]: categoryLimitApi.reducer,
+    [goalApi.reducerPath]: goalApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -42,6 +44,7 @@ export const store = configureStore({
       analyticApi.middleware,
       AIApi.middleware,
       categoryLimitApi.middleware,
+      goalApi.middleware,
     ),
 });
 
