@@ -315,6 +315,8 @@
   "Add Goal": "Add Goal",
   "last_updated": "Last updated",
   "out of": "Reached {{currentAmount}} out of {{targetAmount}}",
+  "remain_amount": "To achieve the goal with your current income until {{date}}, you need to postpone {{how_many_month}} every month or {{how_many_week}} every week or {{how_many_day}} every day.",
+  "goal": "goal",
   "validation": {
     "Expected number": "Excepted number",
     "Cash, card or savings": "Cash, card or savings",
