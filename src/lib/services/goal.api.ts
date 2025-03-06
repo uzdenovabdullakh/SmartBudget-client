@@ -7,9 +7,11 @@ import { Goal } from "../types/goal.types";
 export const goalApi = createApi({
   reducerPath: "goals",
   baseQuery: axiosBaseQuery({ baseUrl: "/goals" }),
+  tagTypes: ["goals"],
   endpoints: (builder) => ({
     getGoals: builder.query<Goal[], string>({
       query: (id: string) => ({ url: `/${id}`, method: "GET" }),
+      providesTags: ["goals"],
     }),
     createGoal: builder.mutation<
       ResponseWithoutData,
@@ -20,6 +22,7 @@ export const goalApi = createApi({
         method: "POST",
         data,
       }),
+      invalidatesTags: ["goals"],
     }),
     updateGoal: builder.mutation<
       ResponseWithoutData,
@@ -30,12 +33,14 @@ export const goalApi = createApi({
         method: "PATCH",
         data,
       }),
+      invalidatesTags: ["goals"],
     }),
     removeGoal: builder.mutation<ResponseWithoutData, string>({
       query: (id: string) => ({
         url: `/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["goals"],
     }),
   }),
 });
