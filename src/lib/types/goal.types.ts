@@ -6,3 +6,12 @@ export type Goal = {
   achieveDate: Date;
   updatedAt: Date;
 };
+
+export type GoalWithSavings = {
+  goal: Omit<Goal, "updatedAt">;
+  savings: {
+    daily: number;
+    weekly: number;
+    monthly: number;
+  };
+};

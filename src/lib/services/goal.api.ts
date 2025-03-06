@@ -2,7 +2,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import { axiosBaseQuery } from "../axiosBaseQuery";
 import { ResponseWithoutData } from "../types/types";
 import { CreateGoalDto, UpdateGoalDto } from "../validation/goal.schema";
-import { Goal } from "../types/goal.types";
+import { Goal, GoalWithSavings } from "../types/goal.types";
 
 export const goalApi = createApi({
   reducerPath: "goals",
@@ -10,6 +10,10 @@ export const goalApi = createApi({
   tagTypes: ["goals"],
   endpoints: (builder) => ({
     getGoals: builder.query<Goal[], string>({
+      query: (id: string) => ({ url: `/all/${id}`, method: "GET" }),
+      providesTags: ["goals"],
+    }),
+    getGoal: builder.query<GoalWithSavings, string>({
       query: (id: string) => ({ url: `/${id}`, method: "GET" }),
       providesTags: ["goals"],
     }),
@@ -47,6 +51,7 @@ export const goalApi = createApi({
 
 export const {
   useGetGoalsQuery,
+  useGetGoalQuery,
   useCreateGoalMutation,
   useUpdateGoalMutation,
   useRemoveGoalMutation,
