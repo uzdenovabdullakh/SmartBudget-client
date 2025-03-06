@@ -3,14 +3,20 @@ import { axiosBaseQuery } from "../axiosBaseQuery";
 import { ResponseWithoutData } from "../types/types";
 import { CreateGoalDto, UpdateGoalDto } from "../validation/goal.schema";
 import { Goal, GoalWithSavings } from "../types/goal.types";
+import { GetGoalFilter } from "../constants/enums";
 
 export const goalApi = createApi({
   reducerPath: "goals",
   baseQuery: axiosBaseQuery({ baseUrl: "/goals" }),
   tagTypes: ["goals"],
   endpoints: (builder) => ({
-    getGoals: builder.query<Goal[], string>({
-      query: (id: string) => ({ url: `/all/${id}`, method: "GET" }),
+    getGoals: builder.query<Goal[], { id: string; filter?: GetGoalFilter }>({
+      query: ({ id, filter }) => {
+        const params = new URLSearchParams();
+        if (filter) params.append("filter", filter);
+
+        return { url: `/all/${id}?${params.toString()}`, method: "GET" };
+      },
       providesTags: ["goals"],
     }),
     getGoal: builder.query<GoalWithSavings, string>({

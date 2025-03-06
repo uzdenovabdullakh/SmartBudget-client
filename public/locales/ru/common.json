@@ -317,6 +317,8 @@
   "out of": "Достигнуто {{currentAmount}} из {{targetAmount}}",
   "remain_amount": "Чтобы достигнуть цели с вашими текущими доходами до {{date}} нужно откладывать {{how_many_month}} каждый месяц или {{how_many_week}} каждую неделю или {{how_many_day}} каждый день.",
   "goal": "цель",
+  "Active": "Активные",
+  "Reached": "Завершенные",
   "validation": {
     "Expected number": "Ожидалось число",
     "Cash, card or savings": "Наличные, кредитная карточка или сбережения",
