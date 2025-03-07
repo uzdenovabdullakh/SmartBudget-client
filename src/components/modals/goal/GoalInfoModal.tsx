@@ -33,6 +33,22 @@ export const GoalInfoModal = ({
     100,
   );
 
+  const formattedDate = achieveDate.toLocaleDateString();
+  const formattedMonthly = formatCurrency(savings.monthly, budget?.settings);
+  const formattedWeekly = formatCurrency(savings.weekly, budget?.settings);
+  const formattedDaily = formatCurrency(savings.daily, budget?.settings);
+
+  const remainAmountText = t("remain_amount", {
+    date: "__DATE__",
+    how_many_month: "__MONTHLY__",
+    how_many_week: "__WEEKLY__",
+    how_many_day: "__DAILY__",
+  });
+
+  const parts = remainAmountText.split(
+    /(__DATE__|__MONTHLY__|__WEEKLY__|__DAILY__)/,
+  );
+
   return (
     <DefaultModal
       isOpen={isOpen}
@@ -60,25 +76,67 @@ export const GoalInfoModal = ({
               <Text fontSize="md" fontWeight="bold">
                 {t("Achieve date")}:{" "}
                 <Text as="span" fontWeight="normal">
-                  {achieveDate.toLocaleDateString()}
+                  {formattedDate}
                 </Text>
               </Text>
             </Box>
-            <Box>
-              <Text as="span" fontWeight="normal">
-                {t("remain_amount", {
-                  date: achieveDate.toLocaleDateString(),
-                  how_many_month: formatCurrency(
-                    savings.monthly,
-                    budget?.settings,
-                  ),
-                  how_many_week: formatCurrency(
-                    savings.weekly,
-                    budget?.settings,
-                  ),
-                  how_many_day: formatCurrency(savings.daily, budget?.settings),
-                })}
-              </Text>
+            <Box pb={4}>
+              {progress === 100 ? (
+                <Text>{t("You reached your target!")}</Text>
+              ) : (
+                <Text fontWeight="normal">
+                  {parts.map((part) => {
+                    switch (part) {
+                      case "__DATE__":
+                        return (
+                          <Text
+                            as="span"
+                            key={part}
+                            color="tan"
+                            fontWeight="bold"
+                          >
+                            {formattedDate}
+                          </Text>
+                        );
+                      case "__MONTHLY__":
+                        return (
+                          <Text
+                            as="span"
+                            key={part}
+                            color="teal.500"
+                            fontWeight="bold"
+                          >
+                            {formattedMonthly}
+                          </Text>
+                        );
+                      case "__WEEKLY__":
+                        return (
+                          <Text
+                            as="span"
+                            key={part}
+                            color="teal.500"
+                            fontWeight="bold"
+                          >
+                            {formattedWeekly}
+                          </Text>
+                        );
+                      case "__DAILY__":
+                        return (
+                          <Text
+                            as="span"
+                            key={part}
+                            color="teal.500"
+                            fontWeight="bold"
+                          >
+                            {formattedDaily}
+                          </Text>
+                        );
+                      default:
+                        return part;
+                    }
+                  })}
+                </Text>
+              )}
             </Box>
           </VStack>
         </VStack>
