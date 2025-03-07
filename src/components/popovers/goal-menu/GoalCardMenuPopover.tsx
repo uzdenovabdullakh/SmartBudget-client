@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { Goal } from "@/lib/types/goal.types";
 import { EditGoalModal } from "@/components/modals/goal/EditGoalModal";
 import { useRemoveGoalMutation } from "@/lib/services/goal.api";
+import { SetUpAutoCompletionModal } from "@/components/modals/set-up-auto-completion/SetUpAutoCompletionModal";
 import { BasePopover } from "..";
 
 type GoalCardMenuPopoverProps = {
@@ -18,6 +19,7 @@ export const GoalCardMenuPopover = ({ goal }: GoalCardMenuPopoverProps) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
   const editModal = useDisclosure();
   const deleteModal = useDisclosure();
+  const setUpAutoCompletion = useDisclosure();
 
   const [deleteGoal, { isLoading }] = useRemoveGoalMutation();
 
@@ -47,6 +49,9 @@ export const GoalCardMenuPopover = ({ goal }: GoalCardMenuPopoverProps) => {
     <VStack spacing={4} align="stretch">
       <Button leftIcon={<FiEdit />} onClick={editModal.onOpen}>
         {t("Edit")}
+      </Button>
+      <Button onClick={setUpAutoCompletion.onOpen}>
+        {t("Set up auto-completion")}
       </Button>
       <Button leftIcon={<FiTrash2 />} onClick={deleteModal.onOpen}>
         {t("Delete", {
@@ -78,6 +83,11 @@ export const GoalCardMenuPopover = ({ goal }: GoalCardMenuPopoverProps) => {
         isLoading={isLoading}
         onDelete={handleDelete}
         entity={entity}
+      />
+      <SetUpAutoCompletionModal
+        isOpen={setUpAutoCompletion.isOpen}
+        onClose={setUpAutoCompletion.onClose}
+        goal={goal}
       />
     </>
   );
