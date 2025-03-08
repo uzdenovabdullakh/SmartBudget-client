@@ -11,18 +11,19 @@ import DatePickerUI from "./DatePickerUI";
 
 type Props = {
   control: any;
+  name: string;
   label?: string;
   placeholder?: string;
   error?: string;
 } & DatePickerProps;
 
 const FormDatePicker = forwardRef<DatePicker, Props>(
-  ({ control, label, error, placeholder }, ref) => {
+  ({ control, label, error, placeholder, name }, ref) => {
     return (
       <FormControl isInvalid={!!error}>
         {label && <FormLabel>{label}</FormLabel>}
         <Controller
-          name="date"
+          name={name}
           control={control}
           render={({ field }) => (
             <Box>

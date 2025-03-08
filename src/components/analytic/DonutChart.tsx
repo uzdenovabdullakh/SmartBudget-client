@@ -1,6 +1,7 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { CheckIcon } from "@chakra-ui/icons";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -8,14 +9,21 @@ type DonutChartProps = {
   progress: number;
   limitAmount: number;
   spentAmount: number;
+  reverseColor: boolean;
 };
 
 export const DonutChart = ({
   progress,
   limitAmount,
   spentAmount,
+  reverseColor,
 }: DonutChartProps) => {
   const getProgressColor = (pgr: number) => {
+    if (reverseColor) {
+      if (pgr < 50) return "red";
+      if (pgr < 80) return "orange";
+      return "green";
+    }
     if (pgr < 50) return "green";
     if (pgr < 80) return "orange";
     return "red";
@@ -62,9 +70,13 @@ export const DonutChart = ({
           transform="translate(-50%, -50%)"
           textAlign="center"
         >
-          <Text fontSize="18px" fontWeight="bold">
-            {`${progress.toFixed(0)}%`}
-          </Text>
+          {progress === 100 && reverseColor ? (
+            <CheckIcon boxSize={6} color="green.500" />
+          ) : (
+            <Text fontSize="18px" fontWeight="bold">
+              {`${progress.toFixed(0)}%`}
+            </Text>
+          )}
         </Box>
       </Box>
     </Flex>

@@ -1,9 +1,43 @@
-import { Box, Button, HStack } from "@chakra-ui/react";
+import { Box, Button, HStack, useDisclosure } from "@chakra-ui/react";
 import { useCategoryManagement } from "@/lib/hooks/useCategoryManagment";
 import { CategoryFilter } from "@/lib/constants/enums";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CategoryCreatePopover } from "../popovers/category/CategoryCreatePopover";
+import { AddGoalModal } from "../modals/add-goal/AddGoalModal";
+import { SpanButton } from "../ui/SpanButton";
+
+const buttonStyles = {
+  default: {
+    background: "#edf1f5",
+    color: "#19223c",
+    border: ".09375rem solid transparent",
+    borderRadius: ".3125rem",
+    fontWeight: "500",
+    lineHeight: "1rem",
+    maxWidth: "9.375rem",
+    padding: ".1875rem .75rem",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    _hover: {
+      background: "#e2e8f0",
+    },
+  },
+  active: {
+    background: "#d8e0fd",
+    borderColor: "#3b5eda",
+    border: ".09375rem solid",
+  },
+};
+
+const filters = [
+  { label: "All", value: null },
+  { label: "Spent", value: CategoryFilter.SPENT },
+  { label: "Available", value: CategoryFilter.AVAILABLE },
+  { label: "Limit Reached", value: CategoryFilter.LIMIT_REACHED },
+  { label: "Assigned", value: CategoryFilter.ASSIGNED },
+];
 
 type CategoryPanelProps = {
   onFilterChange: (filter: CategoryFilter | null) => void;
@@ -12,6 +46,8 @@ type CategoryPanelProps = {
 export const CategoryPanel = ({ onFilterChange }: CategoryPanelProps) => {
   const { t } = useTranslation();
   const { handleCreateCategoryGroup } = useCategoryManagement();
+  const { isOpen, onClose, onOpen } = useDisclosure();
+
   const [activeFilter, setActiveFilter] = useState<CategoryFilter | null>(null);
 
   const handleFilterClick = useCallback(
@@ -27,45 +63,17 @@ export const CategoryPanel = ({ onFilterChange }: CategoryPanelProps) => {
     [activeFilter, onFilterChange],
   );
 
-  const buttonStyles = {
-    default: {
-      background: "#edf1f5",
-      color: "#19223c",
-      border: ".09375rem solid transparent",
-      borderRadius: ".3125rem",
-      fontWeight: "500",
-      lineHeight: "1rem",
-      maxWidth: "9.375rem",
-      padding: ".1875rem .75rem",
-      textOverflow: "ellipsis",
-      whiteSpace: "nowrap",
-      overflow: "hidden",
-      _hover: {
-        background: "#e2e8f0",
-      },
-    },
-    active: {
-      background: "#d8e0fd",
-      borderColor: "#3b5eda",
-      border: ".09375rem solid",
-    },
-  };
-
-  const filters = [
-    { label: t("All"), value: null },
-    { label: t("Spent"), value: CategoryFilter.SPENT },
-    { label: t("Available"), value: CategoryFilter.AVAILABLE },
-    { label: t("Limit Reached"), value: CategoryFilter.LIMIT_REACHED },
-    { label: t("Assigned"), value: CategoryFilter.ASSIGNED },
-  ];
-
   return (
     <Box p={6} textAlign="left" borderBottom="1px solid #e2e8f0">
       <HStack spacing={4} align="center" justifyContent="space-between">
-        <CategoryCreatePopover
-          isCategoryGroup
-          onCreate={handleCreateCategoryGroup as any}
-        />
+        <HStack spacing={4}>
+          <CategoryCreatePopover
+            isCategoryGroup
+            onCreate={handleCreateCategoryGroup as any}
+          />
+          <SpanButton name={t("Create goal")} onClick={onOpen} />
+          <AddGoalModal isOpen={isOpen} onClose={onClose} />
+        </HStack>
         <HStack spacing={2}>
           {filters.map((filter) => (
             <Button
@@ -74,7 +82,7 @@ export const CategoryPanel = ({ onFilterChange }: CategoryPanelProps) => {
               {...(activeFilter === filter.value ? buttonStyles.active : {})}
               onClick={() => handleFilterClick(filter.value)}
             >
-              {filter.label}
+              {t(filter.label)}
             </Button>
           ))}
         </HStack>
