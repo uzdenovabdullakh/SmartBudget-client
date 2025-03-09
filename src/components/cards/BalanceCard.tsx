@@ -39,7 +39,10 @@ export const BalanceCard = ({
           <AccordionButton p={4}>
             <Flex flex="1" alignItems="center" justifyContent="space-between">
               <Heading size="xs" fontWeight="semibold">
-                {t("Available in")} {formattedDate} <AccordionIcon />
+                {t("Available in", {
+                  date: formattedDate,
+                })}
+                <AccordionIcon />
               </Heading>
               <ColoredCurrency currency={available} nodeType="span" />
             </Flex>
@@ -49,7 +52,9 @@ export const BalanceCard = ({
             <Box mb={4} color="granite.granite600">
               <Flex justifyContent="space-between" mb={2}>
                 <Text>
-                  {t("Assigned in")} {formattedDate}
+                  {t("Assigned in", {
+                    date: formattedDate,
+                  })}
                 </Text>
                 <Text>{assigned}</Text>
               </Flex>

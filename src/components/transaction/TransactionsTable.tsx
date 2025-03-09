@@ -144,7 +144,9 @@ export const TransactionsTable: React.FC<TransactionsTableProps> = ({
       {selectedRows.length > 0 && (
         <HStack>
           <Button colorScheme="red" onClick={handleDelete}>
-            {t("Delete Selected")} ({selectedRows.length})
+            {t("Delete Selected", {
+              count: selectedRows.length,
+            })}
           </Button>
           <Tooltip
             label={t("Categorize selected transactions using AI")}
@@ -155,7 +157,9 @@ export const TransactionsTable: React.FC<TransactionsTableProps> = ({
               color="neutrals.midnight"
               onClick={handleCategorize}
             >
-              {t("Categorize Selected")} ({selectedRows.length})
+              {t("Categorize Selected", {
+                count: selectedRows.length,
+              })}
             </Button>
           </Tooltip>
         </HStack>

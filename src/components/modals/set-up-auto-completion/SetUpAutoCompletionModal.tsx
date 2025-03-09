@@ -160,7 +160,7 @@ export const SetUpAutoCompletionModal = ({
     bodyContent = (
       <VStack spacing={4}>
         <Text>
-          {t("Current Percentage")}:{" "}
+          {t("Current Percentage")}
           <strong>{goal?.autoReplenishments?.percentage}</strong>%
         </Text>
       </VStack>

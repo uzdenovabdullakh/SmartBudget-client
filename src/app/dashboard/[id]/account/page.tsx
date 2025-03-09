@@ -65,8 +65,9 @@ export default function Accounts() {
           <SkeletonUI height={4} />
         ) : (
           <Text fontSize="lg" fontWeight="bold" mb={4}>
-            {t("Total Balance")}:{" "}
-            {formatCurrency(totalBalance, budget?.settings)}
+            {t("Total Balance", {
+              balance: formatCurrency(totalBalance, budget?.settings),
+            })}
           </Text>
         )}
 

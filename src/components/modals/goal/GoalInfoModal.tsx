@@ -74,7 +74,7 @@ export const GoalInfoModal = ({
             </Box>
             <Box>
               <Text fontSize="md" fontWeight="bold">
-                {t("Achieve date")}:{" "}
+                {t("Achieve date")}
                 <Text as="span" fontWeight="normal">
                   {formattedDate}
                 </Text>
