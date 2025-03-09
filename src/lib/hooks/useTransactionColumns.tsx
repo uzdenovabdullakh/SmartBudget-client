@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { Button, HStack, Input, Td, Tfoot, Tr } from "@chakra-ui/react";
@@ -90,81 +90,84 @@ export const useTransactionColumns = ({
     }
   }, [editingId, transactions, reset]);
 
-  const columns = [
-    columnHelper.accessor("date", {
-      header: t("Date"),
-      cell: (info) =>
-        editingId === info.row.original.id ? (
-          <Controller
-            name="date"
-            control={control}
-            defaultValue={info.getValue()}
-            render={({ field }) => (
-              <DatePickerUI
-                selected={field.value ? new Date(field.value) : new Date()}
-                onChange={(date) => field.onChange(date)}
-              />
-            )}
-          />
-        ) : (
-          new Date(info.getValue()).toLocaleDateString()
-        ),
-    }),
-    columnHelper.accessor("description", {
-      header: t("Description"),
-      cell: (info) =>
-        editingId === info.row.original.id ? (
-          <Input
-            {...register("description")}
-            defaultValue={info.getValue() || undefined}
-          />
-        ) : (
-          info.getValue()
-        ),
-    }),
-    columnHelper.accessor("category.name", {
-      header: t("Category"),
-      cell: (info) =>
-        editingId === info.row.original.id ? (
-          <CategorySelect
-            {...register("category", {
-              setValueAs: handleSetCategory,
-            })}
-            defaultValue=""
-          />
-        ) : (
-          info.row.original.category?.name
-        ),
-    }),
-    columnHelper.accessor("inflow", {
-      header: t("Inflow"),
-      cell: (info) =>
-        editingId === info.row.original.id ? (
-          <Input
-            {...register("inflow", { valueAsNumber: true })}
-            defaultValue={info.getValue() || undefined}
-            type="number"
-          />
-        ) : (
-          info.getValue() &&
-          formatCurrency(info.getValue() as number, budget?.settings)
-        ),
-    }),
-    columnHelper.accessor("outflow", {
-      header: t("Outflow"),
-      cell: (info) =>
-        editingId === info.row.original.id ? (
-          <Input
-            {...register("outflow", { valueAsNumber: true })}
-            defaultValue={info.getValue() || undefined}
-            type="number"
-          />
-        ) : (
-          info.getValue() &&
-          formatCurrency(info.getValue() as number, budget?.settings)
-        ),
-    }),
-  ];
+  const columns = useMemo(
+    () => [
+      columnHelper.accessor("date", {
+        header: t("Date"),
+        cell: (info) =>
+          editingId === info.row.original.id ? (
+            <Controller
+              name="date"
+              control={control}
+              defaultValue={info.getValue()}
+              render={({ field }) => (
+                <DatePickerUI
+                  selected={field.value ? new Date(field.value) : new Date()}
+                  onChange={(date) => field.onChange(date)}
+                />
+              )}
+            />
+          ) : (
+            new Date(info.getValue()).toLocaleDateString()
+          ),
+      }),
+      columnHelper.accessor("description", {
+        header: t("Description"),
+        cell: (info) =>
+          editingId === info.row.original.id ? (
+            <Input
+              {...register("description")}
+              defaultValue={info.getValue() || undefined}
+            />
+          ) : (
+            info.getValue()
+          ),
+      }),
+      columnHelper.accessor("category.name", {
+        header: t("Category"),
+        cell: (info) =>
+          editingId === info.row.original.id ? (
+            <CategorySelect
+              {...register("category", {
+                setValueAs: handleSetCategory,
+              })}
+              defaultValue=""
+            />
+          ) : (
+            info.row.original.category?.name
+          ),
+      }),
+      columnHelper.accessor("inflow", {
+        header: t("Inflow"),
+        cell: (info) =>
+          editingId === info.row.original.id ? (
+            <Input
+              {...register("inflow", { valueAsNumber: true })}
+              defaultValue={info.getValue() || undefined}
+              type="number"
+            />
+          ) : (
+            info.getValue() &&
+            formatCurrency(info.getValue() as number, budget?.settings)
+          ),
+      }),
+      columnHelper.accessor("outflow", {
+        header: t("Outflow"),
+        cell: (info) =>
+          editingId === info.row.original.id ? (
+            <Input
+              {...register("outflow", { valueAsNumber: true })}
+              defaultValue={info.getValue() || undefined}
+              type="number"
+            />
+          ) : (
+            info.getValue() &&
+            formatCurrency(info.getValue() as number, budget?.settings)
+          ),
+      }),
+    ],
+    [budget?.settings, control, editingId, handleSetCategory, register, t],
+  );
 
   const footer = () =>
     editingId ? (
