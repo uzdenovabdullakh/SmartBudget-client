@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Controller, useForm, useWatch } from "react-hook-form";
-import { Button, HStack, Input, Td, Tfoot, Tr } from "@chakra-ui/react";
+import { Button, HStack, Input, Td, Tr } from "@chakra-ui/react";
 import { createColumnHelper } from "@tanstack/react-table";
 import { Transaction } from "@/lib/types/transaction.types";
 import {
@@ -169,11 +169,11 @@ export const useTransactionColumns = ({
     [budget?.settings, control, editingId, handleSetCategory, register, t],
   );
 
-  const footer = () =>
-    editingId ? (
-      <Tfoot>
+  const renderEditFooter = (row: any) => {
+    if (editingId === row.original.id) {
+      return (
         <Tr>
-          <Td colSpan={6}>
+          <Td colSpan={columns.length + 1}>
             <HStack justify="flex-end" p={2}>
               <Button
                 colorScheme="blue"
@@ -188,8 +188,10 @@ export const useTransactionColumns = ({
             </HStack>
           </Td>
         </Tr>
-      </Tfoot>
-    ) : null;
+      );
+    }
+    return null;
+  };
 
-  return { columns, footer };
+  return { columns, renderEditFooter };
 };

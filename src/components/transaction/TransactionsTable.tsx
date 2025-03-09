@@ -119,7 +119,7 @@ export const TransactionsTable: React.FC<TransactionsTableProps> = ({
   );
   const totalPages = useMemo(() => data?.totalPages || 0, [data?.totalPages]);
 
-  const { columns, footer } = useTransactionColumns({
+  const { columns, renderEditFooter } = useTransactionColumns({
     editingId,
     setEditingId,
     transactions,
@@ -203,32 +203,34 @@ export const TransactionsTable: React.FC<TransactionsTableProps> = ({
         </Thead>
         <Tbody>
           {table.getRowModel().rows.map((row) => (
-            <Tr key={row.id}>
-              <Td>
-                <Checkbox
-                  isChecked={selectedRows.includes(row.original.id)}
-                  onChange={(e) => {
-                    setSelectedRows(
-                      e.target.checked
-                        ? [...selectedRows, row.original.id]
-                        : selectedRows.filter((id) => id !== row.original.id),
-                    );
-                  }}
-                />
-              </Td>
-              {row.getVisibleCells().map((cell) => (
-                <Td
-                  key={cell.id}
-                  height="75px"
-                  onClick={() => handleRowClick(row)}
-                >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+            <React.Fragment key={row.id}>
+              <Tr key={row.id}>
+                <Td>
+                  <Checkbox
+                    isChecked={selectedRows.includes(row.original.id)}
+                    onChange={(e) => {
+                      setSelectedRows(
+                        e.target.checked
+                          ? [...selectedRows, row.original.id]
+                          : selectedRows.filter((id) => id !== row.original.id),
+                      );
+                    }}
+                  />
                 </Td>
-              ))}
-            </Tr>
+                {row.getVisibleCells().map((cell) => (
+                  <Td
+                    key={cell.id}
+                    height="75px"
+                    onClick={() => handleRowClick(row)}
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </Td>
+                ))}
+              </Tr>
+              {renderEditFooter(row)}
+            </React.Fragment>
           ))}
         </Tbody>
-        {footer()}
       </Table>
       <Pagination
         currentPage={currentPage}
