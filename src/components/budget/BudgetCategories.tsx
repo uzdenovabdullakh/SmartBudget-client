@@ -107,7 +107,7 @@ export const BudgetCategories = ({
 
   return (
     <BudgetInspectorProvider>
-      <Flex width="100%" h="calc(100% - 12rem)">
+      <Flex width="100%" h="calc(100% - 13.5rem)">
         <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}
