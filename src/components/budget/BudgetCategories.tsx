@@ -1,4 +1,4 @@
-import { useLazyGetCategoryGroupQuery } from "@/lib/services/category-group.api";
+import { useGetCategoryGroupQuery } from "@/lib/services/category-group.api";
 import {
   Box,
   Table,
@@ -57,7 +57,10 @@ export const BudgetCategories = ({
     useSensor(KeyboardSensor),
   );
 
-  const [getCategoryGroup, { isLoading }] = useLazyGetCategoryGroupQuery();
+  const { data: categoryGroupsData, isLoading } = useGetCategoryGroupQuery(
+    { id: budget?.id!, filter },
+    { skip: !budget?.id },
+  );
   const [categoryGroups, setCategoryGroups] = useState<CategoryGroup[]>([]);
   const [isPending, startTransition] = useTransition();
 
@@ -71,13 +74,13 @@ export const BudgetCategories = ({
     }
   };
 
-  const fetchCategoryGroups = useCallback(async () => {
-    if (!budget?.id) return;
-    const data = await getCategoryGroup({ id: budget.id, filter }).unwrap();
-    startTransition(() => {
-      setCategoryGroups(data);
-    });
-  }, [budget?.id, filter, getCategoryGroup]);
+  const fetchCategoryGroups = useCallback(() => {
+    if (categoryGroupsData) {
+      startTransition(() => {
+        setCategoryGroups(categoryGroupsData);
+      });
+    }
+  }, [categoryGroupsData]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedFetch = useCallback(

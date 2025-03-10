@@ -12,6 +12,7 @@ import {
 export const categoryGroupApi = createApi({
   reducerPath: "categoryGroup",
   baseQuery: axiosBaseQuery({ baseUrl: "/category-groups" }),
+  tagTypes: ["CategoryGroup"],
   endpoints: (builder) => ({
     getCategoryGroup: builder.query<CategoryGroup[], GetCategoryGroup>({
       query: (query) => {
@@ -29,6 +30,7 @@ export const categoryGroupApi = createApi({
           method: "GET",
         };
       },
+      providesTags: ["CategoryGroup"],
     }),
     removeCategoryGroup: builder.mutation<ResponseWithoutData, string>({
       query: (id: string) => ({
@@ -45,6 +47,7 @@ export const categoryGroupApi = createApi({
         method: "POST",
         data,
       }),
+      invalidatesTags: ["CategoryGroup"],
     }),
     updateCategoryGroup: builder.mutation<
       ResponseWithoutData,
@@ -67,7 +70,6 @@ export const categoryGroupApi = createApi({
 });
 
 export const {
-  useLazyGetCategoryGroupQuery,
   useGetCategoryGroupQuery,
   useCreateCategoryGroupMutation,
   useRemoveCategoryGroupMutation,
