@@ -54,7 +54,6 @@ export const TransactionForm = () => {
       <CategorySelect
         label={t("Category")}
         {...register("category")}
-        placeholder={t("Select Category")}
         defaultValue={undefined}
         error={errors.category?.message}
       />

@@ -119,7 +119,7 @@ export const TransactionsTable: React.FC<TransactionsTableProps> = ({
   );
   const totalPages = useMemo(() => data?.totalPages || 0, [data?.totalPages]);
 
-  const { columns, footer } = useTransactionColumns({
+  const { columns, renderEditFooter } = useTransactionColumns({
     editingId,
     setEditingId,
     transactions,
@@ -144,7 +144,9 @@ export const TransactionsTable: React.FC<TransactionsTableProps> = ({
       {selectedRows.length > 0 && (
         <HStack>
           <Button colorScheme="red" onClick={handleDelete}>
-            {t("Delete Selected")} ({selectedRows.length})
+            {t("Delete Selected", {
+              count: selectedRows.length,
+            })}
           </Button>
           <Tooltip
             label={t("Categorize selected transactions using AI")}
@@ -155,7 +157,9 @@ export const TransactionsTable: React.FC<TransactionsTableProps> = ({
               color="neutrals.midnight"
               onClick={handleCategorize}
             >
-              {t("Categorize Selected")} ({selectedRows.length})
+              {t("Categorize Selected", {
+                count: selectedRows.length,
+              })}
             </Button>
           </Tooltip>
         </HStack>
@@ -199,32 +203,34 @@ export const TransactionsTable: React.FC<TransactionsTableProps> = ({
         </Thead>
         <Tbody>
           {table.getRowModel().rows.map((row) => (
-            <Tr key={row.id}>
-              <Td>
-                <Checkbox
-                  isChecked={selectedRows.includes(row.original.id)}
-                  onChange={(e) => {
-                    setSelectedRows(
-                      e.target.checked
-                        ? [...selectedRows, row.original.id]
-                        : selectedRows.filter((id) => id !== row.original.id),
-                    );
-                  }}
-                />
-              </Td>
-              {row.getVisibleCells().map((cell) => (
-                <Td
-                  key={cell.id}
-                  height="75px"
-                  onClick={() => handleRowClick(row)}
-                >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+            <React.Fragment key={row.id}>
+              <Tr key={row.id}>
+                <Td>
+                  <Checkbox
+                    isChecked={selectedRows.includes(row.original.id)}
+                    onChange={(e) => {
+                      setSelectedRows(
+                        e.target.checked
+                          ? [...selectedRows, row.original.id]
+                          : selectedRows.filter((id) => id !== row.original.id),
+                      );
+                    }}
+                  />
                 </Td>
-              ))}
-            </Tr>
+                {row.getVisibleCells().map((cell) => (
+                  <Td
+                    key={cell.id}
+                    height="75px"
+                    onClick={() => handleRowClick(row)}
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </Td>
+                ))}
+              </Tr>
+              {renderEditFooter(row)}
+            </React.Fragment>
           ))}
         </Tbody>
-        {footer()}
       </Table>
       <Pagination
         currentPage={currentPage}

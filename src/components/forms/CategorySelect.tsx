@@ -9,6 +9,7 @@ import {
 import { formatCurrency } from "@/lib/utils/helpers";
 import { useGetCategoryGroupQuery } from "@/lib/services/category-group.api";
 import { useBudgetContext } from "@/lib/context/BudgetContext";
+import { useTranslation } from "react-i18next";
 
 type CategorySelectProps = {
   onlyPositiveAvailable?: boolean;
@@ -23,6 +24,7 @@ export const CategorySelect: React.FC<CategorySelectProps> = ({
   ...props
 }) => {
   const { budget } = useBudgetContext();
+  const { t } = useTranslation();
 
   const { data: categoryGroups } = useGetCategoryGroupQuery(
     {
@@ -70,6 +72,7 @@ export const CategorySelect: React.FC<CategorySelectProps> = ({
         }}
       >
         {/* TODO - стилизовать option чтобы было расстояние между названием категории и available, плюс окрашивать available */}
+        {!props.value && <option value="">{t("Category not selected")}</option>}
         {filteredCategoryGroups?.map((group) => (
           <optgroup key={group.id} label={`${group.name}:`}>
             {group.categories.map((cat) => (

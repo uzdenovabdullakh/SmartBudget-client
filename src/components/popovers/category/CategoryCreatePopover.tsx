@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { Input, HStack, Box, useDisclosure, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { DivButton } from "@/components/ui/DivButton";
@@ -40,7 +40,7 @@ export const CategoryCreatePopover = ({
     ? CreateCategoryGroupSchema
     : CreateCategorySchema;
 
-  const { register, handleSubmit } = useForm<
+  const { register, handleSubmit, reset } = useForm<
     CreateCategoryGroupDto | CreateCategoryDto
   >({
     resolver: zodResolver(schema),
@@ -71,6 +71,14 @@ export const CategoryCreatePopover = ({
     }
     onClose();
   };
+
+  useEffect(() => {
+    if (isCategoryGroup) {
+      reset({
+        budgetId: budget?.id,
+      });
+    }
+  }, [budget?.id, isCategoryGroup, reset]);
 
   const placeholder = isCategoryGroup
     ? t("Create category group")

@@ -113,7 +113,6 @@ export const MoveAvailablePopover = ({ category }: { category: Category }) => {
             {...register("to", {
               onChange: (e) => setSelectedCategoryId(e.target.value),
             })}
-            placeholder={t("Select category")}
             label={isNegative ? t("Cover expenses from category") : t("In")}
           />
         </VStack>

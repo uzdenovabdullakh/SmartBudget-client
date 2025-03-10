@@ -41,14 +41,11 @@ export const useCategoryManagement = (
 
   const handleUpdateGroupName = useCallback(
     async (id: string, newName: string) => {
-      handleCategoryGroupsChange?.((prevGroups) =>
-        prevGroups.map((g) => ({
-          ...g,
-          categories: g.categories.map((c) =>
-            c.id === id ? { ...c, name: newName } : c,
-          ),
-        })),
-      );
+      if (handleCategoryGroupsChange) {
+        handleCategoryGroupsChange((prevGroups) =>
+          prevGroups.map((g) => (g.id === id ? { ...g, name: newName } : g)),
+        );
+      }
 
       const { message } = await updateCategoryGroup({
         id,
@@ -61,12 +58,11 @@ export const useCategoryManagement = (
 
   const handleDeleteGroup = useCallback(
     async (id: string) => {
-      handleCategoryGroupsChange?.((prevGroups) =>
-        prevGroups.map((g) => ({
-          ...g,
-          categories: g.categories.filter((c) => c.id !== id),
-        })),
-      );
+      if (handleCategoryGroupsChange) {
+        handleCategoryGroupsChange((prevGroups) =>
+          prevGroups.filter((g) => g.id !== id),
+        );
+      }
 
       const { message } = await removeCategoryGroup(id).unwrap();
       showToast({ title: message, status: "success" });
@@ -76,20 +72,22 @@ export const useCategoryManagement = (
 
   const handleAssignChange = useCallback(
     async (categoryId: string, data: AssigningChangeDto) => {
-      handleCategoryGroupsChange?.((prevGroups) =>
-        prevGroups.map((g) => ({
-          ...g,
-          categories: g.categories.map((c) =>
-            c.id === categoryId
-              ? {
-                  ...c,
-                  assigned: data.assigned,
-                  available: c.available - (data.assigned - c.assigned),
-                }
-              : c,
-          ),
-        })),
-      );
+      if (handleCategoryGroupsChange) {
+        handleCategoryGroupsChange((prevGroups) =>
+          prevGroups.map((g) => ({
+            ...g,
+            categories: g.categories.map((c) =>
+              c.id === categoryId
+                ? {
+                    ...c,
+                    assigned: data.assigned,
+                    available: c.available - (data.assigned - c.assigned),
+                  }
+                : c,
+            ),
+          })),
+        );
+      }
 
       await assignChange({ id: categoryId, assigned: data.assigned });
     },
@@ -106,15 +104,17 @@ export const useCategoryManagement = (
 
   const handleDeleteCategory = useCallback(
     async (id: string) => {
-      handleCategoryGroupsChange?.((prevGroups) =>
-        prevGroups.map((g) => {
-          const updatedCategories = g.categories.filter((c) => c.id !== id);
-          return {
-            ...g,
-            categories: updatedCategories,
-          };
-        }),
-      );
+      if (handleCategoryGroupsChange) {
+        handleCategoryGroupsChange((prevGroups) =>
+          prevGroups.map((g) => {
+            const updatedCategories = g.categories.filter((c) => c.id !== id);
+            return {
+              ...g,
+              categories: updatedCategories,
+            };
+          }),
+        );
+      }
 
       const { message } = await removeCategory(id).unwrap();
       showToast({
@@ -127,24 +127,26 @@ export const useCategoryManagement = (
 
   const handleUpdateCategoryName = useCallback(
     async (id: string, newName: string) => {
-      handleCategoryGroupsChange?.((prevGroups) =>
-        prevGroups.map((g) => {
-          const updatedCategories = g.categories.map((c) => {
-            if (c.id !== id) {
-              return c;
-            }
+      if (handleCategoryGroupsChange) {
+        handleCategoryGroupsChange((prevGroups) =>
+          prevGroups.map((g) => {
+            const updatedCategories = g.categories.map((c) => {
+              if (c.id !== id) {
+                return c;
+              }
 
+              return {
+                ...c,
+                name: newName,
+              };
+            });
             return {
-              ...c,
-              name: newName,
+              ...g,
+              categories: updatedCategories,
             };
-          });
-          return {
-            ...g,
-            categories: updatedCategories,
-          };
-        }),
-      );
+          }),
+        );
+      }
 
       const { message } = await updateCategory({
         id,

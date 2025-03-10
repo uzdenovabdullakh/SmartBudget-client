@@ -35,7 +35,7 @@ export const CategoryGroupItem = ({
   );
 
   const { handleUpdateGroupName, handleDeleteGroup, handleCreateCategory } =
-    useCategoryManagement();
+    useCategoryManagement(handleCategoryGroupsChange);
 
   const { totalAssigned, totalSpent, totalAvailable } = useMemo(() => {
     return group.categories.reduce(

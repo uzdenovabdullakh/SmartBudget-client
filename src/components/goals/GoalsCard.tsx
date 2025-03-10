@@ -23,7 +23,9 @@ export function GoalsCard({ goal }: GoalsCardProps) {
           </Text>
           <GoalAnimation loop={false} width={120} height={120} />
           <Text fontSize="md">
-            {t("last_updated")}: {new Date(goal.updatedAt).toLocaleDateString()}
+            {t("last_updated", {
+              date: new Date(goal.updatedAt).toLocaleDateString(),
+            })}
           </Text>
         </Box>
         <GoalCardMenuPopover goal={goal} />

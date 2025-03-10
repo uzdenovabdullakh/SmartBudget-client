@@ -21,7 +21,9 @@ export function BudgetCard({ budget }: BudgetCardProps) {
             {budget.name}
           </Text>
           <Text fontSize="md">
-            {t("created")}: {new Date(budget.createdAt).toLocaleDateString()}
+            {t("created", {
+              date: new Date(budget.createdAt).toLocaleDateString(),
+            })}
           </Text>
         </Box>
         <BudgetCardMenuPopover budget={budget} />

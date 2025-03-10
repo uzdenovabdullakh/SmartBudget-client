@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Controller, useForm, useWatch } from "react-hook-form";
-import { Button, HStack, Input, Td, Tfoot, Tr } from "@chakra-ui/react";
+import { Button, HStack, Input, Td, Tr } from "@chakra-ui/react";
 import { createColumnHelper } from "@tanstack/react-table";
 import { Transaction } from "@/lib/types/transaction.types";
 import {
@@ -85,92 +85,105 @@ export const useTransactionColumns = ({
     if (editingId) {
       const transaction = transactions.find((tx) => tx.id === editingId);
       if (transaction) {
-        reset(transaction as UpdateTransactionDto);
+        reset({
+          ...transaction,
+          category: transaction?.category?.id ?? null,
+        } as UpdateTransactionDto);
       }
     }
   }, [editingId, transactions, reset]);
 
-  const columns = [
-    columnHelper.accessor("date", {
-      header: t("Date"),
-      cell: (info) =>
-        editingId === info.row.original.id ? (
-          <Controller
-            name="date"
-            control={control}
-            defaultValue={info.getValue()}
-            render={({ field }) => (
-              <DatePickerUI
-                selected={field.value ? new Date(field.value) : new Date()}
-                onChange={(date) => field.onChange(date)}
-              />
-            )}
-          />
-        ) : (
-          new Date(info.getValue()).toLocaleDateString()
-        ),
-    }),
-    columnHelper.accessor("description", {
-      header: t("Description"),
-      cell: (info) =>
-        editingId === info.row.original.id ? (
-          <Input
-            {...register("description")}
-            defaultValue={info.getValue() || undefined}
-          />
-        ) : (
-          info.getValue()
-        ),
-    }),
-    columnHelper.accessor("category.name", {
-      header: t("Category"),
-      cell: (info) =>
-        editingId === info.row.original.id ? (
-          <CategorySelect
-            {...register("category", {
-              setValueAs: handleSetCategory,
-            })}
-            defaultValue=""
-          />
-        ) : (
-          info.row.original.category?.name
-        ),
-    }),
-    columnHelper.accessor("inflow", {
-      header: t("Inflow"),
-      cell: (info) =>
-        editingId === info.row.original.id ? (
-          <Input
-            {...register("inflow", { valueAsNumber: true })}
-            defaultValue={info.getValue() || undefined}
-            type="number"
-          />
-        ) : (
-          info.getValue() &&
-          formatCurrency(info.getValue() as number, budget?.settings)
-        ),
-    }),
-    columnHelper.accessor("outflow", {
-      header: t("Outflow"),
-      cell: (info) =>
-        editingId === info.row.original.id ? (
-          <Input
-            {...register("outflow", { valueAsNumber: true })}
-            defaultValue={info.getValue() || undefined}
-            type="number"
-          />
-        ) : (
-          info.getValue() &&
-          formatCurrency(info.getValue() as number, budget?.settings)
-        ),
-    }),
-  ];
+  const columns = useMemo(
+    () => [
+      columnHelper.accessor("date", {
+        header: t("Date"),
+        cell: (info) =>
+          editingId === info.row.original.id ? (
+            <Controller
+              name="date"
+              control={control}
+              defaultValue={info.getValue()}
+              render={({ field }) => (
+                <DatePickerUI
+                  selected={field.value ? new Date(field.value) : new Date()}
+                  onChange={(date) => field.onChange(date)}
+                />
+              )}
+            />
+          ) : (
+            new Date(info.getValue()).toLocaleDateString()
+          ),
+      }),
+      columnHelper.accessor("description", {
+        header: t("Description"),
+        cell: (info) =>
+          editingId === info.row.original.id ? (
+            <Input
+              {...register("description")}
+              defaultValue={info.getValue() || undefined}
+            />
+          ) : (
+            info.getValue()
+          ),
+      }),
+      columnHelper.accessor("category.name", {
+        header: t("Category"),
+        cell: (info) =>
+          editingId === info.row.original.id ? (
+            <Controller
+              name="category"
+              control={control}
+              defaultValue={info.row.original?.category?.id}
+              render={({ field }) => (
+                <CategorySelect
+                  value={field.value ?? ""}
+                  onChange={(e) =>
+                    field.onChange(handleSetCategory(e.target.value))
+                  }
+                />
+              )}
+            />
+          ) : (
+            info.row.original.category?.name
+          ),
+      }),
+      columnHelper.accessor("inflow", {
+        header: t("Inflow"),
+        cell: (info) =>
+          editingId === info.row.original.id ? (
+            <Input
+              {...register("inflow", { valueAsNumber: true })}
+              defaultValue={info.getValue() || undefined}
+              type="number"
+            />
+          ) : (
+            info.getValue() &&
+            formatCurrency(info.getValue() as number, budget?.settings)
+          ),
+      }),
+      columnHelper.accessor("outflow", {
+        header: t("Outflow"),
+        cell: (info) =>
+          editingId === info.row.original.id ? (
+            <Input
+              {...register("outflow", { valueAsNumber: true })}
+              defaultValue={info.getValue() || undefined}
+              type="number"
+            />
+          ) : (
+            info.getValue() &&
+            formatCurrency(info.getValue() as number, budget?.settings)
+          ),
+      }),
+    ],
+    [budget?.settings, control, editingId, handleSetCategory, register, t],
+  );
 
-  const footer = () =>
-    editingId ? (
-      <Tfoot>
+  const renderEditFooter = (row: any) => {
+    if (editingId === row.original.id) {
+      return (
         <Tr>
-          <Td colSpan={6}>
+          <Td colSpan={columns.length + 1}>
             <HStack justify="flex-end" p={2}>
               <Button
                 colorScheme="blue"
@@ -185,8 +198,10 @@ export const useTransactionColumns = ({
             </HStack>
           </Td>
         </Tr>
-      </Tfoot>
-    ) : null;
+      );
+    }
+    return null;
+  };
 
-  return { columns, footer };
+  return { columns, renderEditFooter };
 };

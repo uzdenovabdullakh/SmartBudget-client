@@ -7,6 +7,7 @@ import {
   UpdateTransactionDto,
 } from "../validation/transaction.schema";
 import { ListTransactions } from "../types/transaction.types";
+import { accountApi } from "./account.api";
 
 export const transactionsApi = createApi({
   reducerPath: "transactions",
@@ -48,6 +49,11 @@ export const transactionsApi = createApi({
     deleteTransactions: builder.mutation<ResponseWithoutData, string[]>({
       query: (data: string[]) => ({ url: "/", method: "DELETE", data }),
       invalidatesTags: ["Transactions"],
+      async onQueryStarted(args, { dispatch, queryFulfilled }) {
+        await queryFulfilled;
+        dispatch(accountApi.util.invalidateTags(["Accounts"]));
+        dispatch(accountApi.util.invalidateTags(["Account"]));
+      },
     }),
     updateTransaction: builder.mutation<
       ResponseWithoutData,
@@ -59,6 +65,11 @@ export const transactionsApi = createApi({
         data,
       }),
       invalidatesTags: ["Transactions"],
+      async onQueryStarted(args, { dispatch, queryFulfilled }) {
+        await queryFulfilled;
+        dispatch(accountApi.util.invalidateTags(["Accounts"]));
+        dispatch(accountApi.util.invalidateTags(["Account"]));
+      },
     }),
     createTransaction: builder.mutation<
       ResponseWithoutData,
@@ -70,6 +81,11 @@ export const transactionsApi = createApi({
         data,
       }),
       invalidatesTags: ["Transactions"],
+      async onQueryStarted(args, { dispatch, queryFulfilled }) {
+        await queryFulfilled;
+        dispatch(accountApi.util.invalidateTags(["Accounts"]));
+        dispatch(accountApi.util.invalidateTags(["Account"]));
+      },
     }),
     importBankStatement: builder.mutation<
       ResponseWithoutData,
@@ -89,6 +105,11 @@ export const transactionsApi = createApi({
         };
       },
       invalidatesTags: ["Transactions"],
+      async onQueryStarted(args, { dispatch, queryFulfilled }) {
+        await queryFulfilled;
+        dispatch(accountApi.util.invalidateTags(["Accounts"]));
+        dispatch(accountApi.util.invalidateTags(["Account"]));
+      },
     }),
   }),
 });
