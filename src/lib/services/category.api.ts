@@ -9,6 +9,7 @@ import {
   MoveAvaliableDto,
   ReorderCategoriesDto,
 } from "../validation/category.schema";
+import { categoryGroupApi } from "./category-group.api";
 
 export const categoryApi = createApi({
   reducerPath: "category",
@@ -31,6 +32,10 @@ export const categoryApi = createApi({
         method: "POST",
         data,
       }),
+      async onQueryStarted(args, { dispatch, queryFulfilled }) {
+        await queryFulfilled;
+        dispatch(categoryGroupApi.util.invalidateTags(["CategoryGroup"]));
+      },
     }),
     updateCategory: builder.mutation<
       ResponseWithoutData,
@@ -59,6 +64,10 @@ export const categoryApi = createApi({
         method: "PUT",
         data,
       }),
+      async onQueryStarted(args, { dispatch, queryFulfilled }) {
+        await queryFulfilled;
+        dispatch(categoryGroupApi.util.invalidateTags(["CategoryGroup"]));
+      },
     }),
     reorderCategories: builder.mutation<void, ReorderCategoriesDto>({
       query: (data: ReorderCategoriesDto) => ({

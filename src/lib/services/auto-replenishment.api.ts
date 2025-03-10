@@ -5,6 +5,7 @@ import {
   CreateAutoReplenishmentDto,
   UpdateAutoReplenishmentDto,
 } from "../validation/auto-replenishment.schema";
+import { goalApi } from "./goal.api";
 
 export const autoReplenishmentApi = createApi({
   reducerPath: "auto-replenishment",
@@ -19,6 +20,10 @@ export const autoReplenishmentApi = createApi({
         method: "POST",
         data,
       }),
+      async onQueryStarted(args, { dispatch, queryFulfilled }) {
+        await queryFulfilled;
+        dispatch(goalApi.util.invalidateTags(["goals"]));
+      },
     }),
     updateAutoReplenishment: builder.mutation<
       ResponseWithoutData,
@@ -32,12 +37,20 @@ export const autoReplenishmentApi = createApi({
         method: "PATCH",
         data,
       }),
+      async onQueryStarted(args, { dispatch, queryFulfilled }) {
+        await queryFulfilled;
+        dispatch(goalApi.util.invalidateTags(["goals"]));
+      },
     }),
     deactivateAutoReplenishment: builder.mutation<ResponseWithoutData, string>({
       query: (id: string) => ({
         url: `/${id}`,
         method: "DELETE",
       }),
+      async onQueryStarted(args, { dispatch, queryFulfilled }) {
+        await queryFulfilled;
+        dispatch(goalApi.util.invalidateTags(["goals"]));
+      },
     }),
   }),
 });

@@ -8,7 +8,7 @@ import { GetGoalFilter } from "../constants/enums";
 export const goalApi = createApi({
   reducerPath: "goals",
   baseQuery: axiosBaseQuery({ baseUrl: "/goals" }),
-  tagTypes: ["goals"],
+  tagTypes: ["goals", "goal"],
   endpoints: (builder) => ({
     getGoals: builder.query<Goal[], { id: string; filter?: GetGoalFilter }>({
       query: ({ id, filter }) => {
@@ -21,7 +21,7 @@ export const goalApi = createApi({
     }),
     getGoal: builder.query<GoalWithSavings, string>({
       query: (id: string) => ({ url: `/${id}`, method: "GET" }),
-      providesTags: ["goals"],
+      providesTags: ["goal"],
     }),
     createGoal: builder.mutation<
       ResponseWithoutData,
@@ -43,7 +43,7 @@ export const goalApi = createApi({
         method: "PATCH",
         data,
       }),
-      invalidatesTags: ["goals"],
+      invalidatesTags: ["goals", "goal"],
     }),
     removeGoal: builder.mutation<ResponseWithoutData, string>({
       query: (id: string) => ({
