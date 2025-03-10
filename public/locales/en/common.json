@@ -324,6 +324,7 @@
   "Current Percentage": "Current percentage from your income: ",
   "Enter percentage": "Введите процент",
   "auto_completion_description": "You can set up auto-completion of this goal based on your income. When you add a revenue transaction, a percentage of it will be added to the amount of the current goal. Just choose what percentage of your income should be credited to the goal's balance.",
+  "Category not selected": "Category not selected",
   "validation": {
     "Expected number": "Excepted number",
     "Cash, card or savings": "Cash, card or savings",

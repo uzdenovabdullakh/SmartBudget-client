@@ -85,7 +85,10 @@ export const useTransactionColumns = ({
     if (editingId) {
       const transaction = transactions.find((tx) => tx.id === editingId);
       if (transaction) {
-        reset(transaction as UpdateTransactionDto);
+        reset({
+          ...transaction,
+          category: transaction?.category?.id ?? null,
+        } as UpdateTransactionDto);
       }
     }
   }, [editingId, transactions, reset]);
@@ -127,11 +130,18 @@ export const useTransactionColumns = ({
         header: t("Category"),
         cell: (info) =>
           editingId === info.row.original.id ? (
-            <CategorySelect
-              {...register("category", {
-                setValueAs: handleSetCategory,
-              })}
-              defaultValue=""
+            <Controller
+              name="category"
+              control={control}
+              defaultValue={info.row.original?.category?.id}
+              render={({ field }) => (
+                <CategorySelect
+                  value={field.value ?? ""}
+                  onChange={(e) =>
+                    field.onChange(handleSetCategory(e.target.value))
+                  }
+                />
+              )}
             />
           ) : (
             info.row.original.category?.name
