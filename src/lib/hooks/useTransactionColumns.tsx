@@ -136,10 +136,8 @@ export const useTransactionColumns = ({
               defaultValue={info.row.original?.category?.id}
               render={({ field }) => (
                 <CategorySelect
-                  value={field.value ?? ""}
-                  onChange={(e) =>
-                    field.onChange(handleSetCategory(e.target.value))
-                  }
+                  value={field.value || ""}
+                  onChange={(value) => field.onChange(handleSetCategory(value))}
                 />
               )}
             />

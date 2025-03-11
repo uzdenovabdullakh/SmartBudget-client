@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { HStack, useDisclosure, Button, VStack } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   MoveAvaliableDto,
@@ -37,7 +37,7 @@ export const MoveAvailablePopover = ({ category }: { category: Category }) => {
   );
   const isNegative = category.available < 0;
 
-  const { register, handleSubmit, reset } = useForm<MoveAvaliableDto>({
+  const { register, handleSubmit, control, reset } = useForm<MoveAvaliableDto>({
     resolver: zodResolver(MoveAvaliableSchema),
     defaultValues: {
       from: category.id,
@@ -86,6 +86,8 @@ export const MoveAvailablePopover = ({ category }: { category: Category }) => {
   return (
     <BasePopover
       isOpen={isOpen}
+      placement="start-start"
+      strategy="fixed"
       onClose={onClose}
       triggerButton={
         <ColoredCurrency
@@ -108,22 +110,27 @@ export const MoveAvailablePopover = ({ category }: { category: Category }) => {
               label={t("Move")}
             />
           )}
-          <CategorySelect
-            onlyPositiveAvailable={isNegative}
-            {...register("to", {
-              onChange: (e) => setSelectedCategoryId(e.target.value),
-            })}
-            label={isNegative ? t("Cover expenses from category") : t("In")}
+          <Controller
+            name="to"
+            control={control}
+            render={({ field }) => (
+              <CategorySelect
+                onlyPositiveAvailable={isNegative}
+                value={field.value}
+                onChange={(value) => {
+                  field.onChange(value);
+                  setSelectedCategoryId(value);
+                }}
+                label={isNegative ? t("Cover expenses from category") : t("In")}
+              />
+            )}
           />
         </VStack>
       }
       footerContent={
         <HStack spacing={4} justifyContent="flex-end">
           <Button
-            onClick={(e) => {
-              e.stopPropagation();
-              onClose();
-            }}
+            onClick={onClose}
             bgColor="gray.200"
             _hover={{ bg: "gray.300" }}
             color="black"
@@ -131,10 +138,7 @@ export const MoveAvailablePopover = ({ category }: { category: Category }) => {
             {t("Cancel")}
           </Button>
           <Button
-            onClick={(e) => {
-              e.stopPropagation();
-              handleSubmit(handleApply)();
-            }}
+            onClick={handleSubmit(handleApply)}
             bgColor="blue.500"
             color="white"
             _hover={{ bg: "blue.600" }}

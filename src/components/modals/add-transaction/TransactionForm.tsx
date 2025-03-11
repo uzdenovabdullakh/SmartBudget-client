@@ -1,5 +1,5 @@
 import { VStack } from "@chakra-ui/react";
-import { useFormContext, useWatch } from "react-hook-form";
+import { Controller, useFormContext, useWatch } from "react-hook-form";
 import { CreateTransactionDto } from "@/lib/validation/transaction.schema";
 import FormInputUI from "@/components/ui/FormInputUI";
 import FormDatePicker from "@/components/ui/FormDatePicker";
@@ -51,11 +51,17 @@ export const TransactionForm = () => {
         label={t("Date")}
         placeholder={t("Select date")}
       />
-      <CategorySelect
-        label={t("Category")}
-        {...register("category")}
-        defaultValue={undefined}
-        error={errors.category?.message}
+      <Controller
+        name="category"
+        control={control}
+        render={({ field }) => (
+          <CategorySelect
+            label={t("Category")}
+            value={field.value ?? undefined}
+            onChange={field.onChange}
+            error={errors.category?.message}
+          />
+        )}
       />
       <FormInputUI
         type="text"
