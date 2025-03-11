@@ -18,7 +18,7 @@ export const ChatPopover = () => {
   const { isOpen, onToggle, onClose } = useDisclosure();
 
   return (
-    <Popover isOpen={isOpen} onClose={onClose} placement="top-start">
+    <Popover isOpen={isOpen} onClose={onClose} placement="top-end">
       <PopoverTrigger>
         <Tooltip label={t("Ask AI")} placement="left" hasArrow>
           <IconButton

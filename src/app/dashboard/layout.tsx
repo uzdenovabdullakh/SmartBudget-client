@@ -45,9 +45,9 @@ export default function DashboardLayout({
         <Sidebar user={user} />
         <Flex flex="1" direction="column" overflowY="auto" overflowX="hidden">
           {children}
-          <ChatPopover />
-          <AddTransactionIconButton />
         </Flex>
+        <ChatPopover />
+        <AddTransactionIconButton />
       </Flex>
     </BudgetProvider>
   );
