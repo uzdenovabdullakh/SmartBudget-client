@@ -9,6 +9,7 @@ import {
   HStack,
   PopoverBodyProps,
   PopoverContentProps,
+  PopoverProps,
 } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
@@ -24,7 +25,7 @@ type BasePopoverProps = {
   footerContent?: ReactNode | null;
   onApply?: () => void;
   onCancel?: () => void;
-};
+} & PopoverProps;
 
 export const BasePopover = ({
   triggerButton,
@@ -54,7 +55,11 @@ export const BasePopover = ({
   return (
     <Popover isOpen={isOpen} onClose={onClose} closeOnBlur {...props}>
       <PopoverTrigger>{triggerButton}</PopoverTrigger>
-      <PopoverContent {...contentProps} p={4}>
+      <PopoverContent
+        {...contentProps}
+        p={4}
+        onClick={(e) => e.stopPropagation()}
+      >
         {headerText && (
           <PopoverHeader fontWeight="bold">{headerText}</PopoverHeader>
         )}
