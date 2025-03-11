@@ -14,6 +14,7 @@ import {
 } from "@/lib/validation/category.schema";
 import { AddIcon } from "@chakra-ui/icons";
 import { useBudgetContext } from "@/lib/context/BudgetContext";
+import { useScrollControl } from "@/lib/hooks/useScrollControl";
 import { BasePopover } from "..";
 
 type CategoryCreatePopoverProps<T> = {
@@ -35,6 +36,8 @@ export const CategoryCreatePopover = ({
   const { budget } = useBudgetContext();
 
   const { isOpen, onToggle, onClose } = useDisclosure();
+
+  useScrollControl(isOpen);
 
   const schema = isCategoryGroup
     ? CreateCategoryGroupSchema

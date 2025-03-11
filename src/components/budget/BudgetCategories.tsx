@@ -117,7 +117,14 @@ export const BudgetCategories = ({
           onDragEnd={handleDragEnd}
           onDragStart={handleDragStart}
         >
-          <Box as="section" p={4} flex={1} overflow="auto" scrollPaddingTop={5}>
+          <Box
+            as="section"
+            p={4}
+            flex={1}
+            overflow="auto"
+            scrollPaddingTop={5}
+            id="budget-categories"
+          >
             <SortableContext
               items={categoryGroupIds}
               strategy={verticalListSortingStrategy}

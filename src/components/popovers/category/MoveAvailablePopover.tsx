@@ -14,6 +14,7 @@ import FormInputUI from "@/components/ui/FormInputUI";
 import { ColoredCurrency } from "@/components/ui/ColoredCurrency";
 import { useBudgetContext } from "@/lib/context/BudgetContext";
 import { useGetCategoryGroupQuery } from "@/lib/services/category-group.api";
+import { useScrollControl } from "@/lib/hooks/useScrollControl";
 import { BasePopover } from "..";
 
 export const MoveAvailablePopover = ({ category }: { category: Category }) => {
@@ -21,6 +22,8 @@ export const MoveAvailablePopover = ({ category }: { category: Category }) => {
   const { budget } = useBudgetContext();
   const { isOpen, onToggle, onClose } = useDisclosure();
   const [moveAvailable] = useMoveAvailableMutation();
+
+  useScrollControl(isOpen);
 
   const { data: categoryGroups } = useGetCategoryGroupQuery(
     {
