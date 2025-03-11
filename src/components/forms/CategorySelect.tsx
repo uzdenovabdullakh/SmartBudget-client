@@ -1,12 +1,17 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import {
   Box,
   FormErrorMessage,
   FormLabel,
-  Select,
-  SelectProps,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuGroup,
+  MenuItem,
+  Button,
 } from "@chakra-ui/react";
-import { formatCurrency } from "@/lib/utils/helpers";
+import { ChevronDownIcon } from "@chakra-ui/icons";
+import { formatCurrency, getCurrencyColorStyles } from "@/lib/utils/helpers";
 import { useGetCategoryGroupQuery } from "@/lib/services/category-group.api";
 import { useBudgetContext } from "@/lib/context/BudgetContext";
 import { useTranslation } from "react-i18next";
@@ -15,13 +20,16 @@ type CategorySelectProps = {
   onlyPositiveAvailable?: boolean;
   label?: string;
   error?: string;
-} & SelectProps;
+  value?: string;
+  onChange?: (value: string) => void;
+};
 
 export const CategorySelect: React.FC<CategorySelectProps> = ({
   onlyPositiveAvailable = false,
   label,
   error,
-  ...props
+  value,
+  onChange,
 }) => {
   const { budget } = useBudgetContext();
   const { t } = useTranslation();
@@ -49,41 +57,106 @@ export const CategorySelect: React.FC<CategorySelectProps> = ({
     [categoryGroups, onlyPositiveAvailable],
   );
 
+  const categoryMap = useMemo(() => {
+    const map = new Map<string, { name: string; available: number }>();
+    filteredCategoryGroups?.forEach((group) => {
+      group.categories.forEach((cat) => {
+        map.set(cat.id, { name: cat.name, available: cat.available });
+      });
+    });
+    return map;
+  }, [filteredCategoryGroups]);
+
+  const handleSelect = useCallback(
+    (catId: string) => {
+      if (onChange) {
+        onChange(catId);
+      }
+    },
+    [onChange],
+  );
+
+  const selectedCategory = useMemo(
+    () => (value ? categoryMap.get(value) : null),
+    [categoryMap, value],
+  );
+
   return (
-    <Box>
+    <Box position="relative">
       {label && <FormLabel>{label}</FormLabel>}
-      <Select
-        {...props}
-        variant="filled"
-        size="md"
-        sx={{
-          "& > optgroup": {
-            backgroundColor: "#f9f9f9",
-            color: "#333",
-            padding: "8px",
-            fontWeight: "bold",
-          },
-          "& > option": {
-            paddingLeft: "24px",
-            fontSize: "14px",
-            display: "flex",
-            justifyContent: "space-between",
-          },
-        }}
-      >
-        {/* TODO - стилизовать option чтобы было расстояние между названием категории и available, плюс окрашивать available */}
-        {!props.value && <option value="">{t("Category not selected")}</option>}
-        {filteredCategoryGroups?.map((group) => (
-          <optgroup key={group.id} label={`${group.name}:`}>
-            {group.categories.map((cat) => (
-              <option key={cat.id} value={cat.id}>
-                {cat.name}&nbsp;&nbsp;&nbsp;
-                {formatCurrency(cat.available, budget?.settings)}
-              </option>
-            ))}
-          </optgroup>
-        ))}
-      </Select>
+      <Menu placement="top">
+        <MenuButton
+          as={Button}
+          rightIcon={<ChevronDownIcon />}
+          variant="filled"
+          size="md"
+          width="100%"
+          textAlign="left"
+          sx={{
+            "&:hover": {
+              bg: "gray.100",
+            },
+          }}
+        >
+          {selectedCategory
+            ? `${selectedCategory.name} (${formatCurrency(selectedCategory.available, budget?.settings)})`
+            : t("Category not selected")}
+        </MenuButton>
+        <MenuList
+          maxHeight="300px"
+          overflowY="auto"
+          sx={{
+            "&::-webkit-scrollbar": {
+              width: "8px",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              background: "gray.300",
+              borderRadius: "4px",
+            },
+          }}
+        >
+          {!value && (
+            <MenuItem onClick={() => handleSelect("")} fontStyle="italic">
+              {t("Category not selected")}
+            </MenuItem>
+          )}
+          {filteredCategoryGroups?.map((group) => (
+            <MenuGroup
+              key={group.id}
+              title={`${group.name}:`}
+              sx={{
+                bg: "#f9f9f9",
+                color: "#333",
+                p: "8px",
+                fontWeight: "bold",
+              }}
+            >
+              {group.categories.map((cat) => (
+                <MenuItem
+                  key={cat.id}
+                  onClick={() => handleSelect(cat.id)}
+                  display="flex"
+                  justifyContent="space-between"
+                  paddingLeft="24px"
+                  fontSize="14px"
+                >
+                  <Box as="span">{cat.name}</Box>
+                  <Box
+                    as="span"
+                    sx={{
+                      ...getCurrencyColorStyles(cat.available),
+                      padding: "2px 4px",
+                      borderRadius: "16px",
+                    }}
+                  >
+                    {formatCurrency(cat.available, budget?.settings)}
+                  </Box>
+                </MenuItem>
+              ))}
+            </MenuGroup>
+          ))}
+        </MenuList>
+      </Menu>
       {error && (
         <FormErrorMessage position="absolute" bottom="-20px" left="0" right="0">
           {error}

@@ -13,6 +13,7 @@ import {
   UpdateCategorySchema,
   UpdateCategoryDto,
 } from "@/lib/validation/category.schema";
+import { useScrollControl } from "@/lib/hooks/useScrollControl";
 import { BasePopover } from "..";
 
 type CategoryChangePopoverProps<T> = {
@@ -28,6 +29,8 @@ export const CategoryChangePopover = ({
 }: CategoryChangePopoverProps<Category | CategoryGroup>) => {
   const { t } = useTranslation();
   const { isOpen, onToggle, onClose } = useDisclosure();
+
+  useScrollControl(isOpen);
 
   const isCategoryGroup = "categories" in entity;
   const schema = isCategoryGroup
