@@ -41,12 +41,17 @@ export const EditEntityModal = <T extends FieldValues>({
     defaultValues,
   });
 
+  const handleClose = () => {
+    reset();
+    onClose();
+  };
+
   const onSubmit = async (data: T) => {
     try {
       const { message } = await updateMutation(data);
       showToast({ title: message, status: "success" });
-      reset();
-      onClose();
+
+      handleClose();
     } catch (error) {
       console.log(error);
     }
@@ -55,7 +60,7 @@ export const EditEntityModal = <T extends FieldValues>({
   return (
     <DefaultModal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleClose}
       title={t(title)}
       size="sm"
       body={

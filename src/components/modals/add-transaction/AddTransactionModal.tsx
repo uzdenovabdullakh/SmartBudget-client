@@ -41,13 +41,19 @@ export const AddTransactionModal = ({
 
   const { handleSubmit, reset } = formMethods;
 
+  const handleClose = () => {
+    reset();
+    setStep("choice");
+    setCheckData(null);
+    onClose();
+  };
+
   const onSubmit = async (dto: CreateTransactionDto) => {
     try {
       const { message } = await createTransaction(dto).unwrap();
       showToast({ title: message, status: "success" });
 
-      reset();
-      onClose();
+      handleClose();
     } catch (error) {
       console.log(error);
     }
@@ -84,7 +90,7 @@ export const AddTransactionModal = ({
     <FormProvider {...formMethods}>
       <DefaultModal
         isOpen={isOpen}
-        onClose={onClose}
+        onClose={handleClose}
         title={titles[step]}
         body={screens[step]}
         footer={

@@ -28,6 +28,11 @@ export const ChangePasswordModal = ({ isOpen, onClose }: DefaultModalProps) => {
     resolver: zodResolver(ChangePasswordSchema),
   });
 
+  const handleClose = () => {
+    reset();
+    onClose();
+  };
+
   const onSubmit = async (data: ChangePasswordDto) => {
     try {
       const { confirmNewPassword, ...rest } = data;
@@ -38,8 +43,7 @@ export const ChangePasswordModal = ({ isOpen, onClose }: DefaultModalProps) => {
         status: "success",
       });
 
-      reset();
-      onClose();
+      handleClose();
     } catch (error) {
       console.log(error);
     }
@@ -48,7 +52,7 @@ export const ChangePasswordModal = ({ isOpen, onClose }: DefaultModalProps) => {
   return (
     <DefaultModal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleClose}
       title={t("Change password")}
       size="md"
       body={

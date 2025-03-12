@@ -36,6 +36,11 @@ export const ImportFile = ({ isOpen, onClose, accountId }: ImportFileProps) => {
     name: "file",
   });
 
+  const handleClose = () => {
+    reset();
+    onClose();
+  };
+
   const onSubmit: SubmitHandler<FileUploadForm> = async (data) => {
     const file = data.file[0];
     if (file) {
@@ -50,8 +55,7 @@ export const ImportFile = ({ isOpen, onClose, accountId }: ImportFileProps) => {
           status: "success",
         });
 
-        onClose();
-        reset();
+        handleClose();
       } catch (error) {
         console.log(error);
       }
@@ -61,7 +65,7 @@ export const ImportFile = ({ isOpen, onClose, accountId }: ImportFileProps) => {
   return (
     <DefaultModal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleClose}
       title={t("Upload Bank Statement")}
       size="lg"
       body={
