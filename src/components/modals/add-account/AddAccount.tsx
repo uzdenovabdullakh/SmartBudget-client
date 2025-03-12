@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import { Box, Flex, Text, Button } from "@chakra-ui/react";
-import { InfoIcon } from "@chakra-ui/icons";
+import React from "react";
+import { Box, Flex, Button } from "@chakra-ui/react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCreateAccountMutation } from "@/lib/services/account.api";
@@ -12,7 +11,6 @@ import {
 import { AccountType } from "@/lib/constants/enums";
 import { DefaultModalProps } from "@/lib/types/types";
 import FormSelectUI from "@/components/ui/FormSelectUI";
-import { ArrowBack } from "@/components/ui/ArrowBack";
 import { useTranslation } from "react-i18next";
 import { DefaultModal } from "..";
 import FormInputUI from "../../ui/FormInputUI";
@@ -27,11 +25,6 @@ export const AddAccountModal = ({
   budgetId,
 }: DefaultModalProps & AddAccountModalProps) => {
   const { t } = useTranslation();
-
-  const [currentStep, setCurrentStep] = useState<"select" | "unlinked">(
-    "select",
-  );
-
   const [createAccount, { isLoading }] = useCreateAccountMutation();
 
   const {
@@ -46,12 +39,8 @@ export const AddAccountModal = ({
     },
   });
 
-  const goToUnlinked = () => setCurrentStep("unlinked");
-  const goBack = () => setCurrentStep("select");
-
   const handleClose = () => {
     reset();
-    setCurrentStep("select");
     onClose();
   };
 
@@ -72,62 +61,8 @@ export const AddAccountModal = ({
     }
   };
 
-  const selectScreen = (
+  const screen = (
     <Flex direction="column" gap={4}>
-      <Flex
-        direction="column"
-        align="center"
-        p={4}
-        border="1px solid #E2E8F0"
-        borderRadius="md"
-        bg="blue.50"
-        cursor="pointer"
-        _hover={{ bg: "blue.100" }}
-      >
-        <Text fontSize="lg" fontWeight="bold" color="blue.600">
-          {t("Linked")}
-        </Text>
-        <Text fontSize="sm" color="gray.600" textAlign="center">
-          {t("Connect to your bank and automatically import transactions.")}
-        </Text>
-      </Flex>
-
-      <Flex align="center" gap={2} color="gray.500" fontSize="sm">
-        <Box flex="1" height="1px" bg="gray.300" />
-        <Text>{t("or")}</Text>
-        <Box flex="1" height="1px" bg="gray.300" />
-      </Flex>
-
-      <Flex
-        direction="column"
-        align="center"
-        p={4}
-        border="1px solid #E2E8F0"
-        borderRadius="md"
-        bg="blue.50"
-        cursor="pointer"
-        _hover={{ bg: "blue.100" }}
-        onClick={goToUnlinked}
-      >
-        <Text fontSize="lg" fontWeight="bold" color="blue.600">
-          {t("Unlinked")}
-        </Text>
-        <Text fontSize="sm" color="gray.600" textAlign="center">
-          {t(
-            "Start with your current balance and enter your own transactions.",
-          )}
-        </Text>
-      </Flex>
-    </Flex>
-  );
-
-  const unlinkedScreen = (
-    <Flex direction="column" gap={4}>
-      <Text>
-        {t(
-          "Let’s go! And don’t worry — if you change your mind, you can link your account at any time.",
-        )}
-      </Text>
       <Box>
         <FormInputUI
           type="text"
@@ -163,47 +98,24 @@ export const AddAccountModal = ({
     </Flex>
   );
 
-  const unlinkedFooter = (
+  const footer = (
     <Button
       colorScheme="blue"
       width="100%"
       onClick={handleSubmit(onSubmit)}
       isLoading={isLoading}
     >
-      {t("Next")}
+      {t("Save Changes")}
     </Button>
-  );
-
-  const selectFooter = (
-    <Flex
-      align="center"
-      alignItems="baseline"
-      gap={2}
-      fontSize="sm"
-      color="gray.500"
-    >
-      <InfoIcon color="blue.400" />
-      <Text>
-        {t("Linked is your bank account (credit card)")}
-        <br />
-        {t("Unlinked. You will have to enter all transactions manually.")}
-      </Text>
-    </Flex>
   );
 
   return (
     <DefaultModal
       isOpen={isOpen}
       onClose={handleClose}
-      title={
-        currentStep === "unlinked" ? (
-          <ArrowBack text={t("Add Unlinked Account")} onClick={goBack} />
-        ) : (
-          t("Add Account")
-        )
-      }
-      body={currentStep === "select" ? selectScreen : unlinkedScreen}
-      footer={currentStep === "select" ? selectFooter : unlinkedFooter}
+      title={t("Add Account")}
+      body={screen}
+      footer={footer}
       size="md"
     />
   );
