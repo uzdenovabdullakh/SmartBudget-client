@@ -36,6 +36,11 @@ export const AddBudgetModal = ({ isOpen, onClose }: DefaultModalProps) => {
     },
   });
 
+  const handleClose = () => {
+    reset();
+    onClose();
+  };
+
   const onSubmit = async (data: CreateBudgetDto) => {
     try {
       const { message } = await createBudget(data).unwrap();
@@ -45,8 +50,7 @@ export const AddBudgetModal = ({ isOpen, onClose }: DefaultModalProps) => {
         status: "success",
       });
 
-      reset();
-      onClose();
+      handleClose();
     } catch (error) {
       console.log(error);
     }
@@ -55,7 +59,7 @@ export const AddBudgetModal = ({ isOpen, onClose }: DefaultModalProps) => {
   return (
     <DefaultModal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleClose}
       title={t("Create new budget")}
       size="md"
       body={

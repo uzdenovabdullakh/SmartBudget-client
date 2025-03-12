@@ -55,6 +55,13 @@ export const SetUpAutoCompletionModal = ({
 
   const { autoReplenishments } = goal;
 
+  const handleClose = () => {
+    createForm.reset();
+    updateForm.reset();
+    setIsEditing(false);
+    onClose();
+  };
+
   const onSubmitCreate = async (data: CreateAutoReplenishmentDto) => {
     try {
       const { message } = await createAutoReplenishment(data).unwrap();
@@ -63,8 +70,7 @@ export const SetUpAutoCompletionModal = ({
         status: "success",
       });
 
-      onClose();
-      createForm.reset();
+      handleClose();
     } catch (error) {
       console.log(error);
     }
@@ -82,8 +88,7 @@ export const SetUpAutoCompletionModal = ({
         status: "success",
       });
 
-      setIsEditing(false);
-      updateForm.reset();
+      handleClose();
     } catch (error) {
       console.log(error);
     }
@@ -100,7 +105,7 @@ export const SetUpAutoCompletionModal = ({
         status: "info",
       });
 
-      onClose();
+      handleClose();
     } catch (error) {
       console.log(error);
     }
@@ -186,7 +191,7 @@ export const SetUpAutoCompletionModal = ({
   return (
     <DefaultModal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleClose}
       title={t("Set up auto-completion")}
       size="sm"
       body={bodyContent}

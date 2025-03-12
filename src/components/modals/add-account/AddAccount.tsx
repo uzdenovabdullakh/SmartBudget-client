@@ -49,6 +49,12 @@ export const AddAccountModal = ({
   const goToUnlinked = () => setCurrentStep("unlinked");
   const goBack = () => setCurrentStep("select");
 
+  const handleClose = () => {
+    reset();
+    setCurrentStep("select");
+    onClose();
+  };
+
   const onSubmit: SubmitHandler<CreateAccountDto> = async (
     data: CreateAccountDto,
   ) => {
@@ -60,8 +66,7 @@ export const AddAccountModal = ({
         status: "success",
       });
 
-      reset();
-      onClose();
+      handleClose();
     } catch (error) {
       console.log(error);
     }
@@ -189,7 +194,7 @@ export const AddAccountModal = ({
   return (
     <DefaultModal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleClose}
       title={
         currentStep === "unlinked" ? (
           <ArrowBack text={t("Add Unlinked Account")} onClick={goBack} />

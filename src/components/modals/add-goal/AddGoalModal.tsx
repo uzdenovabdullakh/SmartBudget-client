@@ -30,6 +30,11 @@ export const AddGoalModal = ({ isOpen, onClose }: DefaultModalProps) => {
     },
   });
 
+  const handleClose = () => {
+    reset();
+    onClose();
+  };
+
   const onSubmit = async (data: CreateGoalDto) => {
     if (!budget?.id) return;
 
@@ -37,8 +42,7 @@ export const AddGoalModal = ({ isOpen, onClose }: DefaultModalProps) => {
       const { message } = await createGoal({ id: budget.id, ...data }).unwrap();
       showToast({ title: message, status: "success" });
 
-      reset();
-      onClose();
+      handleClose();
     } catch (error) {
       console.log(error);
     }
@@ -47,7 +51,7 @@ export const AddGoalModal = ({ isOpen, onClose }: DefaultModalProps) => {
   return (
     <DefaultModal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleClose}
       title={t("Add Goal")}
       size="md"
       body={

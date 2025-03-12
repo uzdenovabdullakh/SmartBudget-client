@@ -39,6 +39,11 @@ export const EditGoalModal = ({
     },
   });
 
+  const handleClose = () => {
+    reset();
+    onClose();
+  };
+
   const onSubmit = async (dto: UpdateGoalDto) => {
     try {
       const { message } = await updateGoal({ id: goal.id, ...dto }).unwrap();
@@ -47,22 +52,16 @@ export const EditGoalModal = ({
         status: "success",
       });
 
-      onClose();
-      reset();
+      handleClose();
     } catch (err) {
       console.log(err);
     }
   };
 
-  const handleCancel = () => {
-    reset();
-    onClose();
-  };
-
   return (
     <DefaultModal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleClose}
       title={goal.name}
       size="lg"
       body={
@@ -99,7 +98,7 @@ export const EditGoalModal = ({
       }
       footer={
         <Flex gap={4}>
-          <Button variant="outline" onClick={handleCancel}>
+          <Button variant="outline" onClick={handleClose}>
             {t("Cancel")}
           </Button>
           <Button colorScheme="blue" onClick={handleSubmit(onSubmit)}>

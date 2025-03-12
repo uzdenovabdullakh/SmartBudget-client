@@ -48,6 +48,11 @@ export const ChangeBudgetSettingsModal = ({
     },
   });
 
+  const handleClose = () => {
+    reset();
+    onClose();
+  };
+
   const onSubmit = async (data: UpdateBudgetDto) => {
     if (!budget?.id) return;
 
@@ -59,8 +64,7 @@ export const ChangeBudgetSettingsModal = ({
 
       showToast({ title: message, status: "success" });
 
-      reset();
-      onClose();
+      handleClose();
     } catch (error) {
       console.log(error);
     }
@@ -69,7 +73,7 @@ export const ChangeBudgetSettingsModal = ({
   return (
     <DefaultModal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleClose}
       title={t("Change budget settings")}
       size="md"
       body={
