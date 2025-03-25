@@ -127,14 +127,14 @@ export default function LoginPage() {
         >
           <FormInputUI
             type="email"
-            placeholder="Email"
+            placeholder={t("email")}
             icon={FaEnvelope}
             error={errors.email?.message}
             {...register("email")}
           />
           <FormInputUI
             type="password"
-            placeholder="Password"
+            placeholder={t("password")}
             icon={FaLock}
             error={errors.password?.message}
             {...register("password")}

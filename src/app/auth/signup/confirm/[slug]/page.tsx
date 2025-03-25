@@ -83,14 +83,14 @@ export default function ConfirmRegistrationPage() {
         >
           <FormInputUI
             type="password"
-            placeholder="Your password"
+            placeholder={t("Your password")}
             icon={FaLock}
             error={errors.password?.message}
             {...register("password")}
           />
           <FormInputUI
             type="password"
-            placeholder="Repeat your password"
+            placeholder={t("Repeat your password")}
             icon={FaLock}
             error={errors.confirmPassword?.message}
             {...register("confirmPassword")}

@@ -133,14 +133,14 @@ export default function SignUpPage() {
         >
           <FormInputUI
             type="text"
-            placeholder="Login"
+            placeholder={t("login")}
             icon={FaUser}
             error={errors.login?.message}
             {...register("login")}
           />
           <FormInputUI
             type="email"
-            placeholder="Email"
+            placeholder={t("email")}
             icon={FaEnvelope}
             error={errors.email?.message}
             {...register("email")}
