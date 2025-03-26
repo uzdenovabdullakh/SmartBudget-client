@@ -25,6 +25,7 @@ import { PieChart } from "@/components/analytic/PieChart";
 import { ExpensesTable } from "@/components/analytic/ExpensesTable";
 import { AnalyticResponseDto } from "@/lib/types/analytic.types";
 import { PeriodSelector } from "@/components/analytic/PeriodSelector";
+import { ForeCastCard } from "@/components/cards/ForecastCard";
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
@@ -157,6 +158,10 @@ export default function Analytic() {
           <PieChart data={incomesData} title="Income" colors={incomesColors} />
         )}
       </HStack>
+
+      <Box mt={6}>
+        <ForeCastCard />
+      </Box>
 
       {!expensesData?.amounts.length ? (
         <Box />
