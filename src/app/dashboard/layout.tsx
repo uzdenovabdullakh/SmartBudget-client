@@ -8,7 +8,6 @@ import { Sidebar } from "@/components/sidebar/Sidebar";
 import dynamic from "next/dynamic";
 import { BudgetProvider } from "@/lib/context/BudgetContext";
 import { AddTransactionIconButton } from "@/components/ui/AddTransactionIconButton";
-import { ChatPopover } from "@/components/popovers/chat/ChatPopover";
 
 const Brief = dynamic(
   () => import("@/components/brief/Brief").then((mod) => mod.Brief),
@@ -46,7 +45,6 @@ export default function DashboardLayout({
         <Flex flex="1" direction="column" overflowY="auto" overflowX="hidden">
           {children}
         </Flex>
-        <ChatPopover />
         <AddTransactionIconButton />
       </Flex>
     </BudgetProvider>
