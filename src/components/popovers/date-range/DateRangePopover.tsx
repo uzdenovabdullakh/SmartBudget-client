@@ -118,7 +118,7 @@ export const DateRangePopover = ({ applyDate }: DateRangePopoverProps) => {
       onClose={onClose}
       contentProps={{ minW: "600px" }}
       bodyProps={{ minH: "130px" }}
-      headerText="View Options"
+      headerText={t("View Options")}
       bodyContent={bodyContent}
       onApply={handleApply}
       onCancel={resetState}
