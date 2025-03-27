@@ -15,7 +15,7 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useBudgetContext } from "@/lib/context/BudgetContext";
 
 type AdviceCardProps = {
@@ -85,9 +85,13 @@ export const AdviceCard = ({ category }: AdviceCardProps) => {
     }
   }, [advice, budget?.id, category, provideFinancialAdvice, t]);
 
+  useEffect(() => {
+    setAdvice("");
+  }, [category]);
+
   return (
     <Card borderRadius="md" bg="white" mt={4}>
-      <Accordion allowToggle>
+      <Accordion key={category?.id || "general"} allowToggle>
         <AccordionItem border="none">
           <AccordionButton p={4} onClick={handleAccordionClick}>
             <Heading
