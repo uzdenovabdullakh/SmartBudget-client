@@ -5,7 +5,7 @@ export const AutoCategorizeSchema = z.object({
   accountId: z.string().uuid(i18n.t("validation.Invalid uuid")),
 });
 export const ProvideFinancialAdviceSchema = z.object({
-  message: z.string(),
+  question: z.string(),
   budgetId: z.string().uuid(i18n.t("validation.Invalid uuid")),
 });
 

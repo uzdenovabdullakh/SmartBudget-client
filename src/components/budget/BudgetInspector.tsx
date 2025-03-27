@@ -6,6 +6,7 @@ import { BudgetSettings } from "@/lib/types/budget.types";
 import { useMemo } from "react";
 import { BalanceCard } from "../cards/BalanceCard";
 import { LimitCard } from "../cards/LimitCard";
+import { AdviceCard } from "../cards/AdviceCard";
 
 type BudgetInspectorProps = {
   categoryGroups: CategoryGroup[];
@@ -62,11 +63,14 @@ export const BudgetInspector = ({
 
   if (!selectedCategory) {
     return (
-      <BalanceCard
-        spent={formatCurrency(totalSpent, budgetSettings)}
-        available={totalAvailable}
-        assigned={formatCurrency(totalAssigned, budgetSettings)}
-      />
+      <Box>
+        <BalanceCard
+          spent={formatCurrency(totalSpent, budgetSettings)}
+          available={totalAvailable}
+          assigned={formatCurrency(totalAssigned, budgetSettings)}
+        />
+        <AdviceCard />
+      </Box>
     );
   }
 
@@ -88,6 +92,7 @@ export const BudgetInspector = ({
         spent={categorySpent}
       />
       <LimitCard category={selectedCategory} budgetSettings={budgetSettings} />
+      <AdviceCard category={selectedCategory} />
     </Box>
   );
 };

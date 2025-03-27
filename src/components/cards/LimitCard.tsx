@@ -53,8 +53,8 @@ export const LimitCard = ({ category, budgetSettings }: LimitCardProps) => {
   } = useForm<CategoryLimitDto>({
     resolver: zodResolver(CategoryLimitSchema),
     defaultValues: {
-      limitAmount: categoryLimit?.limitAmount || 0,
-      limitResetPeriod: categoryLimit?.limitResetPeriod || Period.MONTHLY,
+      limitAmount: 0,
+      limitResetPeriod: Period.MONTHLY,
     },
   });
 
@@ -197,9 +197,14 @@ export const LimitCard = ({ category, budgetSettings }: LimitCardProps) => {
         limitAmount: categoryLimit.limitAmount,
         limitResetPeriod: categoryLimit.limitResetPeriod,
       });
-      setIsCreating(false);
+    } else {
+      reset({
+        limitAmount: 0,
+        limitResetPeriod: Period.MONTHLY,
+      });
     }
-  }, [categoryLimit, reset]);
+    setIsCreating(false);
+  }, [categoryLimit, reset, category]);
 
   return (
     <Card borderRadius="md" bg="white" mt={4}>
