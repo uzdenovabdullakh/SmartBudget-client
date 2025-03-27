@@ -17,6 +17,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useCallback, useEffect, useState } from "react";
 import { useBudgetContext } from "@/lib/context/BudgetContext";
+import { formatCurrency } from "@/lib/utils/helpers";
 
 type AdviceCardProps = {
   category?: Category;
@@ -58,18 +59,20 @@ export const AdviceCard = ({ category }: AdviceCardProps) => {
             "Provide recommendations to optimize my budget and give me advice to reduce unnecessary expenses",
           );
         } else {
+          const { name, spent, available, assigned } = category;
           question = t("optimize_my_budget_category_without_limit", {
-            name: category.name,
-            spent: category.spent,
-            avaialable: category.available,
-            assigned: category.assigned,
+            name,
+            spent: formatCurrency(spent, budget?.settings),
+            avaialable: formatCurrency(available, budget?.settings),
+            assigned: formatCurrency(assigned, budget?.settings),
           });
 
           if (category?.categorySpending) {
+            const { spentAmount, limitAmount } = category.categorySpending;
             question = t("optimize_my_budget_category_with_limit", {
-              name: category.name,
-              spent: category.categorySpending.spentAmount,
-              limit: category.categorySpending.limitAmount,
+              name,
+              spent: formatCurrency(spentAmount, budget?.settings),
+              limit: formatCurrency(limitAmount, budget?.settings),
             });
           }
         }
@@ -83,7 +86,14 @@ export const AdviceCard = ({ category }: AdviceCardProps) => {
     } catch (error) {
       console.log(error);
     }
-  }, [advice, budget?.id, category, provideFinancialAdvice, t]);
+  }, [
+    advice,
+    budget?.id,
+    budget?.settings,
+    category,
+    provideFinancialAdvice,
+    t,
+  ]);
 
   useEffect(() => {
     setAdvice("");
