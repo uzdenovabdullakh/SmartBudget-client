@@ -1,9 +1,19 @@
 import { useState } from "react";
-import { Text, Button, HStack, VStack, useDisclosure } from "@chakra-ui/react";
+import {
+  Text,
+  Button,
+  HStack,
+  VStack,
+  useDisclosure,
+  useBreakpointValue,
+  IconButton,
+  SimpleGrid,
+} from "@chakra-ui/react";
 import { DateRange, PredefinedRange } from "@/lib/types/types";
 import { getDateRange } from "@/lib/utils/helpers";
 import { useTranslation } from "react-i18next";
 import DatePickerUI from "@/components/ui/DatePickerUI";
+import { IoFilter } from "react-icons/io5";
 import { BasePopover } from "..";
 
 type DateRangePopoverProps = {
@@ -14,6 +24,7 @@ export const DateRangePopover = ({ applyDate }: DateRangePopoverProps) => {
   const { t } = useTranslation();
 
   const { isOpen, onToggle, onClose } = useDisclosure();
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
   const [dateRange, setDateRange] = useState<DateRange>({
     from: null,
@@ -27,6 +38,11 @@ export const DateRangePopover = ({ applyDate }: DateRangePopoverProps) => {
     "This Year",
     "Custom",
   ];
+
+  const popoverWidth = useBreakpointValue({
+    base: "90vw", // На мобильных устройствах занимает 90% ширины экрана
+    md: "600px", // На планшетах и выше - фиксированная ширина
+  });
 
   const resetState = () => {
     setDateRange({
@@ -54,34 +70,44 @@ export const DateRangePopover = ({ applyDate }: DateRangePopoverProps) => {
 
   const handleApply = () => {
     applyDate(dateRange);
+    onClose();
     resetState();
   };
 
-  const triggerButton = (
+  const triggerButton = isMobile ? (
+    <IconButton
+      aria-label="Open views"
+      icon={<IoFilter />}
+      onClick={onToggle}
+    />
+  ) : (
     <Button pr={6} pl={6} onClick={onToggle}>
       {t("View Options")}
     </Button>
   );
 
   const bodyContent = (
-    <VStack spacing={6} align="stretch">
-      <HStack spacing={4} justify="center">
+    <VStack spacing={6} align="stretch" w="full">
+      <SimpleGrid columns={2} spacing={2}>
         {predefinedRanges.map((range) => (
           <Button
             key={range}
             variant={selectedRange === range ? "solid" : "outline"}
             onClick={() => handleRangeSelection(range)}
-            flex="1"
+            size="sm"
+            whiteSpace="normal"
+            height="auto"
+            py={2}
           >
             {t(range)}
           </Button>
         ))}
-      </HStack>
+      </SimpleGrid>
 
       {selectedRange === "Custom" && (
-        <HStack spacing={4} justifyContent="space-between">
-          <HStack spacing={4} align="center">
-            <Text>{t("From")}</Text>
+        <VStack spacing={4} align="stretch">
+          <HStack spacing={2} align="center" wrap="wrap">
+            <Text minW="50px">{t("From")}</Text>
             <DatePickerUI
               selected={dateRange.from}
               onChange={(date) => {
@@ -93,8 +119,8 @@ export const DateRangePopover = ({ applyDate }: DateRangePopoverProps) => {
               placeholderText={t("Select start date")}
             />
           </HStack>
-          <HStack spacing={4} align="center">
-            <Text>{t("To")}</Text>
+          <HStack spacing={2} align="center" wrap="wrap">
+            <Text minW="50px">{t("To")}</Text>
             <DatePickerUI
               selected={dateRange.to}
               onChange={(date) => {
@@ -106,7 +132,7 @@ export const DateRangePopover = ({ applyDate }: DateRangePopoverProps) => {
               placeholderText={t("Select end date")}
             />
           </HStack>
-        </HStack>
+        </VStack>
       )}
     </VStack>
   );
@@ -115,13 +141,23 @@ export const DateRangePopover = ({ applyDate }: DateRangePopoverProps) => {
     <BasePopover
       triggerButton={triggerButton}
       isOpen={isOpen}
-      onClose={onClose}
-      contentProps={{ minW: "600px" }}
-      bodyProps={{ minH: "130px" }}
+      onClose={() => {
+        resetState();
+        onClose();
+      }}
+      contentProps={{
+        minW: popoverWidth,
+        maxW: popoverWidth,
+        w: "auto",
+      }}
+      bodyProps={{ minH: "130px", p: 3 }}
       headerText={t("View Options")}
       bodyContent={bodyContent}
       onApply={handleApply}
-      onCancel={resetState}
+      onCancel={() => {
+        resetState();
+        onClose();
+      }}
     />
   );
 };
