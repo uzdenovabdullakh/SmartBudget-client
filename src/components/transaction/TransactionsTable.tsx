@@ -204,7 +204,7 @@ export const TransactionsTable: React.FC<TransactionsTableProps> = ({
         <Tbody>
           {table.getRowModel().rows.map((row) => (
             <React.Fragment key={row.id}>
-              <Tr key={row.id}>
+              <Tr key={row.id} _hover={{ bg: "gray.50" }}>
                 <Td>
                   <Checkbox
                     isChecked={selectedRows.includes(row.original.id)}
