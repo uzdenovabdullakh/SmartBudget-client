@@ -20,7 +20,7 @@ type SidebarAccountsProps = {
 export const SidebarAccounts = ({ budget, accounts }: SidebarAccountsProps) => {
   const router = useRouter();
 
-  const { isOpen, onToggle } = useDisclosure();
+  const { isOpen, onToggle } = useDisclosure({ defaultIsOpen: true });
 
   const handleAccountClick = (accountId: string) => {
     if (budget?.id) {
