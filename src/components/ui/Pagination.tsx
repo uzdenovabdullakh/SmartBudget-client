@@ -1,4 +1,4 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Button, Flex, useBreakpointValue } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 
 type PaginationProps = {
@@ -13,9 +13,10 @@ export const Pagination = ({
   onPageChange,
 }: PaginationProps) => {
   const { t } = useTranslation();
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
   return (
-    <Box mt={4} display="flex" justifyContent="space-between">
+    <Flex mt={4} justifyContent={isMobile ? "flex-start" : "space-between"}>
       <Button
         isDisabled={currentPage === 1}
         onClick={() => onPageChange(currentPage - 1)}
@@ -28,6 +29,6 @@ export const Pagination = ({
       >
         {t("Next")}
       </Button>
-    </Box>
+    </Flex>
   );
 };
