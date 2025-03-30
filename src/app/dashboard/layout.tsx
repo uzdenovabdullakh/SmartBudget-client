@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useLazyGetUserQuery } from "@/lib/services/user.api";
 import { UserDetails } from "@/lib/types/user.types";
-import { Flex } from "@chakra-ui/react";
+import { Flex, useBreakpointValue } from "@chakra-ui/react";
 import { Sidebar } from "@/components/sidebar/Sidebar";
 import dynamic from "next/dynamic";
 import { BudgetProvider } from "@/lib/context/BudgetContext";
@@ -22,6 +22,7 @@ export default function DashboardLayout({
   const [getUser] = useLazyGetUserQuery();
   const [isBriefVisible, setBriefVisible] = useState(false);
   const [user, setUser] = useState<UserDetails | null>(null);
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -39,10 +40,16 @@ export default function DashboardLayout({
 
   return (
     <BudgetProvider>
-      <Flex height="100vh" overflow="hidden">
+      <Flex height="100vh" overflow="hidden" position="relative">
         {isBriefVisible && <Brief onClose={() => setBriefVisible(false)} />}
         <Sidebar user={user} />
-        <Flex flex="1" direction="column" overflowY="auto" overflowX="hidden">
+        <Flex
+          flex="1"
+          direction="column"
+          overflowY="auto"
+          overflowX="hidden"
+          ml={isMobile ? 0 : undefined}
+        >
           {children}
         </Flex>
         <AddTransactionIconButton />

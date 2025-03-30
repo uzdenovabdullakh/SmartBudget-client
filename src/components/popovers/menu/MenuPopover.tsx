@@ -7,6 +7,7 @@ import {
   Text,
   Box,
   useDisclosure,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { MdOutlineArrowDropDownCircle } from "react-icons/md";
 import { CiLogout } from "react-icons/ci";
@@ -41,25 +42,29 @@ type PopoverContentBodyProps = {
 const PopoverTriggerButton = ({
   user,
   onToggle,
-}: PopoverTriggerButtonProps) => (
-  <Box
-    display="flex"
-    alignItems="center"
-    gap={2}
-    onClick={onToggle}
-    cursor="pointer"
-  >
-    <Box>
-      <Text fontSize="lg" fontWeight="bold" whiteSpace="nowrap">
-        {user?.login}
-      </Text>
-      <Text fontSize="sm" color="gray.400" whiteSpace="nowrap">
-        {user?.email}
-      </Text>
+}: PopoverTriggerButtonProps) => {
+  const isMobile = useBreakpointValue({ base: true, md: false });
+
+  return (
+    <Box
+      display="flex"
+      alignItems="center"
+      gap={2}
+      onClick={onToggle}
+      cursor="pointer"
+    >
+      <Box>
+        <Text fontSize="lg" fontWeight="bold" whiteSpace="nowrap">
+          {user?.login}
+        </Text>
+        <Text fontSize="sm" color="gray.400" whiteSpace="nowrap">
+          {user?.email}
+        </Text>
+      </Box>
+      {!isMobile && <MdOutlineArrowDropDownCircle size={20} />}
     </Box>
-    <MdOutlineArrowDropDownCircle size={20} />
-  </Box>
-);
+  );
+};
 
 const PopoverContentBody = ({
   onAddBudgetModalOpen,
