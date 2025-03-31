@@ -33,6 +33,11 @@ const MarkdownComponents: Components = {
       {children}
     </Box>
   ),
+  p: ({ children, ...props }) => (
+    <Box as="p" wordBreak="break-word" {...props}>
+      {children}
+    </Box>
+  ),
 };
 
 export const ForeCastCard = () => {
