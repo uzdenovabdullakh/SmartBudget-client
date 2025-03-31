@@ -1,5 +1,5 @@
 import { AnalyticResponseDto } from "@/lib/types/analytic.types";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Text, useBreakpointValue } from "@chakra-ui/react";
 import { Context } from "chartjs-plugin-datalabels";
 import { Pie } from "react-chartjs-2";
 import { useTranslation } from "react-i18next";
@@ -12,6 +12,7 @@ type PieChartProps = {
 
 export const PieChart = ({ data, title, colors }: PieChartProps) => {
   const { t } = useTranslation();
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
   const chartData = {
     labels: data?.categories || [],
@@ -29,6 +30,11 @@ export const PieChart = ({ data, title, colors }: PieChartProps) => {
     plugins: {
       legend: {
         position: "bottom" as const,
+        labels: {
+          font: {
+            size: isMobile ? 16 : 12,
+          },
+        },
       },
       tooltip: {
         enabled: false,
@@ -44,7 +50,7 @@ export const PieChart = ({ data, title, colors }: PieChartProps) => {
         color: "#000",
         font: {
           weight: "bold" as const,
-          size: 12,
+          size: isMobile ? 16 : 12,
         },
         anchor: "end" as const,
         align: "end" as const,
@@ -57,11 +63,11 @@ export const PieChart = ({ data, title, colors }: PieChartProps) => {
       easing: "easeInOutQuad" as const,
     },
     cutout: "75%",
-    radius: "70%",
+    radius: isMobile ? "80%" : "70%",
   };
 
   return (
-    <Box>
+    <Box width={isMobile ? "100%" : "auto"}>
       <Text fontSize="xl" fontWeight="bold" align="center">
         {t(title)}
       </Text>

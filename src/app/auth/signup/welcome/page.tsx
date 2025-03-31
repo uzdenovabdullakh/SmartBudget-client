@@ -46,7 +46,7 @@ export default function WelcomePage() {
 
   return (
     <VStack spacing={6} align="center" mt={10}>
-      <Heading>
+      <Heading textAlign="center">
         {t("Welcome", {
           message: name,
         })}

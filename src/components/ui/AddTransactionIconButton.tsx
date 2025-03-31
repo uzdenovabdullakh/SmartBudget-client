@@ -1,5 +1,10 @@
 import { AddIcon } from "@chakra-ui/icons";
-import { IconButton, Tooltip, useDisclosure } from "@chakra-ui/react";
+import {
+  IconButton,
+  Tooltip,
+  useBreakpointValue,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useGetAccountsQuery } from "@/lib/services/account.api";
 import { useBudgetContext } from "@/lib/context/BudgetContext";
@@ -7,6 +12,7 @@ import { AddTransactionModal } from "../modals/add-transaction/AddTransactionMod
 
 export const AddTransactionIconButton = () => {
   const { t } = useTranslation();
+  const isMobile = useBreakpointValue({ base: true, md: false });
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { budget } = useBudgetContext();
@@ -23,7 +29,12 @@ export const AddTransactionIconButton = () => {
 
   return (
     <>
-      <Tooltip label={t("Add Transaction")} placement="left" hasArrow>
+      <Tooltip
+        label={t("Add Transaction")}
+        placement="left"
+        hasArrow
+        isDisabled={isMobile}
+      >
         <IconButton
           aria-label="Add transaction"
           icon={<AddIcon />}

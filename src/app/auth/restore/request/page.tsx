@@ -45,12 +45,14 @@ export default function RestoreRequestPage() {
 
   return (
     <VStack spacing={6} align="center" mt={10}>
-      <Heading>
+      <Heading textAlign="center">
         {t("Welcome back", {
           message: successMessage,
         })}
       </Heading>
-      <Text>{t("We send restore account email to you.")}</Text>
+      <Text textAlign="center">
+        {t("We send restore account email to you.")}
+      </Text>
       <Button
         variant="primaryButton"
         isLoading={isLoading}

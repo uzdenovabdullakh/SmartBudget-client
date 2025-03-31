@@ -153,3 +153,9 @@ export const getCurrencyColorStyles = (cur: number) => {
     color: "#3c0d09",
   };
 };
+
+export const isMobile = () => {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent,
+  );
+};

@@ -100,7 +100,7 @@ export default function SingleAccount() {
           <HStack gap={2}>
             <IconButton
               variant="outline"
-              aria-label="Edit account"
+              aria-label="Редактировать"
               icon={<FiEdit />}
               onClick={editAccountModal.onOpen}
               colorScheme="teal"
@@ -111,7 +111,7 @@ export default function SingleAccount() {
               account={account}
             />
             <IconButton
-              aria-label="Delete account"
+              aria-label="Удалить"
               icon={<AiOutlineDelete />}
               colorScheme="red"
               onClick={deleteAccountModal.onOpen}

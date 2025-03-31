@@ -7,6 +7,12 @@ import {
   Divider,
   useDisclosure,
   IconButton,
+  useBreakpointValue,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerOverlay,
 } from "@chakra-ui/react";
 import { UserDetails } from "@/lib/types/user.types";
 import { IoAddCircleOutline } from "react-icons/io5";
@@ -15,6 +21,7 @@ import { useGetAccountsQuery } from "@/lib/services/account.api";
 import { useBudgetContext } from "@/lib/context/BudgetContext";
 import { useTranslation } from "react-i18next";
 import dynamic from "next/dynamic";
+import { HamburgerIcon } from "@chakra-ui/icons";
 import { AddAccountModal } from "../modals/add-account/AddAccount";
 import { SidebarAccounts } from "./SidebarAccounts";
 import { NavigationButtons } from "./NavigationButton";
@@ -37,6 +44,7 @@ export const Sidebar = ({ user }: SidebarProps) => {
   const { budget } = useBudgetContext();
 
   const { isOpen, onToggle } = useDisclosure();
+  const isMobile = useBreakpointValue({ base: true, md: false });
   const addAccountModal = useDisclosure();
 
   const { data } = useGetAccountsQuery(
@@ -48,6 +56,54 @@ export const Sidebar = ({ user }: SidebarProps) => {
     },
     { skip: !budget?.id },
   );
+
+  if (isMobile)
+    return (
+      <>
+        <IconButton
+          aria-label="Open menu"
+          icon={<HamburgerIcon />}
+          position="fixed"
+          top="4"
+          left="4"
+          zIndex="dropdown"
+          onClick={onToggle}
+        />
+
+        <Drawer isOpen={isOpen} placement="left" onClose={onToggle}>
+          <DrawerOverlay />
+          <DrawerContent bg="blue.900" color="white">
+            <DrawerCloseButton />
+            <DrawerBody p={4}>
+              <VStack align="start" spacing={4} w="full">
+                <MenuPopover user={user} />
+                <Divider />
+                <NavigationButtons budgetId={budget?.id || ""} />
+                <Divider />
+                <SidebarAccounts
+                  budget={budget}
+                  accounts={data?.accounts || []}
+                />
+                <Button
+                  mt={4}
+                  size="sm"
+                  w="full"
+                  leftIcon={<IoAddCircleOutline />}
+                  onClick={addAccountModal.onOpen}
+                >
+                  {t("Add Account")}
+                </Button>
+              </VStack>
+              <AddAccountModal
+                isOpen={addAccountModal.isOpen}
+                onClose={addAccountModal.onClose}
+                budgetId={budget?.id || ""}
+              />
+            </DrawerBody>
+          </DrawerContent>
+        </Drawer>
+      </>
+    );
 
   return (
     <Flex

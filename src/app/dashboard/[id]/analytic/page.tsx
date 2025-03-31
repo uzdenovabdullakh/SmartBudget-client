@@ -1,6 +1,15 @@
 "use client";
 
-import { Box, HStack, Text, TabList, Tab, Tabs } from "@chakra-ui/react";
+import {
+  Box,
+  HStack,
+  Text,
+  TabList,
+  Tab,
+  Tabs,
+  Stack,
+  useBreakpointValue,
+} from "@chakra-ui/react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import {
@@ -32,6 +41,7 @@ ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 export default function Analytic() {
   const { t } = useTranslation();
   const { budget } = useBudgetContext();
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
   const [period, setPeriod] = useState("month");
   const [selectedYear, setSelectedYear] = useState(getCurrentYear());
@@ -115,18 +125,19 @@ export default function Analytic() {
   }
 
   return (
-    <Box maxW="2xl" mx="auto" p={{ base: 4, md: 6 }}>
+    <Box maxW="2xl" mx="auto" p={{ base: 2, md: 6 }}>
       <Tabs
         index={["week", "month", "year", "custom"].indexOf(period)}
         onChange={(index) =>
           setPeriod(["week", "month", "year", "custom"][index])
         }
+        mt={{ base: 12, md: "0" }}
       >
-        <TabList>
-          <Tab>{t("Week")}</Tab>
-          <Tab>{t("Month")}</Tab>
-          <Tab>{t("Year")}</Tab>
-          <Tab>{t("Custom")}</Tab>
+        <TabList overflowX="auto" pb={2}>
+          <Tab whiteSpace="nowrap">{t("Week")}</Tab>
+          <Tab whiteSpace="nowrap">{t("Month")}</Tab>
+          <Tab whiteSpace="nowrap">{t("Year")}</Tab>
+          <Tab whiteSpace="nowrap">{t("Custom")}</Tab>
         </TabList>
       </Tabs>
 
@@ -142,22 +153,49 @@ export default function Analytic() {
         customDate={customDate}
       />
 
-      <HStack spacing={6} mt={6}>
-        {!expensesData?.amounts.length ? (
-          <NotFoundDataAnimation loop={false} />
-        ) : (
-          <PieChart
-            data={expensesData}
-            title="Expense"
-            colors={expensesColors}
-          />
-        )}
-        {!incomesData?.amounts.length ? (
-          <NotFoundDataAnimation loop={false} />
-        ) : (
-          <PieChart data={incomesData} title="Income" colors={incomesColors} />
-        )}
-      </HStack>
+      {isMobile ? (
+        <Stack spacing={6} mt={6}>
+          {!expensesData?.amounts.length ? (
+            <NotFoundDataAnimation loop={false} />
+          ) : (
+            <PieChart
+              data={expensesData}
+              title="Expense"
+              colors={expensesColors}
+            />
+          )}
+          {!incomesData?.amounts.length ? (
+            <NotFoundDataAnimation loop={false} />
+          ) : (
+            <PieChart
+              data={incomesData}
+              title="Income"
+              colors={incomesColors}
+            />
+          )}
+        </Stack>
+      ) : (
+        <HStack spacing={6} mt={6} align="flex-start">
+          {!expensesData?.amounts.length ? (
+            <NotFoundDataAnimation loop={false} />
+          ) : (
+            <PieChart
+              data={expensesData}
+              title="Expense"
+              colors={expensesColors}
+            />
+          )}
+          {!incomesData?.amounts.length ? (
+            <NotFoundDataAnimation loop={false} />
+          ) : (
+            <PieChart
+              data={incomesData}
+              title="Income"
+              colors={incomesColors}
+            />
+          )}
+        </HStack>
+      )}
 
       <Box mt={6}>
         <ForeCastCard />

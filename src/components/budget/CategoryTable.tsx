@@ -1,5 +1,15 @@
 import { Category, CategoryGroup } from "@/lib/types/category.types";
-import { Table, Tbody, Td, Box, Input, Text } from "@chakra-ui/react";
+import {
+  Table,
+  Tbody,
+  Td,
+  Box,
+  Input,
+  Text,
+  Stack,
+  Flex,
+  useBreakpointValue,
+} from "@chakra-ui/react";
 import {
   SortableContext,
   verticalListSortingStrategy,
@@ -44,6 +54,8 @@ export const CategoryTable = ({
 
   const [editingCategory, setEditingCategory] = useState<string | null>(null);
 
+  const isMobile = useBreakpointValue({ base: true, md: false });
+
   const onSubmit = useCallback(
     (category: Category) => async (data: AssigningChangeDto) => {
       setEditingCategory(null);
@@ -71,67 +83,128 @@ export const CategoryTable = ({
     [setSelectedCategory],
   );
 
-  const renderCategoryRow = (category: Category) => (
-    <SortableItem
-      key={category.id}
-      id={category.id}
-      nodeType="table"
-      onClick={() => handleOpenBudgetInspector(category)}
-    >
-      <Td width="40%">
-        <CategoryChangePopover
-          entity={category}
-          onUpdate={handleUpdateCategoryName}
-          onDelete={handleDeleteCategory}
-        />
-        <Box mt={2}>
+  const renderCategoryRow = (category: Category) =>
+    isMobile ? (
+      <Box key={category.id} id={category.id}>
+        <Box
+          p={4}
+          borderWidth="1px"
+          borderRadius="md"
+          bg="white"
+          mb={2}
+          boxShadow="sm"
+          onClick={() => handleOpenBudgetInspector(category)}
+        >
+          <Flex justify="space-between" align="center" mb={2}>
+            <CategoryChangePopover
+              entity={category}
+              onUpdate={handleUpdateCategoryName}
+              onDelete={handleDeleteCategory}
+            />
+            <MoveAvailablePopover category={category} />
+          </Flex>
           <ProgressBar
             spentAmount={category?.categorySpending?.spentAmount}
             limitAmount={category?.categorySpending?.limitAmount}
           />
+          <Stack spacing={1} mt={2}>
+            <Flex justify="space-between">
+              <Text fontWeight="semibold">{t("Assigned")}</Text>
+              {editingCategory === category.id ? (
+                <Controller
+                  name="assigned"
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      type="number"
+                      size="sm"
+                      autoFocus
+                      width="100px"
+                      textAlign="right"
+                      value={field.value ?? ""}
+                      onChange={(e) => field.onChange(Number(e.target.value))}
+                      onBlur={handleSubmit(onSubmit(category))}
+                    />
+                  )}
+                />
+              ) : (
+                <Text
+                  onClick={(e) => handleEditStart(e, category)}
+                  cursor="pointer"
+                >
+                  {formatCurrency(category.assigned)}
+                </Text>
+              )}
+            </Flex>
+            <Flex justify="space-between">
+              <Text fontWeight="semibold">{t("Spent")}</Text>
+              <Text>{formatCurrency(category.spent)}</Text>
+            </Flex>
+          </Stack>
         </Box>
-      </Td>
-      <Td width="20%" textAlign="center">
-        {editingCategory === category.id ? (
-          <Controller
-            name="assigned"
-            control={control}
-            render={({ field }) => (
-              <Input
-                {...field}
-                type="number"
-                size="sm"
-                autoFocus
-                width="80px"
-                textAlign="center"
-                value={field.value ?? ""}
-                onChange={(e) => field.onChange(Number(e.target.value))}
-                onBlur={handleSubmit(onSubmit(category))}
-              />
-            )}
+      </Box>
+    ) : (
+      <SortableItem
+        key={category.id}
+        id={category.id}
+        nodeType="table"
+        onClick={() => handleOpenBudgetInspector(category)}
+      >
+        <Td width="40%">
+          <CategoryChangePopover
+            entity={category}
+            onUpdate={handleUpdateCategoryName}
+            onDelete={handleDeleteCategory}
           />
-        ) : (
-          <Text
-            onClick={(e) => handleEditStart(e, category)}
-            cursor="pointer"
-            textAlign="center"
-          >
-            {formatCurrency(category.assigned)}
-          </Text>
-        )}
-      </Td>
-      <Td width="20%" textAlign="center">
-        {formatCurrency(category.spent)}
-      </Td>
-      <Td width="20%" textAlign="center">
-        <MoveAvailablePopover category={category} />
-      </Td>
-    </SortableItem>
-  );
+          <Box mt={2}>
+            <ProgressBar
+              spentAmount={category?.categorySpending?.spentAmount}
+              limitAmount={category?.categorySpending?.limitAmount}
+            />
+          </Box>
+        </Td>
+        <Td width="20%" textAlign="center">
+          {editingCategory === category.id ? (
+            <Controller
+              name="assigned"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  type="number"
+                  size="sm"
+                  autoFocus
+                  width="80px"
+                  textAlign="center"
+                  value={field.value ?? ""}
+                  onChange={(e) => field.onChange(Number(e.target.value))}
+                  onBlur={handleSubmit(onSubmit(category))}
+                />
+              )}
+            />
+          ) : (
+            <Text
+              onClick={(e) => handleEditStart(e, category)}
+              cursor="pointer"
+              textAlign="center"
+            >
+              {formatCurrency(category.assigned)}
+            </Text>
+          )}
+        </Td>
+        <Td width="20%" textAlign="center">
+          {formatCurrency(category.spent)}
+        </Td>
+        <Td width="20%" textAlign="center">
+          <MoveAvailablePopover category={category} />
+        </Td>
+      </SortableItem>
+    );
 
-  const renderEmptyRow = () => (
-    <SortableItem key={group.id} id={group.id} nodeType="table">
-      <Td colSpan={4}>
+  const renderEmptyRow = () =>
+    isMobile ? (
+      <Box key={group.id} id={group.id}>
         <Box
           id={group.id}
           minHeight="50px"
@@ -142,25 +215,52 @@ export const CategoryTable = ({
           borderRadius="md"
           color="#aaa"
           fontStyle="italic"
+          p={4}
+          bg="white"
         >
           {t("Create or drag a category here")}
         </Box>
-      </Td>
-    </SortableItem>
-  );
+      </Box>
+    ) : (
+      <SortableItem key={group.id} id={group.id} nodeType="table">
+        <Td colSpan={4}>
+          <Box
+            id={group.id}
+            minHeight="50px"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            border="2px dashed #ccc"
+            borderRadius="md"
+            color="#aaa"
+            fontStyle="italic"
+          >
+            {t("Create or drag a category here")}
+          </Box>
+        </Td>
+      </SortableItem>
+    );
 
   return (
     <SortableContext
       items={group.categories.map((cat) => cat.id)}
       strategy={verticalListSortingStrategy}
     >
-      <Table variant="simple" width="100%">
-        <Tbody>
+      {isMobile ? (
+        <Stack spacing={2}>
           {group.categories.length === 0
             ? renderEmptyRow()
             : group.categories.map(renderCategoryRow)}
-        </Tbody>
-      </Table>
+        </Stack>
+      ) : (
+        <Table variant="simple" width="100%">
+          <Tbody>
+            {group.categories.length === 0
+              ? renderEmptyRow()
+              : group.categories.map(renderCategoryRow)}
+          </Tbody>
+        </Table>
+      )}
     </SortableContext>
   );
 };
