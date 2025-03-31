@@ -147,7 +147,7 @@ export const PageHeader = ({
 
           {/* Рендерим модальные окна вне меню */}
           {buttons &&
-            buttons.props.children.filter(
+            buttons.props?.children?.filter(
               (child: React.ReactNode) =>
                 React.isValidElement(child) && child.props.isOpen !== undefined,
             )}
