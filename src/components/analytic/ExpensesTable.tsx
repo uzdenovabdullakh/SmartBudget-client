@@ -11,6 +11,9 @@ import {
   Tbody,
   Td,
   HStack,
+  useBreakpointValue,
+  Stack,
+  Flex,
 } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 
@@ -25,7 +28,39 @@ export const ExpensesTable = ({
   colors,
   budgetSettings,
 }: ExpensesTableProps) => {
+  const isMobile = useBreakpointValue({ base: true, md: false });
   const { t } = useTranslation();
+
+  if (isMobile) {
+    return (
+      <Stack spacing={4} alignItems="center">
+        {data?.categories.map((category: string, index: number) => (
+          <Box
+            key={category}
+            borderWidth="1px"
+            borderRadius="lg"
+            p={4}
+            minW="sm"
+          >
+            <Flex justifyContent="space-between" mb={2}>
+              <HStack>
+                <Box w="3" h="3" bg={colors[index]} borderRadius="full" />
+                <Text fontWeight="medium">{category}</Text>
+              </HStack>
+              <Text fontWeight="bold">
+                {formatCurrency(data.amounts[index], budgetSettings)}
+              </Text>
+            </Flex>
+            <Text fontSize="sm" color="gray.500">
+              {t("operationsWithCount", {
+                count: data.operationsCount[index],
+              })}
+            </Text>
+          </Box>
+        ))}
+      </Stack>
+    );
+  }
 
   return (
     <Table variant="simple">

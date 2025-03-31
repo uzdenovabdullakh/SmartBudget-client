@@ -6,6 +6,7 @@ import {
   Box,
   HStack,
   AccordionPanel,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 import { CategoryGroup } from "@/lib/types/category.types";
@@ -34,6 +35,8 @@ export const CategoryGroupItem = ({
     null,
   );
 
+  const isMobile = useBreakpointValue({ base: true, md: false });
+
   const { handleUpdateGroupName, handleDeleteGroup, handleCreateCategory } =
     useCategoryManagement(handleCategoryGroupsChange);
 
@@ -49,58 +52,68 @@ export const CategoryGroupItem = ({
     );
   }, [group.categories]);
 
-  return (
-    <SortableItem key={group.id} id={group.id} nodeType="box">
-      <AccordionItem key={group.id} border="none">
-        <AccordionButton backgroundColor="#edf1f5" data-no-dnd="true">
-          <AccordionIcon />
-          <Box
-            flex="1"
-            textAlign="left"
-            fontWeight="semibold"
-            width="40%"
-            onClick={(e) => e.stopPropagation()}
-            onMouseEnter={() => setHoveredGroupId(group.id)}
-            onMouseLeave={() => setHoveredGroupId(null)}
-          >
-            <HStack spacing={2} align="center">
-              <CategoryChangePopover
-                entity={group}
-                onUpdate={handleUpdateGroupName}
-                onDelete={handleDeleteGroup}
+  const content = (
+    <AccordionItem key={group.id} border="none">
+      <AccordionButton backgroundColor="#edf1f5" data-no-dnd="true">
+        <AccordionIcon />
+        <Box
+          flex="1"
+          textAlign="left"
+          fontWeight="semibold"
+          width={isMobile ? "100%" : "40%"}
+          onClick={(e) => e.stopPropagation()}
+          onMouseEnter={() => setHoveredGroupId(group.id)}
+          onMouseLeave={() => setHoveredGroupId(null)}
+        >
+          <HStack spacing={2} align="center">
+            <CategoryChangePopover
+              entity={group}
+              onUpdate={handleUpdateGroupName}
+              onDelete={handleDeleteGroup}
+            />
+            {(hoveredGroupId === group.id ||
+              openPopoverGroupId === group.id) && (
+              <CategoryCreatePopover
+                isCategoryGroup={false}
+                groupId={group.id}
+                onCreate={handleCreateCategory as any}
+                onOpenPopover={() => setOpenPopoverGroupId(group.id)}
+                onClosePopover={() => setOpenPopoverGroupId(null)}
               />
-              {(hoveredGroupId === group.id ||
-                openPopoverGroupId === group.id) && (
-                <CategoryCreatePopover
-                  isCategoryGroup={false}
-                  groupId={group.id}
-                  onCreate={handleCreateCategory as any}
-                  onOpenPopover={() => setOpenPopoverGroupId(group.id)}
-                  onClosePopover={() => setOpenPopoverGroupId(null)}
-                />
-              )}
-            </HStack>
-          </Box>
-          <Box width="20%" textAlign="center">
-            {formatCurrency(totalAssigned, budgetInfo?.settings)}
-          </Box>
-          <Box width="20%" textAlign="center">
-            {formatCurrency(totalSpent, budgetInfo?.settings)}
-          </Box>
-          <Box width="20%" textAlign="center">
-            {formatCurrency(totalAvailable, budgetInfo?.settings)}
-          </Box>
-        </AccordionButton>
-        <AccordionPanel>
-          <CategoryTable
-            group={group}
-            formatCurrency={(value) =>
-              formatCurrency(value, budgetInfo?.settings)
-            }
-            handleCategoryGroupsChange={handleCategoryGroupsChange}
-          />
-        </AccordionPanel>
-      </AccordionItem>
+            )}
+          </HStack>
+        </Box>
+        {!isMobile && (
+          <>
+            <Box width="20%" textAlign="center">
+              {formatCurrency(totalAssigned, budgetInfo?.settings)}
+            </Box>
+            <Box width="20%" textAlign="center">
+              {formatCurrency(totalSpent, budgetInfo?.settings)}
+            </Box>
+            <Box width="20%" textAlign="center">
+              {formatCurrency(totalAvailable, budgetInfo?.settings)}
+            </Box>
+          </>
+        )}
+      </AccordionButton>
+      <AccordionPanel>
+        <CategoryTable
+          group={group}
+          formatCurrency={(value) =>
+            formatCurrency(value, budgetInfo?.settings)
+          }
+          handleCategoryGroupsChange={handleCategoryGroupsChange}
+        />
+      </AccordionPanel>
+    </AccordionItem>
+  );
+
+  return isMobile ? (
+    <Box key={group.id}>{content}</Box>
+  ) : (
+    <SortableItem key={group.id} id={group.id} nodeType="box">
+      {content}
     </SortableItem>
   );
 };

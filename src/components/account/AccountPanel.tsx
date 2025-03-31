@@ -1,4 +1,10 @@
-import { HStack, Button, useDisclosure } from "@chakra-ui/react";
+import {
+  Button,
+  useDisclosure,
+  Stack,
+  useBreakpointValue,
+  HStack,
+} from "@chakra-ui/react";
 import { t } from "i18next";
 import { AiOutlineFile } from "react-icons/ai";
 import { IoAddCircleOutline } from "react-icons/io5";
@@ -24,28 +30,34 @@ export const AccountPanel = ({
 }: AccountPanelProps) => {
   const importFileModal = useDisclosure();
   const addTransactionModal = useDisclosure();
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
   return (
-    <HStack
+    <Stack
+      direction={isMobile ? "column" : "row"}
       mb={4}
       justifyContent="space-between"
-      alignItems="center"
+      alignItems={isMobile ? "stretch" : "center"}
       spacing={4}
     >
-      <HStack spacing={4}>
-        <Button
-          leftIcon={<IoAddCircleOutline />}
-          colorScheme="blue"
-          variant="solid"
-          onClick={addTransactionModal.onOpen}
-        >
-          {t("Add Transaction")}
-        </Button>
-        <AddTransactionModal
-          accountId={accountId}
-          isOpen={addTransactionModal.isOpen}
-          onClose={addTransactionModal.onClose}
-        />
+      <Stack direction={isMobile ? "column" : "row"} spacing={4}>
+        {!isMobile && (
+          <>
+            <Button
+              leftIcon={<IoAddCircleOutline />}
+              colorScheme="blue"
+              variant="solid"
+              onClick={addTransactionModal.onOpen}
+            >
+              {t("Add Transaction")}
+            </Button>
+            <AddTransactionModal
+              accountId={accountId}
+              isOpen={addTransactionModal.isOpen}
+              onClose={addTransactionModal.onClose}
+            />
+          </>
+        )}
         <Button
           leftIcon={<AiOutlineFile />}
           colorScheme="gray"
@@ -60,7 +72,7 @@ export const AccountPanel = ({
           onClose={importFileModal.onClose}
         />
         <AutoCategorizePopover accountId={accountId} />
-      </HStack>
+      </Stack>
 
       <HStack spacing={4}>
         <DateRangePopover applyDate={onApplyDate} />
@@ -70,6 +82,6 @@ export const AccountPanel = ({
           onSearchChange={onSearchChange}
         />
       </HStack>
-    </HStack>
+    </Stack>
   );
 };

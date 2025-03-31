@@ -5,13 +5,21 @@ import { AddBudgetModal } from "@/components/modals/add-budget/AddBudget";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SkeletonUI } from "@/components/ui/SkeletonUI";
 import { useGetBudgetsQuery } from "@/lib/services/budget.api";
-import { Box, Button, HStack, Text, useDisclosure } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  HStack,
+  Text,
+  useBreakpointValue,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { FiPlus } from "react-icons/fi";
 
 export default function Dashboard() {
   const { t } = useTranslation();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
   const { data: budgets = [], isLoading } = useGetBudgetsQuery();
 
@@ -41,7 +49,7 @@ export default function Dashboard() {
             cursor="pointer"
           >
             <FiPlus size={32} />
-            <Text>{t("create_budget")}</Text>
+            {!isMobile && <Text>{t("create_budget")}</Text>}
           </Box>
         </HStack>
         <AddBudgetModal isOpen={isOpen} onClose={onClose} />

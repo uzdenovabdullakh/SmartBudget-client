@@ -6,6 +6,7 @@ import {
   useUploadCheckByFileMutation,
 } from "@/lib/services/check.api";
 import { useTranslation } from "react-i18next";
+import { isMobile } from "@/lib/utils/helpers";
 
 type Props = {
   onScanComplete: (data: any) => void;
@@ -13,6 +14,8 @@ type Props = {
 
 export const ScanTransaction = ({ onScanComplete }: Props) => {
   const { t } = useTranslation();
+
+  const facingMode = isMobile() ? "environment" : "user";
 
   const boxRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -89,6 +92,7 @@ export const ScanTransaction = ({ onScanComplete }: Props) => {
       ) : (
         <VStack justifyContent="space-between" spacing={5}>
           <Scanner
+            constraints={{ facingMode }}
             onScan={handleScan}
             onError={(error: any) => setScanError(error.message)}
             styles={{

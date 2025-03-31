@@ -44,6 +44,7 @@ export default function HomePage() {
           px="5rem"
           flexDirection={{ base: "column", lg: "row" }}
           alignItems="center"
+          gap={6}
         >
           <VStack
             align="flex-start"

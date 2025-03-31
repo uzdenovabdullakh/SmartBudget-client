@@ -17,7 +17,7 @@ export default function NotFoundPage() {
       flexDir="column"
     >
       <NotFoundPageAnimation />
-      <Text variant="error-description">
+      <Text variant="error-description" textAlign="center">
         {t(
           "The page was not found. It may have been deleted or never been. It existed.",
         )}

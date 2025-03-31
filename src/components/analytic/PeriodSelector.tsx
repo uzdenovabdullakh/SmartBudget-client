@@ -3,7 +3,7 @@ import {
   getCurrentYear,
   getWeekRange,
 } from "@/lib/utils/helpers";
-import { HStack, Button, Text } from "@chakra-ui/react";
+import { HStack, Button, Text, useBreakpointValue } from "@chakra-ui/react";
 import { Dispatch, SetStateAction } from "react";
 import { useTranslation } from "react-i18next";
 import DatePickerUI from "../ui/DatePickerUI";
@@ -44,6 +44,7 @@ export const PeriodSelector = ({
   setCustomDate,
   customDate,
 }: PeriodSelectorProps) => {
+  const isMobile = useBreakpointValue({ base: true, md: false });
   const { t } = useTranslation();
 
   const now = new Date();
@@ -155,7 +156,7 @@ export const PeriodSelector = ({
       )}
 
       {period === "custom" && (
-        <HStack mt={4} spacing={4}>
+        <HStack mt={4} spacing={4} flexDir={isMobile ? "column" : "row"}>
           <HStack spacing={4} align="center">
             <Text>{t("From")}</Text>
             <DatePickerUI

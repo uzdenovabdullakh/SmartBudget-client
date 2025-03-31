@@ -1,5 +1,11 @@
 import { LayoutProps } from "@/lib/types/types";
-import { VStack, HStack, Heading, Text } from "@chakra-ui/react";
+import {
+  VStack,
+  HStack,
+  Heading,
+  Text,
+  useBreakpointValue,
+} from "@chakra-ui/react";
 import Link from "next/link";
 
 export default function AuthLayout({
@@ -7,6 +13,8 @@ export default function AuthLayout({
   heading,
   subHeading,
 }: LayoutProps) {
+  const isMobile = useBreakpointValue({ base: true, lg: false });
+
   return (
     <VStack width="100vw" height="100vh" bg="blue.900">
       <HStack width="100%" align="start" padding={4} mb={2}>
@@ -17,12 +25,14 @@ export default function AuthLayout({
         </Link>
       </HStack>
       <HStack width="100%" gap={16} padding={4} justify="center">
-        <VStack align="start" width="40%" color="neutrals.buttermilk">
-          <Heading fontSize="40px" mb={3}>
-            {heading}
-          </Heading>
-          <Text fontSize="sm">{subHeading}</Text>
-        </VStack>
+        {!isMobile && (
+          <VStack align="start" width="40%" color="neutrals.buttermilk">
+            <Heading fontSize="40px" mb={3}>
+              {heading}
+            </Heading>
+            <Text fontSize="sm">{subHeading}</Text>
+          </VStack>
+        )}
         {children}
       </HStack>
     </VStack>
