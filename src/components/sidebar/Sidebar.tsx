@@ -84,7 +84,21 @@ export const Sidebar = ({ user }: SidebarProps) => {
                   budget={budget}
                   accounts={data?.accounts || []}
                 />
+                <Button
+                  mt={4}
+                  size="sm"
+                  w="full"
+                  leftIcon={<IoAddCircleOutline />}
+                  onClick={addAccountModal.onOpen}
+                >
+                  {t("Add Account")}
+                </Button>
               </VStack>
+              <AddAccountModal
+                isOpen={addAccountModal.isOpen}
+                onClose={addAccountModal.onClose}
+                budgetId={budget?.id || ""}
+              />
             </DrawerBody>
           </DrawerContent>
         </Drawer>
