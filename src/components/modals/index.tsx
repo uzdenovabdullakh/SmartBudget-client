@@ -8,6 +8,7 @@ import {
   ModalBody,
   ModalFooter,
   ResponsiveValue,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 
 type Size = ResponsiveValue<
@@ -42,8 +43,10 @@ export const DefaultModal = ({
   footer,
   size,
 }: DefaultModalProps) => {
+  const isMobile = useBreakpointValue({ base: true, md: false });
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size={size}>
+    <Modal isOpen={isOpen} onClose={onClose} size={isMobile ? "sm" : size}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{title}</ModalHeader>
