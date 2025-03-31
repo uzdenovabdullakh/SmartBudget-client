@@ -32,7 +32,7 @@ export default function Budget() {
         buttons={isMobile ? undefined : <BudgetBalance />}
       />
       {isMobile && (
-        <Box pl={16} pr={16} pt={2} pb={2}>
+        <Box pl={16} pr={16}>
           <BudgetBalance />
         </Box>
       )}

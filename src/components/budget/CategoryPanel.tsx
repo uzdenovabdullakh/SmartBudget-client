@@ -92,8 +92,6 @@ export const CategoryPanel = ({ onFilterChange }: CategoryPanelProps) => {
             isCategoryGroup
             onCreate={handleCreateCategoryGroup as any}
           />
-          <SpanButton name={t("Create goal")} onClick={onOpen} />
-          <AddGoalModal isOpen={isOpen} onClose={onClose} />
           <Menu>
             <MenuButton
               as={IconButton}
