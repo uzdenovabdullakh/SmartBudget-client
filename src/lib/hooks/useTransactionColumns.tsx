@@ -106,7 +106,7 @@ export const useTransactionColumns = ({
               render={({ field }) => (
                 <DatePickerUI
                   selected={field.value ? new Date(field.value) : new Date()}
-                  onChange={(date) => field.onChange(date)}
+                  onChange={(date) => field.onChange(date?.toISOString())}
                 />
               )}
             />
