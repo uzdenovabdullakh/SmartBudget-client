@@ -10,6 +10,7 @@ import {
   RadioGroup,
   Radio,
   Progress,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { AnswerToBriefSchema } from "@/lib/validation/brief.schema";
@@ -19,6 +20,7 @@ import { BriefImage } from "./BriefImage";
 
 export const Brief = ({ onClose }: { onClose: () => void }) => {
   const { t } = useTranslation();
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
   const questions = Object.keys(BriefQuestions);
 
@@ -30,10 +32,13 @@ export const Brief = ({ onClose }: { onClose: () => void }) => {
   );
 
   const questionText = questions[currentQuestion];
-  const { image, animation, categories } =
-    QuestionCategoryMapping[
-      questionText as keyof typeof QuestionCategoryMapping
-    ];
+  const {
+    image,
+    animation,
+    categories: options,
+  } = QuestionCategoryMapping[
+    questionText as keyof typeof QuestionCategoryMapping
+  ];
 
   const isMultipleChoice = Array.isArray(BriefQuestions[questionText]);
 
@@ -42,7 +47,7 @@ export const Brief = ({ onClose }: { onClose: () => void }) => {
   const hasAnswered = answers[questionText].length > 0;
 
   const isOptionDisabled = (option: string) => {
-    const lastOption = categories[categories.length - 1];
+    const lastOption = options[options.length - 1];
     const selectedAnswers = answers[questionText];
     return selectedAnswers.includes(lastOption) && option !== lastOption;
   };
@@ -59,7 +64,7 @@ export const Brief = ({ onClose }: { onClose: () => void }) => {
   };
 
   const handleAnswerChange = (value: string[]) => {
-    const lastOption = categories[categories.length - 1];
+    const lastOption = options[options.length - 1];
 
     if (value.includes(lastOption)) {
       setAnswers((prev) => ({
@@ -104,7 +109,8 @@ export const Brief = ({ onClose }: { onClose: () => void }) => {
         borderRadius="md"
         boxShadow="lg"
         maxW="1200px"
-        height="500px"
+        height={{ base: "90vh", md: "500px" }}
+        maxHeight={{ md: "90vh" }}
         width="90%"
         display="flex"
         flexDirection="column"
@@ -119,7 +125,7 @@ export const Brief = ({ onClose }: { onClose: () => void }) => {
         />
 
         <Flex flex="1">
-          <BriefImage image={image} animation={animation} />
+          {!isMobile && <BriefImage image={image} animation={animation} />}
           <Flex
             flex={image || animation ? "1.5" : "1"}
             p={8}
@@ -137,16 +143,21 @@ export const Brief = ({ onClose }: { onClose: () => void }) => {
                 onChange={(value) => handleAnswerChange(value as string[])}
               >
                 <SimpleGrid
-                  columns={categories.length < 5 ? 1 : { base: 1, md: 2 }}
-                  spacing={4}
+                  columns={options.length < 5 ? 1 : { base: 1, md: 2 }}
+                  spacing={{ base: 6, md: 4 }}
                 >
-                  {categories.map((category) => (
+                  {options.map((option) => (
                     <Checkbox
-                      key={category}
-                      value={category}
-                      isDisabled={isOptionDisabled(category)}
+                      key={option}
+                      value={option}
+                      isDisabled={isOptionDisabled(option)}
+                      sx={{
+                        span: {
+                          fontSize: { base: "xl", md: "md" },
+                        },
+                      }}
                     >
-                      {t(category)}
+                      {t(option)}
                     </Checkbox>
                   ))}
                 </SimpleGrid>
@@ -157,12 +168,14 @@ export const Brief = ({ onClose }: { onClose: () => void }) => {
                 onChange={(value) => handleAnswerChange([value])}
               >
                 <SimpleGrid
-                  columns={categories.length < 5 ? 1 : { base: 1, md: 2 }}
-                  spacing={4}
+                  columns={options.length < 5 ? 1 : { base: 1, md: 2 }}
+                  spacing={{ base: 6, md: 4 }}
                 >
-                  {categories.map((category) => (
-                    <Radio key={category} value={category}>
-                      {t(category)}
+                  {options.map((option) => (
+                    <Radio key={option} value={option}>
+                      <Text fontSize={{ base: "xl", md: "md" }}>
+                        {t(option)}
+                      </Text>
                     </Radio>
                   ))}
                 </SimpleGrid>
