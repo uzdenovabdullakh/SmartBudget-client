@@ -41,8 +41,11 @@ export default function DashboardLayout({
   return (
     <BudgetProvider>
       <Flex height="100vh" overflow="hidden" position="relative">
-        {isBriefVisible && <Brief onClose={() => setBriefVisible(false)} />}
-        <Sidebar user={user} />
+        {isBriefVisible ? (
+          <Brief onClose={() => setBriefVisible(false)} />
+        ) : (
+          <Sidebar user={user} />
+        )}
         <Flex
           flex="1"
           direction="column"
